@@ -20,6 +20,21 @@ không phụ thuộc thư viện ngoài).
 | Kraken, nàng tiên cá | **Rồng thiêng Hạ Long** hiện lên ban phước |
 | Doubloon | **Lượng** bạc |
 
+## Phân vai — chọn thuyền trưởng
+
+Khi bắt đầu ván mới, bạn chọn 1 trong 4 thuyền trưởng, mỗi vai một sở trường:
+
+| Vai | Biệt danh | Sở trường |
+|---|---|---|
+| 🔥 **Đô đốc Thúy Hường** | «Phượng Hỏa Bắc Hải» | +1 nòng pháo mỗi mạn, nạp đạn nhanh hơn 30% — thiện chiến nhất |
+| 🧭 **Lái buôn Trần Vân Đồn** | «Thần Toán Bến Cổ» | Mua rẻ 10%, bán đắt 10%, +20 khoang hàng — làm giàu nhanh nhất |
+| 🌪️ **Kiếm khách Hải Âu** | «Cánh Én Ngược Gió» | Tốc độ +15%, bẻ lái nhanh hơn 25% — cơ động nhất |
+| ⚓ **Bà Tư Cát Hải** | «Mẹ Biển Cả» | +50 máu, +4 thủy thủ — bền bỉ nhất |
+
+Đô đốc Thúy Hường có tạo hình riêng (hội *Vietnam Tech Pirates* — xem
+`assets/`), buồm màu ngọc lam và màn kết thắng trận đặc biệt.
+Mỗi vai có màu buồm riêng để nhận diện trên biển.
+
 ## Cách chơi
 
 - **↑ / ↓** — căng / hạ buồm (3 cấp). **← / →** — bẻ lái.
