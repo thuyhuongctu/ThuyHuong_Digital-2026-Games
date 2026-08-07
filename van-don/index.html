@@ -84,6 +84,33 @@
   button.ghost{background:var(--panel);border-color:var(--wood);color:var(--celadon);
     font-weight:400;font-size:13px;padding:9px 16px}
   #introArt{font-size:44px;text-align:center;margin:6px 0 2px}
+
+  /* ===== Cống phẩm ===== */
+  #tribBar{position:absolute;left:0;right:0;z-index:4;display:none;
+    align-items:center;justify-content:center;gap:10px;
+    background:rgba(36,23,8,.93);border-bottom:1px solid var(--son);
+    padding:6px 10px;font-size:12.5px}
+  #tribBar b{color:var(--dong)}
+  #tribBar .t{color:var(--son);font-weight:700}
+  #tribBar button{padding:5px 14px;font-size:12.5px}
+  #tribBar button:disabled{opacity:.45}
+
+  /* ===== Sử ký ===== */
+  #btnSu{background:none;border:1px solid var(--wood);color:var(--celadon);
+    font-size:14px;padding:4px 9px;border-radius:6px;font-weight:400}
+  #title .eyebrow{white-space:nowrap}
+  @media (max-width:480px){
+    #res{gap:7px;font-size:11.5px}
+    #btnSu{font-size:12px;padding:3px 7px}
+    #title h1{font-size:15px}
+    #title .eyebrow{font-size:8px;letter-spacing:2px}
+    #lvlSeal{font-size:9.5px;padding:2px 5px}
+    .lbl{display:none}
+  }
+  .lbl{font-style:normal}
+  .suItem{border-left:3px solid var(--dong);padding:2px 0 2px 12px;margin-bottom:12px}
+  .suItem h3{color:var(--dong);font-size:14px;margin-bottom:3px}
+  .suItem p{font-size:13px;margin-bottom:0}
 </style>
 </head>
 <body>
@@ -95,9 +122,10 @@
       <h1 class="serif">VÂN ĐỒN</h1>
     </div>
     <div id="res">
+      <button id="btnSu" title="Sổ sử ký">📖</button>
       <span id="lvlSeal">Trang nhỏ</span>
-      <span>💰 <b id="rGold">0</b> quan</span>
-      <span>🏮 <b id="rRep">0</b> danh vọng</span>
+      <span>💰 <b id="rGold">0</b><i class="lbl"> quan</i></span>
+      <span>🏮 <b id="rRep">0</b><i class="lbl"> danh vọng</i></span>
     </div>
   </div>
   <div id="goodsRow"></div>
@@ -105,7 +133,42 @@
 </div>
 
 <canvas id="game"></canvas>
+<div id="tribBar">
+  <span id="tribTxt"></span>
+  <button id="btnTrib">🐉 Dâng tiến</button>
+</div>
 <div id="toast"></div>
+
+<!-- Sổ sử ký -->
+<div class="ov" id="suOv">
+  <div class="pn">
+    <div class="songly"></div>
+    <div class="pnIn">
+      <div class="eyebrow">SỔ SỬ KÝ</div>
+      <h2 class="serif">Vân Đồn trong chính sử</h2>
+      <div class="suItem"><h3>📜 Chiếu lập trang, năm 1149</h3>
+        <p><i>Đại Việt sử ký toàn thư</i> chép: mùa xuân năm Kỷ Tỵ, thuyền buôn
+        ba nước Trảo Oa (Java), Lộ Lạc, Xiêm La vào Hải Đông xin buôn bán.
+        Vua Lý Anh Tông cho lập trang ở nơi hải đảo, gọi là <b>Vân Đồn</b> —
+        thương cảng đầu tiên của Đại Việt.</p></div>
+      <div class="suItem"><h3>⛵ Bến nối bốn phương</h3>
+        <p>Suốt các triều Lý – Trần – Lê, thuyền buôn Tống, Nhật Bản, Nam Dương
+        đến Vân Đồn đổi chác gốm sứ, lụa, trầm hương, ngọc trai. Khảo cổ tại
+        Quan Lạn, Cống Đông tìm thấy hàng vạn mảnh gốm thương mại các thời.</p></div>
+      <div class="suItem"><h3>🏺 Gốm Chu Đậu</h3>
+        <p>Dòng gốm hoa lam nổi tiếng của Đại Việt (Hải Dương ngày nay), theo
+        thuyền buôn từ các cảng Đông Bắc tỏa đi khắp Đông Nam Á, Trung Đông —
+        một chiếc bình gốm Chu Đậu hiện còn ở bảo tàng Topkapi (Thổ Nhĩ Kỳ).</p></div>
+      <div class="suItem"><h3>🗼 Trấn giữ cửa biển</h3>
+        <p>Vân Đồn cũng là tiền đồn phòng thủ: năm 1288, Trần Khánh Dư phục kích
+        đoàn thuyền lương của Trương Văn Hổ tại vùng biển Vân Đồn – Cửa Lục,
+        góp phần làm nên đại thắng Bạch Đằng.</p></div>
+      <p style="text-align:center;margin-top:14px">
+        <button id="btnSuClose">Gấp sổ lại</button></p>
+    </div>
+    <div class="songly"></div>
+  </div>
+</div>
 
 <div id="bottom">
   <div class="songly"></div>
@@ -208,6 +271,25 @@ const NATIONS = [
   { id:'xiem', name:'Xiêm La', flag:'#d9a441', sail:'#9ec5ab', prefs:['gom','ngoc'], mult:1.05 },
 ];
 
+// ---------- Thuyền Phượng Hỏa — Đô đốc T'Hương từ Bắc Hải Đảo ghé thăm ----------
+const PHOENIX = { id:'phuonghoa', name:'Phượng Hỏa', flag:'#2e8b8b', sail:'#2e8b8b', mult:1.6 };
+function spawnPhoenix(){
+  const ds=docks(); if(!ds.length) return;
+  const busy=game.ships.map(s=>s.dockC);
+  const free=ds.filter(d=>!busy.includes(d.c));
+  if(!free.length){ game.phoenixCd=25; return; }
+  const dock=pick(free);
+  const wants={};
+  for(const g of unlockedGoods()) wants[g.id]=Math.floor(rand(4,9));
+  game.ships.push({
+    nat:PHOENIX, special:true, wants, dockC:dock.c,
+    x:dock.x+rand(-40,40), y:cv.height+50, tx:dock.x, ty:dock.y+34,
+    state:'in', tradeT:0, waitT:26, bob:rand(0,TAU),
+  });
+  toast("🔥 Thuyền <b>Phượng Hỏa</b> của Đô đốc T'Hương từ Bắc Hải Đảo ghé bến — mua nhiều, trả giá hậu hĩnh!",4600);
+  sfx('gong');
+}
+
 // ---------- Cấp bến ----------
 const LEVELS = [
   { rep:0,   name:'Trang nhỏ',        title:'TRANG NHỎ VEN VỊNH' },
@@ -251,6 +333,7 @@ const game = {
   eventT:rand(45,70),
   storm:0, t:0, served:0,
   started:false,
+  tribute:null, tributeCd:70, phoenixCd:150,
 };
 GOODS.forEach(g=>game.storage[g.id]=0);
 for(let r=0;r<ROWS;r++){ game.grid.push(Array(COLS).fill(null)); }
@@ -278,7 +361,8 @@ addEventListener('resize', ()=>{ resize(); });
 let toastTimer=null;
 function toast(msg,ms=3400){
   const el=$('toast'); el.innerHTML=msg; el.style.display='block';
-  el.style.top=($('top').offsetHeight+10)+'px';
+  const tribH = $('tribBar').style.display==='flex' ? $('tribBar').offsetHeight+4 : 0;
+  el.style.top=($('top').offsetHeight+tribH+10)+'px';
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.style.display='none',ms);
 }
 function fly(x,y,txt,color){ floats.push({x,y,txt,color,life:1.3}); }
@@ -333,6 +417,10 @@ function updateShips(dt){
   if(game.storm>0) dt*=0.25;                       // bão: mọi việc chậm lại
   game.nextShip-=dt;
   if(game.nextShip<=0){ spawnShip(); game.nextShip=rand(9,15)/Math.max(1,docks().length*0.6); }
+  if(game.level>=2){
+    game.phoenixCd-=dt;
+    if(game.phoenixCd<=0){ game.phoenixCd=rand(130,200); spawnPhoenix(); }
+  }
   for(const s of game.ships){
     s.bob+=dt;
     if(s.state==='in'){
@@ -358,6 +446,7 @@ function updateShips(dt){
         s.state='out'; s.ty=cv.height+80; s.tx=s.x+rand(-60,60);
         const tax=8; game.gold+=tax;
         let dr = done?2:1;
+        if(s.special){ dr+=5; toast('🔥 Phượng Hỏa nhổ neo — Đô đốc gửi lời khen, <b>+5 danh vọng</b>!',3200); }
         dr += countB('den')* (BUILDS.find(b=>b.id==='den').bless);
         game.rep+=dr; game.served++;
         fly(s.x, s.y-18, `+${dr} 🏮`, '#9ec5ab');
@@ -416,6 +505,54 @@ function updateEvents(dt){
     toast(`🐘 Đoàn cống sứ ghé bến nghỉ chân, biếu <b>${bonus} quan</b> trà nước.`,3600);
   }
 }
+
+// ---------- Cống phẩm triều đình ----------
+function updateTribute(dt){
+  if(game.level<1) return;                        // mở từ cấp Trang Vân Đồn
+  if(game.tribute){
+    game.tribute.time-=dt;
+    if(game.tribute.time<=0){
+      game.rep=Math.max(0, game.rep-5); sfx('bad');
+      toast('📜 <b>Trễ hạn cống phẩm!</b> Sứ thần phật ý — <b>-5 danh vọng</b>.',3800);
+      game.tribute=null; game.tributeCd=rand(50,80);
+    }
+  } else {
+    game.tributeCd-=dt;
+    if(game.tributeCd<=0){
+      const g=pick(unlockedGoods());
+      const qty=Math.floor(rand(4,9));
+      game.tribute={ good:g.id, qty, time:75 };
+      sfx('gong');
+      toast(`📜 <b>Chiếu triều đình:</b> dâng tiến <b>${qty} ${g.ic} ${g.name}</b> trong 75 nhịp!`,4600);
+    }
+  }
+}
+function renderTribute(){
+  const el=$('tribBar'), tr=game.tribute;
+  if(!tr){ el.style.display='none'; return; }
+  const g=GOODS.find(x=>x.id===tr.good);
+  el.style.display='flex';
+  el.style.top=$('top').offsetHeight+'px';
+  $('tribTxt').innerHTML =
+    `📜 Dâng <b>${tr.qty} ${g.ic} ${g.name}</b> (kho có ${game.storage[tr.good]}) · còn <span class="t">${Math.ceil(tr.time)}</span> nhịp`;
+  $('btnTrib').disabled = game.storage[tr.good]<tr.qty;
+}
+$('btnTrib').onclick=()=>{
+  const tr=game.tribute; if(!tr) return;
+  const g=GOODS.find(x=>x.id===tr.good);
+  if(game.storage[tr.good]<tr.qty) return;
+  game.storage[tr.good]-=tr.qty;
+  const reward=Math.round(g.price*tr.qty*1.6);
+  game.gold+=reward; game.rep+=10; sfx('gong');
+  fly(cv.width/2, cv.height*0.3, `+${reward} quan · +10 🏮`, '#d9a441');
+  toast(`🐉 Sứ thần hài lòng dâng vua! Ban <b>${reward} quan</b>, <b>+10 danh vọng</b>.`,4200);
+  game.tribute=null; game.tributeCd=rand(60,90);
+  checkLevel(); saveGame();
+};
+
+// ---------- Sổ sử ký ----------
+$('btnSu').onclick=()=>{ $('suOv').style.display='flex'; };
+$('btnSuClose').onclick=()=>{ $('suOv').style.display='none'; };
 
 // ---------- Thăng cấp ----------
 function checkLevel(){
@@ -489,7 +626,7 @@ function updateHUD(){
     unlockedGoods().map(g=>`<span>${g.ic} <b>${game.storage[g.id]}</b></span>`).join('') +
     `<span>⛵ Đã tiếp <b>${game.served}</b> thuyền</span>`;
 }
-setInterval(()=>{ if(game.started){ updateHUD();
+setInterval(()=>{ if(game.started){ updateHUD(); renderTribute();
   // cập nhật trạng thái đủ/thiếu tiền trên chip mà không vẽ lại khi đang chọn ô
   for(const el of document.querySelectorAll('.chip')){
     const b=BUILDS.find(x=>x.id===el.dataset.id);
@@ -677,7 +814,7 @@ function loop(now){
   const dt=Math.min(0.05,(now-last)/1000); last=now;
   if(game.started){
     game.t+=dt;
-    updateShips(dt); updateProd(dt); updateEvents(dt);
+    updateShips(dt); updateProd(dt); updateEvents(dt); updateTribute(dt);
     draw(dt);
   }
   requestAnimationFrame(loop);

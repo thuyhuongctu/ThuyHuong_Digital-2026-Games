@@ -24,6 +24,16 @@ Bạn là quan trấn thủ được vua giao dựng bến. Vòng chơi:
    ban thưởng và mở công trình mới.
 4. **Biến cố**: bão trên vịnh khiến mọi việc đình trệ; **giặc Tàu Ô** cướp
    bến nếu chưa dựng Vọng lâu thủy binh; đoàn cống sứ ghé ngang biếu quà.
+5. **Cống phẩm triều đình** (từ cấp Trang Vân Đồn): chiếu chỉ định kỳ đòi
+   dâng tiến sản vật trong hạn định — dâng kịp được ban thưởng lớn và
+   +10 danh vọng, trễ hạn sứ thần phật ý trừ danh vọng.
+6. **Khách quý**: từ cấp Trấn, thuyền **Phượng Hỏa** của Đô đốc T'Hương
+   (game *Bắc Hải Đảo* cùng bộ sưu tập) thỉnh thoảng ghé bến — mua nhiều
+   mặt hàng, trả giá cao nhất và tặng thêm danh vọng khi rời bến.
+
+Nút **📖** trên thanh trên mở **Sổ sử ký** — tóm lược sử liệu thật về
+Vân Đồn: chiếu lập trang 1149, gốm Chu Đậu xuất khẩu, trận Vân Đồn 1288
+của Trần Khánh Dư.
 
 Game tự lưu mỗi 12 giây — vào lại chọn **Chơi tiếp ván cũ**.
 
