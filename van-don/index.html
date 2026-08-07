@@ -139,6 +139,23 @@
 </div>
 <div id="toast"></div>
 
+<!-- Nâng cấp công trình -->
+<div class="ov" id="upOv">
+  <div class="pn" style="max-width:400px">
+    <div class="songly"></div>
+    <div class="pnIn">
+      <div class="eyebrow">CÔNG TRÌNH</div>
+      <h2 class="serif" id="upName"></h2>
+      <p id="upDesc" style="color:#c9baa0"></p>
+      <p id="upNow"></p>
+      <p style="text-align:center;margin-top:14px">
+        <button id="btnUp"></button>
+        <button id="btnUpClose" class="ghost">Đóng</button></p>
+    </div>
+    <div class="songly"></div>
+  </div>
+</div>
+
 <!-- Sổ sử ký -->
 <div class="ov" id="suOv">
   <div class="pn">
@@ -332,6 +349,7 @@ const game = {
   gold:300, rep:0, level:0,
   storage:{}, cap:40,
   grid:[],                            // grid[r][c] = build id | null
+  glvl:[],                            // glvl[r][c] = cấp công trình (mặc định 1)
   ships:[], nextShip:4,
   eventT:rand(45,70),
   storm:0, t:0, served:0,
@@ -374,14 +392,14 @@ function fly(x,y,txt,color){ floats.push({x,y,txt,color,life:1.3}); }
 function saveGame(){
   store.set(SAVE_KEY, JSON.stringify({
     gold:game.gold, rep:game.rep, level:game.level, storage:game.storage,
-    cap:game.cap, grid:game.grid, served:game.served,
+    cap:game.cap, grid:game.grid, glvl:game.glvl, served:game.served,
   }));
 }
 function loadGame(){
   try{
     const d=JSON.parse(store.get(SAVE_KEY)); if(!d) return false;
     Object.assign(game,{gold:d.gold,rep:d.rep,level:d.level,cap:d.cap,served:d.served||0});
-    game.storage=d.storage; game.grid=d.grid;
+    game.storage=d.storage; game.grid=d.grid; game.glvl=d.glvl||[];
     return true;
   }catch(e){ return false; }
 }
@@ -393,8 +411,13 @@ function docks(){ const out=[]; const r=ROWS-1;
     out.push({c, x:L.ox+(c+0.5)*L.tile, y:L.shoreY});
   return out; }
 function countB(id){ let n=0; for(const row of game.grid) for(const v of row) if(v===id) n++; return n; }
+function lvlAt(r,c){ return (game.glvl[r] && game.glvl[r][c]) || 1; }
+function setLvl(r,c,v){ if(!game.glvl[r]) game.glvl[r]=[]; game.glvl[r][c]=v; }
+function sumLvl(id){ let n=0; for(let r=0;r<ROWS;r++) for(let c2=0;c2<COLS;c2++)
+  if(game.grid[r][c2]===id) n+=lvlAt(r,c2); return n; }
+function upCost(b,lv){ return Math.round(b.cost*0.8*lv); }
 function stored(){ return GOODS.reduce((s,g)=>s+game.storage[g.id],0); }
-function sellMult(){ return 1 + countB('cho')*0.1; }
+function sellMult(){ return 1 + sumLvl('cho')*0.1; }
 function unlockedGoods(){ return GOODS.filter(g=>g.lv<=game.level+1); }
 
 // ---------- Thuyền buôn ----------
@@ -447,10 +470,10 @@ function updateShips(dt){
       const done=Object.values(s.wants).every(v=>v<=0);
       if(done||s.waitT<=0){
         s.state='out'; s.ty=cv.height+80; s.tx=s.x+rand(-60,60);
-        const tax=8; game.gold+=tax;
+        const tax=8*lvlAt(ROWS-1, s.dockC); game.gold+=tax;
         let dr = done?2:1;
         if(s.special){ dr+=5; toast('🔥 Phượng Hỏa nhổ neo — Đô đốc gửi lời khen, <b>+5 danh vọng</b>!',3200); }
-        dr += countB('den')* (BUILDS.find(b=>b.id==='den').bless);
+        dr += sumLvl('den')*2;
         game.rep+=dr; game.served++;
         fly(s.x, s.y-18, `+${dr} 🏮`, '#9ec5ab');
         checkLevel();
@@ -472,9 +495,10 @@ function updateProd(dt){
     const id=game.grid[r][c]; if(!id) continue;
     const b=BUILDS.find(x=>x.id===id); if(!b||!b.make) continue;
     const key=r+'_'+c;
-    prodTimers[key]=(prodTimers[key]||b.rate)-dt;
+    const effRate=b.rate/(1+0.5*(lvlAt(r,c)-1));   // cấp 2 nhanh gấp rưỡi, cấp 3 gấp đôi
+    prodTimers[key]=(prodTimers[key]||effRate)-dt;
     if(prodTimers[key]<=0){
-      prodTimers[key]=b.rate;
+      prodTimers[key]=effRate;
       if(stored()<game.cap){
         game.storage[b.make]++;
         const g=GOODS.find(x=>x.id===b.make);
@@ -496,8 +520,9 @@ function updateEvents(dt){
     toast('⛈️ <b>Bão nổi trên vịnh!</b> Thuyền neo tránh, lò xưởng tạm nghỉ…',3800);
   } else if(roll<0.7){
     if(countB('vong')>0){
-      game.rep+=8; sfx('gong'); checkLevel();
-      toast('🗼 Vọng lâu phát hiện <b>giặc Tàu Ô</b>! Thủy binh đẩy lui — <b>+8 danh vọng</b>.',4200);
+      const gain=4+4*sumLvl('vong');
+      game.rep+=gain; sfx('gong'); checkLevel();
+      toast(`🗼 Vọng lâu phát hiện <b>giặc Tàu Ô</b>! Thủy binh đẩy lui — <b>+${gain} danh vọng</b>.`,4200);
     } else {
       const loss=Math.min(game.gold, Math.max(30, Math.round(game.gold*0.15)));
       game.gold-=loss; sfx('bad');
@@ -604,8 +629,7 @@ cv.addEventListener('pointerdown', e=>{
   const c=Math.floor((px-L.ox)/L.tile), r=Math.floor((py-L.oy)/L.tile);
   if(c<0||c>=COLS||r<0||r>=ROWS) return;
   const cur=game.grid[r][c];
-  if(cur){ const b=BUILDS.find(x=>x.id===cur);
-    toast(`${b.ic} <b>${b.name}</b> — ${b.desc}.`); return; }
+  if(cur){ openUp(r,c); return; }
   if(!selBuild) return;
   const b=BUILDS.find(x=>x.id===selBuild);
   const isShore = r===ROWS-1;
@@ -620,6 +644,47 @@ cv.addEventListener('pointerdown', e=>{
   if(b.id==='cau') toast('⚓ Cầu tàu mới dựng xong — thuyền buôn sẽ vào đông hơn!');
   renderChips(); saveGame();
 });
+
+// ---------- Nâng cấp công trình theo bậc ----------
+let upSel=null;
+function effText(b,lv){
+  if(b.make){ const g=GOODS.find(x=>x.id===b.make);
+    return `mỗi <b>${(b.rate/(1+0.5*(lv-1))).toFixed(1)}</b> nhịp ra 1 ${g.ic}`; }
+  if(b.cap)  return `tổng <b>+${b.cap*lv}</b> sức chứa kho`;
+  if(b.sell) return `góp <b>+${10*lv}%</b> giá bán mọi mặt hàng`;
+  if(b.bless)return `<b>+${2*lv}</b> danh vọng mỗi thuyền rời bến`;
+  if(b.guard)return `góp <b>+${4*lv}</b> danh vọng khi đẩy lui giặc`;
+  if(b.id==='cau') return `thuế <b>${8*lv} quan</b> mỗi thuyền cập bến này`;
+  return b.desc;
+}
+function openUp(r,c){ upSel={r,c}; renderUp(); $('upOv').style.display='flex'; }
+function renderUp(){
+  const {r,c}=upSel; const id=game.grid[r][c]; if(!id) return;
+  const b=BUILDS.find(x=>x.id===id); const lv=lvlAt(r,c);
+  $('upName').innerHTML=`${b.ic} ${b.name} <span style="color:var(--dong)">· cấp ${lv}${'★'.repeat(lv-1)}</span>`;
+  $('upDesc').textContent=b.desc+'.';
+  $('upNow').innerHTML=`Hiện tại: ${effText(b,lv)}`+
+    (lv<3?`<br>Cấp ${lv+1}: ${effText(b,lv+1)}`:'<br>Đã đạt cấp tối đa.');
+  const btn=$('btnUp');
+  if(lv>=3){ btn.textContent='★★ Tối đa'; btn.disabled=true; }
+  else{ const cost=upCost(b,lv);
+    btn.textContent=`⬆️ Nâng cấp ${lv+1} — ${cost} quan`;
+    btn.disabled=game.gold<cost; }
+}
+$('btnUp').onclick=()=>{
+  const {r,c}=upSel; const id=game.grid[r][c]; if(!id) return;
+  const b=BUILDS.find(x=>x.id===id); const lv=lvlAt(r,c);
+  if(lv>=3) return;
+  const cost=upCost(b,lv);
+  if(game.gold<cost) return;
+  game.gold-=cost; setLvl(r,c,lv+1);
+  if(b.cap) game.cap+=b.cap;
+  delete prodTimers[r+'_'+c];          // chu kỳ mới áp dụng ngay
+  sfx('build');
+  fly(L.ox+(c+0.5)*L.tile, L.oy+(r+0.3)*L.tile, `⬆️ Cấp ${lv+1}!`, '#d9a441');
+  renderUp(); updateHUD(); saveGame();
+};
+$('btnUpClose').onclick=()=>{ $('upOv').style.display='none'; };
 
 // ---------- HUD ----------
 function updateHUD(){
@@ -689,7 +754,16 @@ function draw(dt){
       cx.setLineDash([5,5]);
       cx.strokeRect(x+5,y+5,L.tile-10,L.tile-10);
       cx.setLineDash([]);
-    } else drawBuilding(game.grid[r][c], x, y, L.tile, t);
+    } else {
+      drawBuilding(game.grid[r][c], x, y, L.tile, t);
+      const lv=lvlAt(r,c);
+      if(lv>1){
+        cx.fillStyle='#d9a441'; cx.font='bold '+Math.max(10,L.tile*0.17|0)+'px serif';
+        cx.textAlign='right'; cx.textBaseline='top';
+        cx.fillText('★'.repeat(lv-1), x+L.tile-5, y+4);
+        cx.textBaseline='alphabetic';
+      }
+    }
   }
   // --- thuyền ---
   for(const s of game.ships) drawShip(s,t);

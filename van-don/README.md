@@ -15,6 +15,10 @@ Bạn là quan trấn thủ được vua giao dựng bến. Vòng chơi:
 1. **Kiến thiết**: chạm công trình ở thanh dưới rồi chạm ô đất trống để dựng —
    lò gốm Chu Đậu, xưởng dệt lụa, bè ngọc trai, trạm trầm hương… sản xuất
    hàng hóa; cầu tàu (đặt ven bờ) đón thêm thuyền; kho tăng sức chứa.
+   **Chạm vào công trình đã dựng** để mở bảng **nâng cấp theo bậc** (tối đa
+   cấp 3, hiện sao ★ trên nóc): lò xưởng cấp 2 nhanh gấp rưỡi, cấp 3 gấp
+   đôi; kho thêm +30 sức chứa mỗi cấp; cầu tàu thu thuế cao hơn; chợ, đền,
+   vọng lâu mạnh dần theo cấp.
 2. **Giao thương**: thương thuyền **Tống, Nhật Bản, Trảo Oa, Xiêm La** lần
    lượt cập bến, mỗi nước chuộng mặt hàng khác nhau và trả giá khác nhau —
    hàng trong kho tự động bán ra thu **quan tiền**.
