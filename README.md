@@ -1,9 +1,15 @@
 # 🎮 ThuyHuong Digital 2026 — Games
 
-Bộ sưu tập game web của hệ sinh thái ThuyHuong Digital 2026.
+**Cổng Trò Chơi Sử Việt** — bộ sưu tập game web của ThuyHuong Digital 2026.
 Tất cả game đều là HTML5 thuần (canvas 2D), **không cần cài đặt** — mở file
 `index.html` bằng trình duyệt hoặc chơi trực tuyến qua GitHub Pages.
 Hỗ trợ cả máy tính (bàn phím) lẫn điện thoại (cảm ứng).
+
+Trang chủ xếp các game trên **trục dòng sử** (Vân Đồn 1149 → Bắc Hải Đảo
+1780) với bảng màu gốm Lý–Trần đồng bộ cùng game. Cổng game là một **PWA**:
+mở trên điện thoại sẽ có nút **📲 Cài lên màn hình chính** — cài xong chạy
+toàn màn hình như app thật và **chơi được ngoại tuyến** (service worker
+`sw.js` + `manifest.webmanifest` + bộ icon trong `icons/`).
 
 ## Danh sách game
 
