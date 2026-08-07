@@ -96,12 +96,12 @@
   #tribBar button:disabled{opacity:.45}
 
   /* ===== Sử ký ===== */
-  #btnSu,#btnMusic{background:none;border:1px solid var(--wood);color:var(--celadon);
+  #btnSu,#btnMusic,#btnStats{background:none;border:1px solid var(--wood);color:var(--celadon);
     font-size:14px;padding:4px 9px;border-radius:6px;font-weight:400}
   #title .eyebrow{white-space:nowrap}
   @media (max-width:480px){
     #res{gap:7px;font-size:11.5px}
-    #btnSu,#btnMusic{font-size:12px;padding:3px 7px}
+    #btnSu,#btnMusic,#btnStats{font-size:12px;padding:3px 7px}
     #title h1{font-size:15px}
     #title .eyebrow{font-size:8px;letter-spacing:2px}
     #lvlSeal{font-size:9.5px;padding:2px 5px}
@@ -123,6 +123,7 @@
     </div>
     <div id="res">
       <button id="btnMusic" title="Nhạc nền">🔊</button>
+      <button id="btnStats" title="Bảng thành tích">🏆</button>
       <button id="btnSu" title="Sổ sử ký">📖</button>
       <span id="lvlSeal">Trang nhỏ</span>
       <span>💰 <b id="rGold">0</b><i class="lbl"> quan</i></span>
@@ -152,6 +153,21 @@
       <p style="text-align:center;margin-top:14px">
         <button id="btnUp"></button>
         <button id="btnUpClose" class="ghost">Đóng</button></p>
+    </div>
+    <div class="songly"></div>
+  </div>
+</div>
+
+<!-- Bảng thành tích -->
+<div class="ov" id="statsOv">
+  <div class="pn" style="max-width:430px">
+    <div class="songly"></div>
+    <div class="pnIn">
+      <div class="eyebrow">BẢNG THÀNH TÍCH</div>
+      <h2 class="serif">Công trạng quan trấn thủ</h2>
+      <div id="statsBody"></div>
+      <p style="text-align:center;margin-top:14px">
+        <button id="btnStatsClose">Đóng</button></p>
     </div>
     <div class="songly"></div>
   </div>
@@ -386,6 +402,7 @@ function spawnPhoenix(){
     x:dock.x+rand(-40,40), y:cv.height+50, tx:dock.x, ty:dock.y+34,
     state:'in', tradeT:0, waitT:26, bob:rand(0,TAU),
   });
+  game.phoenixN++;
   toast("🔥 Thuyền <b>Phượng Hỏa</b> của Đô đốc T'Hương từ Bắc Hải Đảo ghé bến — mua nhiều, trả giá hậu hĩnh!",4600);
   sfx('gong');
 }
@@ -435,6 +452,7 @@ const game = {
   storm:0, t:0, served:0,
   started:false,
   tribute:null, tributeCd:70, phoenixCd:150,
+  earned:0, prodN:0, tribOk:0, guardN:0, phoenixN:0, playT:0,
 };
 GOODS.forEach(g=>game.storage[g.id]=0);
 for(let r=0;r<ROWS;r++){ game.grid.push(Array(COLS).fill(null)); }
@@ -473,6 +491,8 @@ function saveGame(){
   store.set(SAVE_KEY, JSON.stringify({
     gold:game.gold, rep:game.rep, level:game.level, storage:game.storage,
     cap:game.cap, grid:game.grid, glvl:game.glvl, served:game.served,
+    earned:game.earned, prodN:game.prodN, tribOk:game.tribOk,
+    guardN:game.guardN, phoenixN:game.phoenixN, playT:game.playT,
   }));
 }
 function loadGame(){
@@ -480,6 +500,8 @@ function loadGame(){
     const d=JSON.parse(store.get(SAVE_KEY)); if(!d) return false;
     Object.assign(game,{gold:d.gold,rep:d.rep,level:d.level,cap:d.cap,served:d.served||0});
     game.storage=d.storage; game.grid=d.grid; game.glvl=d.glvl||[];
+    game.earned=d.earned||0; game.prodN=d.prodN||0; game.tribOk=d.tribOk||0;
+    game.guardN=d.guardN||0; game.phoenixN=d.phoenixN||0; game.playT=d.playT||0;
     return true;
   }catch(e){ return false; }
 }
@@ -543,14 +565,14 @@ function updateShips(dt){
           const g=GOODS.find(x=>x.id===want);
           const p=Math.round(g.price*s.nat.mult*sellMult());
           game.storage[want]--; s.wants[want]--;
-          game.gold+=p; sfx('coin');
+          game.gold+=p; game.earned+=p; sfx('coin');
           fly(s.x, s.y-34, `+${p} quan`, '#d9a441');
         }
       }
       const done=Object.values(s.wants).every(v=>v<=0);
       if(done||s.waitT<=0){
         s.state='out'; s.ty=cv.height+80; s.tx=s.x+rand(-60,60);
-        const tax=8*lvlAt(ROWS-1, s.dockC); game.gold+=tax;
+        const tax=8*lvlAt(ROWS-1, s.dockC); game.gold+=tax; game.earned+=tax;
         let dr = done?2:1;
         if(s.special){ dr+=5; toast('🔥 Phượng Hỏa nhổ neo — Đô đốc gửi lời khen, <b>+5 danh vọng</b>!',3200); }
         dr += sumLvl('den')*2;
@@ -580,7 +602,7 @@ function updateProd(dt){
     if(prodTimers[key]<=0){
       prodTimers[key]=effRate;
       if(stored()<game.cap){
-        game.storage[b.make]++;
+        game.storage[b.make]++; game.prodN++;
         const g=GOODS.find(x=>x.id===b.make);
         fly(L.ox+(c+0.5)*L.tile, L.oy+(r+0.35)*L.tile, '+1 '+g.ic, '#f2e8d5');
       }
@@ -601,7 +623,7 @@ function updateEvents(dt){
   } else if(roll<0.7){
     if(countB('vong')>0){
       const gain=4+4*sumLvl('vong');
-      game.rep+=gain; sfx('gong'); checkLevel();
+      game.rep+=gain; game.guardN++; sfx('gong'); checkLevel();
       toast(`🗼 Vọng lâu phát hiện <b>giặc Tàu Ô</b>! Thủy binh đẩy lui — <b>+${gain} danh vọng</b>.`,4200);
     } else {
       const loss=Math.min(game.gold, Math.max(30, Math.round(game.gold*0.15)));
@@ -609,7 +631,7 @@ function updateEvents(dt){
       toast(`☠️ <b>Giặc Tàu Ô cướp bến!</b> Mất <b>${loss} quan</b>. Hãy dựng Vọng lâu thủy binh!`,4200);
     }
   } else {
-    const bonus=60+game.level*40; game.gold+=bonus; sfx('coin');
+    const bonus=60+game.level*40; game.gold+=bonus; game.earned+=bonus; sfx('coin');
     toast(`🐘 Đoàn cống sứ ghé bến nghỉ chân, biếu <b>${bonus} quan</b> trà nước.`,3600);
   }
 }
@@ -651,12 +673,50 @@ $('btnTrib').onclick=()=>{
   if(game.storage[tr.good]<tr.qty) return;
   game.storage[tr.good]-=tr.qty;
   const reward=Math.round(g.price*tr.qty*1.6);
-  game.gold+=reward; game.rep+=10; sfx('gong');
+  game.gold+=reward; game.earned+=reward; game.rep+=10; game.tribOk++; sfx('gong');
   fly(cv.width/2, cv.height*0.3, `+${reward} quan · +10 🏮`, '#d9a441');
   toast(`🐉 Sứ thần hài lòng dâng vua! Ban <b>${reward} quan</b>, <b>+10 danh vọng</b>.`,4200);
   game.tribute=null; game.tributeCd=rand(60,90);
   checkLevel(); saveGame();
 };
+
+// ---------- Bảng thành tích ----------
+function fmtPlayT(s){
+  const m=Math.floor(s/60);
+  return m>=60 ? Math.floor(m/60)+' giờ '+(m%60)+' phút' : m+' phút '+Math.floor(s%60)+' giây';
+}
+function renderStats(){
+  let builds=0, lvls=0;
+  for(let r=0;r<ROWS;r++) for(let c2=0;c2<COLS;c2++)
+    if(game.grid[r][c2]){ builds++; lvls+=lvlAt(r,c2); }
+  const rows=[
+    ['🏯 Cấp bến', LEVELS[game.level].name],
+    ['⛵ Thuyền đã tiếp', game.served],
+    ['💰 Quan tiền tích lũy', game.earned.toLocaleString('vi-VN')+' quan'],
+    ['🏺 Món hàng sản xuất', game.prodN],
+    ['📜 Cống phẩm dâng đúng hạn', game.tribOk],
+    ['🗼 Lần đẩy lui giặc Tàu Ô', game.guardN],
+    ['🔥 Lần Phượng Hỏa ghé bến', game.phoenixN],
+    ['🏗️ Công trình (tổng cấp)', builds+' ('+lvls+')'],
+    ['⏳ Thời gian trấn thủ', fmtPlayT(game.playT)],
+  ];
+  const titles=[
+    ['👑 Đệ Nhất Thương Cảng', game.level>=3],
+    ['⚖️ Thần buôn — tiếp 50 thuyền', game.served>=50],
+    ['🛡️ Hộ quốc — đẩy giặc 3 lần', game.guardN>=3],
+    ['🤝 Bằng hữu Đô đốc — Phượng Hỏa ghé 3 lần', game.phoenixN>=3],
+    ['🏗️ Đại kiến trúc sư — tổng cấp ≥ 15', lvls>=15],
+    ['📜 Trung thần — dâng 5 cống phẩm', game.tribOk>=5],
+  ];
+  $('statsBody').innerHTML =
+    rows.map(x=>`<p style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span>${x[0]}</span><b>${x[1]}</b></p>`).join('') +
+    '<h3 style="color:var(--dong);font-size:14px;margin:12px 0 8px">Danh hiệu</h3>' +
+    titles.map(x=>`<p style="margin-bottom:5px;${x[1]?'':'opacity:.45'}">
+      ${x[1]?'✅':'⬜'} ${x[0]}</p>`).join('');
+}
+$('btnStats').onclick=()=>{ renderStats(); $('statsOv').style.display='flex'; };
+$('btnStatsClose').onclick=()=>{ $('statsOv').style.display='none'; };
 
 // ---------- Sổ sử ký ----------
 $('btnSu').onclick=()=>{ $('suOv').style.display='flex'; };
@@ -667,11 +727,12 @@ function checkLevel(){
   const next=LEVELS[game.level+1];
   if(!next || game.rep<next.rep) return;
   game.level++;
-  game.gold+=next.reward;
+  game.gold+=next.reward; game.earned+=next.reward;
   sfx('gong');
   $('lvlEyebrow').textContent = game.level>=3 ? 'QUỐC SỬ CHÉP RẰNG' : 'SỨ THẦN TRIỀU ĐÌNH ĐẾN BẾN';
   $('lvlTitle').textContent = next.title;
-  $('lvlText').innerHTML = next.text;
+  $('lvlText').innerHTML = next.text +
+    (game.level>=3 ? '<br><br>🏆 Xem <b>Bảng thành tích</b> (nút 🏆 trên thanh trên) để điểm lại công trạng!' : '');
   $('lvlOv').style.display='flex';
   renderChips(); saveGame();
 }
@@ -1187,7 +1248,7 @@ function loop(now){
     game.t+=dt;
     update1288(dt); draw1288(dt);
   } else if(game.started){
-    game.t+=dt;
+    game.t+=dt; game.playT+=dt;
     updateShips(dt); updateProd(dt); updateEvents(dt); updateTribute(dt);
     draw(dt);
   }
