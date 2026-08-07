@@ -10,6 +10,7 @@ Hỗ trợ cả máy tính (bàn phím) lẫn điện thoại (cảm ứng).
 | Game | Thể loại | Chơi |
 |---|---|---|
 | 🏴‍☠️ [**Bắc Hải Đảo** — Hải Tặc Vịnh Bắc Bộ](bac-hai-dao/) | Phiêu lưu / buôn bán / hải chiến | [`bac-hai-dao/index.html`](bac-hai-dao/index.html) |
+| 🏮 [**Vân Đồn** — Đệ Nhất Thương Cảng](van-don/) | Xây dựng / quản lý thương cảng | [`van-don/index.html`](van-don/index.html) |
 
 ### 🏴‍☠️ Bắc Hải Đảo
 
@@ -20,6 +21,14 @@ vôi Hạ Long, buôn nước mắm — lụa — trầm hương — ngọc trai
 thiêng Hạ Long**, và hạ trùm **Hắc Giao** để xưng *Vua Bắc Hải Đảo* 👑.
 
 Xem hướng dẫn chi tiết trong [`bac-hai-dao/README.md`](bac-hai-dao/README.md).
+
+### 🏮 Vân Đồn — Đệ Nhất Thương Cảng
+
+Game xây dựng thương cảng theo sử liệu thật: năm 1149 vua Lý Anh Tông xuống
+chiếu lập trang Vân Đồn. Dựng cầu tàu đón thuyền **Tống - Nhật - Trảo Oa -
+Xiêm La**, mở lò gốm Chu Đậu, xưởng lụa, bè ngọc trai; vượt bão, đuổi giặc
+Tàu Ô, thăng bến từ *Trang nhỏ* lên 👑 *Đệ Nhất Thương Cảng Đại Việt*.
+Xem [`van-don/README.md`](van-don/README.md).
 
 ## Chơi trực tuyến (GitHub Pages)
 

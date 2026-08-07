@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vân Đồn — Đệ Nhất Thương Cảng</title>
+<meta name="description" content="Game xây dựng thương cảng Vân Đồn thời Lý (1149): dựng cầu tàu đón thuyền Tống, Nhật, Java, Xiêm; xây lò gốm Chu Đậu, xưởng lụa, bè ngọc trai. Chơi miễn phí trên trình duyệt, hỗ trợ điện thoại.">
+<meta property="og:title" content="Vân Đồn — Đệ Nhất Thương Cảng">
+<meta property="og:description" content="Dựng lại thời huy hoàng của thương cảng đầu tiên Đại Việt. Chơi ngay trên trình duyệt!">
+<style>
+  /* ===== Bảng màu gốm Lý–Trần: men ngọc · nâu đất · đỏ son · vàng đồng · trắng ngà ===== */
+  :root{
+    --sea:#2f5a4e; --sea2:#22443b;
+    --earth:#8a5a33; --sand:#d8c49a;
+    --wood:#5c3d24; --panel:#241708; --panel2:#31200d;
+    --son:#a5402e; --dong:#d9a441; --nga:#f2e8d5; --celadon:#9ec5ab;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--panel);
+    font-family:"Segoe UI",system-ui,sans-serif;color:var(--nga);touch-action:none}
+  #game{display:block;position:absolute;left:0;right:0}
+  .serif{font-family:Georgia,"Times New Roman","Noto Serif",serif}
+
+  /* Hoa văn sóng nước thời Lý — dấu ấn riêng của giao diện */
+  .songly{height:9px;background:
+    radial-gradient(circle at 6px -3px, transparent 5.5px, var(--dong) 6px, var(--dong) 7.5px, transparent 8px)
+    repeat-x; background-size:12px 9px; opacity:.9}
+
+  /* ===== Thanh trên ===== */
+  #top{position:absolute;top:0;left:0;right:0;z-index:5;background:var(--panel);
+    border-bottom:1px solid var(--wood);padding:0}
+  #topIn{display:flex;align-items:center;justify-content:space-between;
+    padding:7px 12px 5px;gap:8px}
+  #title{line-height:1.15}
+  #title .eyebrow{font-size:9px;letter-spacing:3px;color:var(--celadon)}
+  #title h1{font-size:17px;color:var(--dong);letter-spacing:1px;font-weight:700}
+  #lvlSeal{font-size:10.5px;color:var(--son);border:1px solid var(--son);
+    border-radius:4px;padding:2px 7px;white-space:nowrap;background:rgba(165,64,46,.12)}
+  #res{display:flex;gap:12px;font-size:13px;align-items:center;white-space:nowrap}
+  #res b{color:var(--dong)}
+  #goodsRow{display:flex;gap:10px;padding:0 12px 6px;font-size:11.5px;color:var(--celadon);
+    overflow-x:auto;scrollbar-width:none}
+  #goodsRow::-webkit-scrollbar{display:none}
+  #goodsRow b{color:var(--nga)}
+
+  /* ===== Thanh kiến thiết ===== */
+  #bottom{position:absolute;bottom:0;left:0;right:0;z-index:5;background:var(--panel)}
+  #chips{display:flex;gap:8px;overflow-x:auto;padding:9px 10px 12px;scrollbar-width:none}
+  #chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;min-width:96px;background:var(--panel2);border:1px solid var(--wood);
+    border-radius:10px;padding:7px 9px;text-align:center;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+  .chip .ic{font-size:22px;line-height:1.2}
+  .chip .nm{font-size:11px;color:var(--nga);margin-top:2px;line-height:1.25}
+  .chip .cost{font-size:11px;color:var(--dong);margin-top:2px}
+  .chip.sel{border-color:var(--dong);background:#3d2a10;box-shadow:0 0 0 1px var(--dong)}
+  .chip.locked{opacity:.38}
+  .chip.poor .cost{color:var(--son)}
+  #buildHint{font-size:11px;color:var(--celadon);text-align:center;padding:4px 10px 0;
+    min-height:18px}
+
+  /* ===== Thông báo ===== */
+  #toast{position:absolute;left:50%;transform:translateX(-50%);z-index:6;
+    background:rgba(36,23,8,.94);border:1px solid var(--dong);border-radius:10px;
+    padding:8px 16px;font-size:13.5px;display:none;max-width:88%;text-align:center;
+    pointer-events:none;line-height:1.5}
+
+  /* ===== Overlay ===== */
+  .ov{position:absolute;inset:0;z-index:10;display:none;align-items:center;
+    justify-content:center;background:rgba(12,8,3,.72);padding:16px}
+  .pn{background:var(--panel2);border:2px solid var(--wood);border-radius:14px;
+    max-width:520px;width:100%;max-height:88vh;overflow-y:auto;padding:0}
+  .pnIn{padding:20px 22px 22px}
+  .pn h1{color:var(--dong);font-size:24px;letter-spacing:1px;margin-bottom:2px}
+  .pn h2{color:var(--dong);font-size:19px;margin-bottom:6px}
+  .pn .eyebrow{font-size:10px;letter-spacing:3px;color:var(--celadon);margin-bottom:6px}
+  .pn p{font-size:14px;line-height:1.7;color:#e4d7bf;margin-bottom:10px}
+  .pn b{color:var(--dong)}
+  .pn .son{color:var(--son)}
+  button{background:linear-gradient(180deg,#b8912e,#8a6a1c);color:#fff8e0;
+    border:1px solid var(--dong);border-radius:8px;padding:11px 24px;font-size:15px;
+    font-weight:600;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+  button:active{filter:brightness(1.2)}
+  button.ghost{background:var(--panel);border-color:var(--wood);color:var(--celadon);
+    font-weight:400;font-size:13px;padding:9px 16px}
+  #introArt{font-size:44px;text-align:center;margin:6px 0 2px}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <div id="topIn">
+    <div id="title">
+      <div class="eyebrow">ĐẠI VIỆT · NĂM 1149</div>
+      <h1 class="serif">VÂN ĐỒN</h1>
+    </div>
+    <div id="res">
+      <span id="lvlSeal">Trang nhỏ</span>
+      <span>💰 <b id="rGold">0</b> quan</span>
+      <span>🏮 <b id="rRep">0</b> danh vọng</span>
+    </div>
+  </div>
+  <div id="goodsRow"></div>
+  <div class="songly"></div>
+</div>
+
+<canvas id="game"></canvas>
+<div id="toast"></div>
+
+<div id="bottom">
+  <div class="songly"></div>
+  <div id="buildHint">Chọn công trình rồi chạm vào ô đất trống để dựng</div>
+  <div id="chips"></div>
+</div>
+
+<!-- Mở đầu -->
+<div class="ov" id="introOv" style="display:flex">
+  <div class="pn">
+    <div class="songly"></div>
+    <div class="pnIn">
+      <div class="eyebrow">CHIẾU CHỈ VUA LÝ ANH TÔNG</div>
+      <h1 class="serif">DỰNG TRANG VÂN ĐỒN</h1>
+      <div id="introArt">🏮⛵🏺</div>
+      <p>Mùa xuân năm Kỷ Tỵ 1149, thuyền buôn ba nước <b>Trảo Oa, Lộ Lạc, Xiêm La</b>
+      xin vào Hải Đông buôn bán. Vua xuống chiếu: <i>«Cho lập trang ở nơi hải đảo,
+      gọi là <b>Vân Đồn</b>, để mua bán hàng hóa quý, dâng tiến sản vật địa phương.»</i></p>
+      <p>Khanh là quan trấn thủ được giao trọng trách ấy. Từ một bãi cát ven vịnh,
+      hãy dựng <b>cầu tàu</b> đón thương thuyền bốn phương, mở <b>lò gốm Chu Đậu</b>,
+      <b>xưởng lụa</b>, <b>bè ngọc trai</b> — thu thuế cho quốc khố, tích danh vọng
+      để Vân Đồn xưng danh <b class="son">Đệ Nhất Thương Cảng Đại Việt</b>.</p>
+      <p style="text-align:center;margin-top:14px">
+        <button id="btnStart">🏗️ Nhận chiếu, dựng bến</button>
+        <button id="btnCont" class="ghost" style="display:none">Chơi tiếp ván cũ</button></p>
+    </div>
+    <div class="songly"></div>
+  </div>
+</div>
+
+<!-- Thăng cấp / thắng -->
+<div class="ov" id="lvlOv">
+  <div class="pn">
+    <div class="songly"></div>
+    <div class="pnIn" style="text-align:center">
+      <div class="eyebrow" id="lvlEyebrow">SỨ THẦN TRIỀU ĐÌNH ĐẾN BẾN</div>
+      <div style="font-size:46px;margin:4px 0">🐉</div>
+      <h2 class="serif" id="lvlTitle"></h2>
+      <p id="lvlText" style="text-align:left"></p>
+      <p><button id="btnLvl">Tiếp tục kiến thiết</button></p>
+    </div>
+    <div class="songly"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+// =====================================================================
+//  VÂN ĐỒN — Đệ Nhất Thương Cảng · game xây dựng thương cảng thời Lý
+// =====================================================================
+const TAU = Math.PI*2;
+const SAVE_KEY = 'van-don-save-v1';
+const $ = id => document.getElementById(id);
+const rand = (a,b) => a + Math.random()*(b-a);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const clamp = (v,a,b) => Math.max(a, Math.min(b,v));
+
+// Lưu trữ an toàn: nếu trình xem chặn localStorage thì lưu tạm trong bộ nhớ
+const memStore = {};
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return memStore[k] ?? null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){ memStore[k] = v; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){ delete memStore[k]; } },
+};
+
+// ---------- Âm thanh mộc: tiếng mõ, tiền xu, cồng ----------
+let AC=null;
+function sfx(kind){
+  try{
+    if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    const t=AC.currentTime;
+    const tone=(type,f0,f1,g0,d)=>{
+      const o=AC.createOscillator(),g=AC.createGain();
+      o.type=type;o.frequency.setValueAtTime(f0,t);
+      if(f1)o.frequency.exponentialRampToValueAtTime(f1,t+d*0.8);
+      g.gain.setValueAtTime(g0,t);g.gain.exponentialRampToValueAtTime(0.001,t+d);
+      o.connect(g).connect(AC.destination);o.start();o.stop(t+d+0.05);
+    };
+    if(kind==='coin'){ tone('sine',900,1350,0.13,0.22); }
+    else if(kind==='build'){ tone('square',180,70,0.18,0.18); }
+    else if(kind==='gong'){ tone('sine',196,0,0.22,1.6); tone('sine',392,0,0.08,1.2); }
+    else if(kind==='bad'){ tone('sawtooth',140,55,0.15,0.5); }
+  }catch(e){}
+}
+
+// ---------- Hàng hóa ----------
+const GOODS = [
+  { id:'gom',  ic:'🏺', name:'Gốm Chu Đậu', price:26, lv:1 },
+  { id:'lua',  ic:'🧵', name:'Lụa tơ tằm',  price:48, lv:2 },
+  { id:'ngoc', ic:'🦪', name:'Ngọc trai',   price:95, lv:3 },
+  { id:'tram', ic:'🌿', name:'Trầm hương',  price:150, lv:3 },
+];
+
+// ---------- Thương thuyền bốn phương ----------
+const NATIONS = [
+  { id:'tong', name:'Tống',    flag:'#c94b3c', sail:'#e8d9b0', prefs:['gom','lua'],  mult:1.0 },
+  { id:'nhat', name:'Nhật Bản',flag:'#f2e8d5', sail:'#b8452f', prefs:['gom','tram'], mult:1.15 },
+  { id:'trao', name:'Trảo Oa', flag:'#3f7a4f', sail:'#d9a441', prefs:['lua','ngoc'], mult:1.1 },
+  { id:'xiem', name:'Xiêm La', flag:'#d9a441', sail:'#9ec5ab', prefs:['gom','ngoc'], mult:1.05 },
+];
+
+// ---------- Cấp bến ----------
+const LEVELS = [
+  { rep:0,   name:'Trang nhỏ',        title:'TRANG NHỎ VEN VỊNH' },
+  { rep:40,  name:'Trang Vân Đồn',    title:'TRANG VÂN ĐỒN',
+    text:'Sứ thần đọc chiếu: bến cát nay chính thức mang tên <b>Trang Vân Đồn</b>. Triều đình ban thưởng <b>250 quan</b>. Từ nay khanh được mở <b>Xưởng dệt lụa</b>, <b>Đền thần biển</b> và <b>Chợ phiên</b>.', reward:250 },
+  { rep:120, name:'Trấn Vân Đồn',     title:'TRẤN VÂN ĐỒN',
+    text:'Danh tiếng bến cảng vang tới kinh sư. Vua thăng Vân Đồn làm <b>Trấn</b>, ban thưởng <b>600 quan</b>. Khanh được mở <b>Bè ngọc trai</b>, <b>Trạm trầm hương</b> và <b>Vọng lâu thủy binh</b>.', reward:600 },
+  { rep:300, name:'Đệ Nhất Thương Cảng', title:'ĐỆ NHẤT THƯƠNG CẢNG ĐẠI VIỆT',
+    text:'Rồng thiêng hiện trên mây. Thuyền buôn mười phương nối đuôi vào vịnh — <b>Vân Đồn</b> nay là thương cảng phồn thịnh bậc nhất Đại Việt, tên tuổi khanh lưu vào quốc sử. Triều đình ban thưởng <b>1500 quan</b>. Bến cảng vẫn trong tay khanh — hãy tiếp tục cho thời huy hoàng kéo dài mãi!', reward:1500 },
+];
+
+// ---------- Công trình ----------
+const BUILDS = [
+  { id:'cau',  ic:'⚓', name:'Cầu tàu',        cost:120, lv:1, shore:true,
+    desc:'Thêm một chỗ cho thuyền cập bến' },
+  { id:'logom',ic:'🏺', name:'Lò gốm Chu Đậu', cost:150, lv:1, make:'gom',  rate:6,
+    desc:'Nung 1 gốm mỗi 6 nhịp' },
+  { id:'kho',  ic:'🏛️', name:'Kho hàng',       cost:100, lv:1, cap:30,
+    desc:'+30 sức chứa hàng hóa' },
+  { id:'cho',  ic:'🏮', name:'Chợ phiên',      cost:200, lv:2, sell:0.1,
+    desc:'Giá bán +10% (cộng dồn)' },
+  { id:'lua',  ic:'🧵', name:'Xưởng dệt lụa',  cost:260, lv:2, make:'lua',  rate:9,
+    desc:'Dệt 1 lụa mỗi 9 nhịp' },
+  { id:'den',  ic:'⛩️', name:'Đền thần biển',  cost:300, lv:2, bless:2,
+    desc:'+2 danh vọng mỗi thuyền rời bến' },
+  { id:'ngoc', ic:'🦪', name:'Bè ngọc trai',   cost:420, lv:3, shore:true, make:'ngoc', rate:13,
+    desc:'Mò 1 ngọc mỗi 13 nhịp (đặt ven bờ)' },
+  { id:'tram', ic:'🌿', name:'Trạm trầm hương',cost:500, lv:3, make:'tram', rate:17,
+    desc:'Gom 1 trầm mỗi 17 nhịp' },
+  { id:'vong', ic:'🗼', name:'Vọng lâu thủy binh', cost:380, lv:3, guard:true,
+    desc:'Đẩy lui giặc Tàu Ô, +8 danh vọng' },
+];
+
+// ---------- Trạng thái ----------
+const COLS=7, ROWS=5;                 // hàng cuối (ROWS-1) là bờ biển
+const game = {
+  gold:300, rep:0, level:0,
+  storage:{}, cap:40,
+  grid:[],                            // grid[r][c] = build id | null
+  ships:[], nextShip:4,
+  eventT:rand(45,70),
+  storm:0, t:0, served:0,
+  started:false,
+};
+GOODS.forEach(g=>game.storage[g.id]=0);
+for(let r=0;r<ROWS;r++){ game.grid.push(Array(COLS).fill(null)); }
+game.grid[ROWS-1][3]='cau';          // cầu tàu đầu tiên vua ban sẵn
+
+let selBuild=null, prodTimers={}, floats=[];
+
+// ---------- Canvas & bố cục ----------
+const cv=$('game'), cx=cv.getContext('2d');
+let L={};                             // layout đo lại khi resize
+function resize(){
+  const topH=$('top').offsetHeight, botH=$('bottom').offsetHeight;
+  cv.style.top=topH+'px';
+  cv.width=innerWidth;
+  cv.height=Math.max(200, innerHeight-topH-botH);
+  const tile=Math.min(cv.width/COLS, cv.height*0.62/ROWS);
+  const gw=tile*COLS;
+  L={ tile, ox:(cv.width-gw)/2, oy:8,
+      shoreY: 8+tile*(ROWS-0.15),           // mép nước
+      seaH: cv.height-(8+tile*(ROWS-0.15)) };
+}
+addEventListener('resize', ()=>{ resize(); });
+
+// ---------- Thông báo ----------
+let toastTimer=null;
+function toast(msg,ms=3400){
+  const el=$('toast'); el.innerHTML=msg; el.style.display='block';
+  el.style.top=($('top').offsetHeight+10)+'px';
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.style.display='none',ms);
+}
+function fly(x,y,txt,color){ floats.push({x,y,txt,color,life:1.3}); }
+
+// ---------- Lưu / tải ----------
+function saveGame(){
+  store.set(SAVE_KEY, JSON.stringify({
+    gold:game.gold, rep:game.rep, level:game.level, storage:game.storage,
+    cap:game.cap, grid:game.grid, served:game.served,
+  }));
+}
+function loadGame(){
+  try{
+    const d=JSON.parse(store.get(SAVE_KEY)); if(!d) return false;
+    Object.assign(game,{gold:d.gold,rep:d.rep,level:d.level,cap:d.cap,served:d.served||0});
+    game.storage=d.storage; game.grid=d.grid;
+    return true;
+  }catch(e){ return false; }
+}
+setInterval(()=>{ if(game.started) saveGame(); }, 12000);
+
+// ---------- Tiện ích kinh tế ----------
+function docks(){ const out=[]; const r=ROWS-1;
+  for(let c=0;c<COLS;c++) if(game.grid[r][c]==='cau')
+    out.push({c, x:L.ox+(c+0.5)*L.tile, y:L.shoreY});
+  return out; }
+function countB(id){ let n=0; for(const row of game.grid) for(const v of row) if(v===id) n++; return n; }
+function stored(){ return GOODS.reduce((s,g)=>s+game.storage[g.id],0); }
+function sellMult(){ return 1 + countB('cho')*0.1; }
+function unlockedGoods(){ return GOODS.filter(g=>g.lv<=game.level+1); }
+
+// ---------- Thuyền buôn ----------
+function spawnShip(){
+  const ds=docks(); if(!ds.length) return;
+  const busy=game.ships.map(s=>s.dockC);
+  const free=ds.filter(d=>!busy.includes(d.c));
+  if(!free.length) return;
+  const dock=pick(free);
+  const nat=pick(NATIONS);
+  const wants={};
+  const avail=unlockedGoods().filter(g=>nat.prefs.includes(g.id));
+  const basket=avail.length?avail:[GOODS[0]];
+  for(const g of basket) wants[g.id]=Math.floor(rand(3,8));
+  game.ships.push({
+    nat, wants, dockC:dock.c,
+    x:dock.x+rand(-40,40), y:cv.height+50, tx:dock.x, ty:dock.y+34,
+    state:'in', tradeT:0, waitT:18, bob:rand(0,TAU),
+  });
+}
+
+function updateShips(dt){
+  if(game.storm>0) dt*=0.25;                       // bão: mọi việc chậm lại
+  game.nextShip-=dt;
+  if(game.nextShip<=0){ spawnShip(); game.nextShip=rand(9,15)/Math.max(1,docks().length*0.6); }
+  for(const s of game.ships){
+    s.bob+=dt;
+    if(s.state==='in'){
+      const dx=s.tx-s.x, dy=s.ty-s.y, d=Math.hypot(dx,dy);
+      if(d<4){ s.state='trade'; toast(`⛵ Thuyền <b>${s.nat.name}</b> cập bến, muốn mua hàng!`,2400); }
+      else { s.x+=dx/d*46*dt; s.y+=dy/d*46*dt; }
+    }
+    else if(s.state==='trade'){
+      s.waitT-=dt; s.tradeT-=dt;
+      if(s.tradeT<=0){
+        s.tradeT=0.85;
+        const want=Object.keys(s.wants).find(k=>s.wants[k]>0 && game.storage[k]>0);
+        if(want){
+          const g=GOODS.find(x=>x.id===want);
+          const p=Math.round(g.price*s.nat.mult*sellMult());
+          game.storage[want]--; s.wants[want]--;
+          game.gold+=p; sfx('coin');
+          fly(s.x, s.y-34, `+${p} quan`, '#d9a441');
+        }
+      }
+      const done=Object.values(s.wants).every(v=>v<=0);
+      if(done||s.waitT<=0){
+        s.state='out'; s.ty=cv.height+80; s.tx=s.x+rand(-60,60);
+        const tax=8; game.gold+=tax;
+        let dr = done?2:1;
+        dr += countB('den')* (BUILDS.find(b=>b.id==='den').bless);
+        game.rep+=dr; game.served++;
+        fly(s.x, s.y-18, `+${dr} 🏮`, '#9ec5ab');
+        checkLevel();
+      }
+    }
+    else if(s.state==='out'){
+      const dx=s.tx-s.x, dy=s.ty-s.y, d=Math.hypot(dx,dy);
+      s.x+=dx/d*52*dt; s.y+=dy/d*52*dt;
+      if(s.y>cv.height+60) s.dead=true;
+    }
+  }
+  game.ships=game.ships.filter(s=>!s.dead);
+}
+
+// ---------- Sản xuất ----------
+function updateProd(dt){
+  if(game.storm>0) return;
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    const id=game.grid[r][c]; if(!id) continue;
+    const b=BUILDS.find(x=>x.id===id); if(!b||!b.make) continue;
+    const key=r+'_'+c;
+    prodTimers[key]=(prodTimers[key]||b.rate)-dt;
+    if(prodTimers[key]<=0){
+      prodTimers[key]=b.rate;
+      if(stored()<game.cap){
+        game.storage[b.make]++;
+        const g=GOODS.find(x=>x.id===b.make);
+        fly(L.ox+(c+0.5)*L.tile, L.oy+(r+0.35)*L.tile, '+1 '+g.ic, '#f2e8d5');
+      }
+    }
+  }
+}
+
+// ---------- Sự kiện ----------
+function updateEvents(dt){
+  if(game.storm>0){ game.storm-=dt; if(game.storm<=0) toast('🌤️ Bão tan, thuyền lại vào vịnh.'); return; }
+  game.eventT-=dt;
+  if(game.eventT>0) return;
+  game.eventT=rand(55,90);
+  const roll=Math.random();
+  if(roll<0.4){
+    game.storm=12; sfx('bad');
+    toast('⛈️ <b>Bão nổi trên vịnh!</b> Thuyền neo tránh, lò xưởng tạm nghỉ…',3800);
+  } else if(roll<0.7){
+    if(countB('vong')>0){
+      game.rep+=8; sfx('gong'); checkLevel();
+      toast('🗼 Vọng lâu phát hiện <b>giặc Tàu Ô</b>! Thủy binh đẩy lui — <b>+8 danh vọng</b>.',4200);
+    } else {
+      const loss=Math.min(game.gold, Math.max(30, Math.round(game.gold*0.15)));
+      game.gold-=loss; sfx('bad');
+      toast(`☠️ <b>Giặc Tàu Ô cướp bến!</b> Mất <b>${loss} quan</b>. Hãy dựng Vọng lâu thủy binh!`,4200);
+    }
+  } else {
+    const bonus=60+game.level*40; game.gold+=bonus; sfx('coin');
+    toast(`🐘 Đoàn cống sứ ghé bến nghỉ chân, biếu <b>${bonus} quan</b> trà nước.`,3600);
+  }
+}
+
+// ---------- Thăng cấp ----------
+function checkLevel(){
+  const next=LEVELS[game.level+1];
+  if(!next || game.rep<next.rep) return;
+  game.level++;
+  game.gold+=next.reward;
+  sfx('gong');
+  $('lvlEyebrow').textContent = game.level>=3 ? 'QUỐC SỬ CHÉP RẰNG' : 'SỨ THẦN TRIỀU ĐÌNH ĐẾN BẾN';
+  $('lvlTitle').textContent = next.title;
+  $('lvlText').innerHTML = next.text;
+  $('lvlOv').style.display='flex';
+  renderChips(); saveGame();
+}
+$('btnLvl').onclick=()=>{ $('lvlOv').style.display='none'; };
+
+// ---------- Kiến thiết ----------
+function renderChips(){
+  $('chips').innerHTML = BUILDS.map(b=>{
+    const locked=b.lv>game.level+1;
+    const poor=game.gold<b.cost;
+    return `<div class="chip ${selBuild===b.id?'sel':''} ${locked?'locked':''} ${poor?'poor':''}"
+      data-id="${b.id}">
+      <div class="ic">${b.ic}</div><div class="nm">${b.name}</div>
+      <div class="cost">${locked?'🔒 cấp '+b.lv:b.cost+' quan'}</div></div>`;
+  }).join('');
+  for(const el of document.querySelectorAll('.chip')){
+    el.onclick=()=>{
+      const b=BUILDS.find(x=>x.id===el.dataset.id);
+      if(b.lv>game.level+1){ toast(`🔒 <b>${b.name}</b> mở ở cấp bến ${b.lv}. ${b.desc}.`); return; }
+      selBuild = selBuild===b.id ? null : b.id;
+      $('buildHint').innerHTML = selBuild
+        ? `${b.ic} <b>${b.name}</b> — ${b.desc}. ${b.shore?'Chạm ô <b>ven bờ</b> (hàng dưới cùng)':'Chạm ô <b>đất trống</b>'} để dựng.`
+        : 'Chọn công trình rồi chạm vào ô đất trống để dựng';
+      renderChips();
+    };
+  }
+}
+
+cv.addEventListener('pointerdown', e=>{
+  if(!game.started) return;
+  const rect=cv.getBoundingClientRect();
+  const px=e.clientX-rect.left, py=e.clientY-rect.top;
+  const c=Math.floor((px-L.ox)/L.tile), r=Math.floor((py-L.oy)/L.tile);
+  if(c<0||c>=COLS||r<0||r>=ROWS) return;
+  const cur=game.grid[r][c];
+  if(cur){ const b=BUILDS.find(x=>x.id===cur);
+    toast(`${b.ic} <b>${b.name}</b> — ${b.desc}.`); return; }
+  if(!selBuild) return;
+  const b=BUILDS.find(x=>x.id===selBuild);
+  const isShore = r===ROWS-1;
+  if(b.shore && !isShore){ toast(`${b.ic} ${b.name} phải đặt ở <b>ô ven bờ</b> (hàng dưới cùng).`); return; }
+  if(!b.shore && isShore){ toast(`Ô ven bờ chỉ đặt được <b>Cầu tàu</b> hoặc <b>Bè ngọc trai</b>.`); return; }
+  if(game.gold<b.cost){ toast(`💸 Không đủ quan tiền (${b.cost} quan).`); return; }
+  game.gold-=b.cost;
+  game.grid[r][c]=b.id;
+  if(b.cap) game.cap+=b.cap;
+  sfx('build');
+  fly(L.ox+(c+0.5)*L.tile, L.oy+(r+0.3)*L.tile, b.ic+' Đã dựng!', '#d9a441');
+  if(b.id==='cau') toast('⚓ Cầu tàu mới dựng xong — thuyền buôn sẽ vào đông hơn!');
+  renderChips(); saveGame();
+});
+
+// ---------- HUD ----------
+function updateHUD(){
+  $('rGold').textContent=game.gold.toLocaleString('vi-VN');
+  $('rRep').textContent=game.rep;
+  $('lvlSeal').textContent=LEVELS[game.level].name;
+  $('goodsRow').innerHTML =
+    `<span>📦 Kho <b>${stored()}/${game.cap}</b></span>` +
+    unlockedGoods().map(g=>`<span>${g.ic} <b>${game.storage[g.id]}</b></span>`).join('') +
+    `<span>⛵ Đã tiếp <b>${game.served}</b> thuyền</span>`;
+}
+setInterval(()=>{ if(game.started){ updateHUD();
+  // cập nhật trạng thái đủ/thiếu tiền trên chip mà không vẽ lại khi đang chọn ô
+  for(const el of document.querySelectorAll('.chip')){
+    const b=BUILDS.find(x=>x.id===el.dataset.id);
+    el.classList.toggle('poor', game.gold<b.cost);
+  }
+}}, 400);
+
+// =====================================================================
+//  VẼ — bảng màu men ngọc & hoa nâu
+// =====================================================================
+function draw(dt){
+  const W=cv.width,H=cv.height,t=game.t;
+  // --- đất liền: nền nâu đất pha cát ---
+  const gl=cx.createLinearGradient(0,0,0,L.shoreY);
+  gl.addColorStop(0,'#7b5230'); gl.addColorStop(1,'#a3805249');
+  cx.fillStyle='#6f4a2b'; cx.fillRect(0,0,W,L.shoreY);
+  cx.fillStyle=gl; cx.fillRect(0,0,W,L.shoreY);
+  // vân đất nhẹ
+  cx.strokeStyle='rgba(216,196,154,0.07)';
+  for(let y=14;y<L.shoreY;y+=26){
+    cx.beginPath(); cx.moveTo(0,y);
+    for(let x=0;x<=W;x+=40) cx.lineTo(x, y+Math.sin(x*0.05+y)*2);
+    cx.stroke();
+  }
+  // --- dải cát bờ ---
+  cx.fillStyle='#d8c49a';
+  cx.beginPath(); cx.moveTo(0,L.shoreY-L.tile*0.55);
+  for(let x=0;x<=W;x+=30) cx.lineTo(x, L.shoreY-L.tile*0.55+Math.sin(x*0.04)*5);
+  cx.lineTo(W,L.shoreY+6); cx.lineTo(0,L.shoreY+6); cx.closePath(); cx.fill();
+  // --- biển men ngọc ---
+  const gs=cx.createLinearGradient(0,L.shoreY,0,H);
+  if(game.storm>0){ gs.addColorStop(0,'#2c443e'); gs.addColorStop(1,'#182a26'); }
+  else { gs.addColorStop(0,'#3d6b5e'); gs.addColorStop(1,'#274b42'); }
+  cx.fillStyle=gs; cx.fillRect(0,L.shoreY,W,H-L.shoreY);
+  // sóng vẽ kiểu vảy — gợi hoa văn sóng nước Lý
+  cx.strokeStyle='rgba(220,240,230,'+(game.storm>0?0.10:0.16)+')'; cx.lineWidth=1.4;
+  for(let y=L.shoreY+16;y<H;y+=22){
+    cx.beginPath();
+    for(let x=-20;x<W+20;x+=22){
+      const ph=(x+y*3+t*(game.storm>0?70:26))%44;
+      if(ph<22) cx.moveTo(x,y), cx.quadraticCurveTo(x+11,y-6,x+22,y);
+    }
+    cx.stroke();
+  }
+  // --- lưới ô đất ---
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    const x=L.ox+c*L.tile, y=L.oy+r*L.tile;
+    const shore=r===ROWS-1;
+    if(!game.grid[r][c]){
+      cx.strokeStyle = selBuild
+        ? (shore === !!BUILDS.find(b=>b.id===selBuild).shore
+            ? 'rgba(217,164,65,'+(0.45+0.25*Math.sin(t*4))+')' : 'rgba(255,255,255,0.06)')
+        : 'rgba(242,232,213,0.10)';
+      cx.setLineDash([5,5]);
+      cx.strokeRect(x+5,y+5,L.tile-10,L.tile-10);
+      cx.setLineDash([]);
+    } else drawBuilding(game.grid[r][c], x, y, L.tile, t);
+  }
+  // --- thuyền ---
+  for(const s of game.ships) drawShip(s,t);
+  // --- mưa bão ---
+  if(game.storm>0){
+    cx.fillStyle='rgba(10,16,14,0.28)'; cx.fillRect(0,0,W,H);
+    cx.strokeStyle='rgba(200,225,215,0.35)';
+    cx.beginPath();
+    for(let i=0;i<50;i++){
+      const rx=((i*257+t*820)%(W+80))-40, ry=((i*181+t*1200)%(H+80))-40;
+      cx.moveTo(rx,ry); cx.lineTo(rx-5,ry+16);
+    }
+    cx.stroke();
+  }
+  // --- chữ bay ---
+  for(const f of floats){
+    f.y-=26*dt; f.life-=dt;
+    cx.globalAlpha=clamp(f.life,0,1);
+    cx.fillStyle=f.color; cx.font='bold 13px sans-serif'; cx.textAlign='center';
+    cx.fillText(f.txt, f.x, f.y);
+  }
+  cx.globalAlpha=1;
+  floats=floats.filter(f=>f.life>0);
+}
+
+// ---- vẽ công trình kiểu kiến trúc Việt cổ ----
+function drawBuilding(id,x,y,s,t){
+  const b=BUILDS.find(v=>v.id===id);
+  cx.save(); cx.translate(x+s/2, y+s/2);
+  const u=s/64;
+  if(id==='cau'){
+    // cầu tàu gỗ lim vươn ra biển
+    cx.fillStyle='#5c3d24';
+    cx.fillRect(-8*u, -6*u, 16*u, 46*u);
+    cx.strokeStyle='#3c2716'; cx.lineWidth=1.5;
+    for(let i=0;i<5;i++){ const yy=-2*u+i*9*u;
+      cx.beginPath(); cx.moveTo(-8*u,yy); cx.lineTo(8*u,yy); cx.stroke(); }
+    for(const px of [-10*u,10*u]) for(const py of [6*u,26*u]){
+      cx.fillStyle='#4a3018'; cx.fillRect(px-2*u,py,4*u,7*u); }
+    // đèn lồng đầu cầu
+    cx.fillStyle='#a5402e'; cx.beginPath(); cx.arc(0,-10*u,4.5*u,0,TAU); cx.fill();
+    cx.strokeStyle='#d9a441'; cx.beginPath(); cx.moveTo(0,-16*u); cx.lineTo(0,-10*u); cx.stroke();
+  } else if(id==='ngoc'){
+    // bè tre nổi + phao
+    cx.fillStyle='#b99a5f';
+    for(let i=-2;i<=2;i++) cx.fillRect(i*7*u-2.5*u, -14*u, 5*u, 34*u);
+    cx.strokeStyle='#8a6a3a'; cx.strokeRect(-17*u,-14*u,34*u,34*u);
+    cx.fillStyle='#f2e8d5';
+    for(const [fx,fy] of [[-10,-6],[8,0],[-2,10]]){
+      cx.beginPath(); cx.arc(fx*u, fy*u+Math.sin(t*2+fx)*1.5, 3.2*u, 0, TAU); cx.fill(); }
+  } else {
+    // nhà mái ngói cong đỏ son trên nền tường ngà
+    const wallW = id==='vong'?26:44, wallH = id==='vong'?34:24;
+    cx.fillStyle = id==='den' ? '#e8dcc2' : '#d9c9a8';
+    cx.fillRect(-wallW/2*u, -2*u, wallW*u, wallH*u);
+    cx.strokeStyle='#5c3d24'; cx.lineWidth=1.4;
+    cx.strokeRect(-wallW/2*u, -2*u, wallW*u, wallH*u);
+    // cửa gỗ
+    cx.fillStyle='#5c3d24';
+    cx.fillRect(-5*u, wallH*u-16*u, 10*u, 14*u);
+    // mái ngói cong hai đầu đao
+    const roof=(yy,w)=>{
+      cx.fillStyle='#a5402e';
+      cx.beginPath();
+      cx.moveTo(-w*u, yy);
+      cx.quadraticCurveTo(-w*u-5*u, yy-3*u, -w*u-7*u, yy-8*u);
+      cx.quadraticCurveTo(0, yy-14*u, w*u+7*u, yy-8*u);
+      cx.quadraticCurveTo(w*u+5*u, yy-3*u, w*u, yy);
+      cx.closePath(); cx.fill();
+      cx.strokeStyle='#6f2318'; cx.stroke();
+    };
+    if(id==='vong'){ roof(-2*u,16); roof(-18*u,12); }
+    else roof(-2*u, wallW/2+4);
+    // biểu tượng công trình trên tường
+    cx.font=(15*u|0)+'px serif'; cx.textAlign='center'; cx.textBaseline='middle';
+    cx.fillText(b.ic, 0, (wallH/2+2)*u);
+    // khói lò
+    if(b.make && game.storm<=0){
+      cx.fillStyle='rgba(230,225,210,0.4)';
+      const sm=(t*18)%26;
+      cx.beginPath(); cx.arc(10*u, -16*u-sm*u*0.5, (2+sm*0.12)*u, 0, TAU); cx.fill();
+    }
+  }
+  cx.restore();
+}
+
+// ---- thuyền mành cánh dơi các nước ----
+function drawShip(s,t){
+  cx.save(); cx.translate(s.x, s.y + Math.sin(s.bob*2)*2.5);
+  // thân nâu
+  cx.fillStyle='#4a3018';
+  cx.beginPath();
+  cx.moveTo(-22,0); cx.quadraticCurveTo(-24,9,-14,11);
+  cx.lineTo(14,11); cx.quadraticCurveTo(24,9,22,0);
+  cx.quadraticCurveTo(0,-4,-22,0); cx.closePath(); cx.fill();
+  cx.strokeStyle='#2c1c0c'; cx.stroke();
+  // buồm cánh dơi màu quốc gia
+  cx.fillStyle=s.nat.sail;
+  cx.beginPath();
+  cx.moveTo(0,-2);
+  cx.quadraticCurveTo(-16,-8,-14,-26);
+  cx.quadraticCurveTo(-2,-34,4,-26);
+  cx.quadraticCurveTo(10,-14,0,-2);
+  cx.closePath(); cx.fill();
+  cx.strokeStyle='rgba(0,0,0,0.35)';
+  for(let i=1;i<4;i++){
+    cx.beginPath(); cx.moveTo(-14+i*2,-26+i*6); cx.lineTo(2,-4-i*1); cx.stroke();
+  }
+  // cột + cờ nước
+  cx.strokeStyle='#2c1c0c'; cx.lineWidth=2;
+  cx.beginPath(); cx.moveTo(0,-2); cx.lineTo(0,-36); cx.stroke();
+  cx.fillStyle=s.nat.flag; cx.fillRect(0,-36,10,6);
+  // tên nước khi đang buôn
+  if(s.state==='trade'){
+    cx.fillStyle='#f2e8d5'; cx.font='11px sans-serif'; cx.textAlign='center';
+    cx.fillText(s.nat.name, 0, 24);
+    // các mặt hàng còn muốn mua
+    const w=Object.keys(s.wants).filter(k=>s.wants[k]>0)
+      .map(k=>GOODS.find(g=>g.id===k).ic+s.wants[k]).join(' ');
+    if(w) cx.fillText('🛒 '+w, 0, 38);
+  }
+  cx.restore();
+}
+
+// ---------- Vòng lặp ----------
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(0.05,(now-last)/1000); last=now;
+  if(game.started){
+    game.t+=dt;
+    updateShips(dt); updateProd(dt); updateEvents(dt);
+    draw(dt);
+  }
+  requestAnimationFrame(loop);
+}
+
+// ---------- Khởi động ----------
+function begin(fresh){
+  if(fresh) store.del(SAVE_KEY); else loadGame();
+  $('introOv').style.display='none';
+  game.started=true;
+  resize(); renderChips(); updateHUD();
+  toast('🏗️ Chạm <b>🏺 Lò gốm</b> ở thanh dưới, rồi chạm ô đất trống để dựng lò đầu tiên!',5200);
+}
+$('btnStart').onclick=()=>begin(true);
+$('btnCont').onclick=()=>begin(false);
+if(store.get(SAVE_KEY)) $('btnCont').style.display='inline-block';
+
+resize();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
