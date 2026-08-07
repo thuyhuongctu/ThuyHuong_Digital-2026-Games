@@ -37,6 +37,19 @@ của Trần Khánh Dư.
 
 Game tự lưu mỗi 12 giây — vào lại chọn **Chơi tiếp ván cũ**.
 
+## ⚔️ Thử thách 1288 — Trận Vân Đồn
+
+Chế độ chơi riêng tái hiện trận đánh có thật: đông 1287–1288, Nhân Huệ Vương
+**Trần Khánh Dư** sau trận thua đầu đã thu tàn quân, phục ở Vân Đồn chờ đoàn
+thuyền lương của **Trương Văn Hổ**.
+
+- Vào từ màn mở đầu hoặc từ Sổ sử ký (không ảnh hưởng ván xây dựng đang chơi)
+- **3 đợt** thuyền lương giặc vượt vịnh — chạm vào thuyền để bắn tên lửa
+- Để **5 thuyền** lọt qua là thua; cuối đợt 3, đánh chìm **soái thuyền
+  Trương Văn Hổ** để đại thắng
+- Thắng trận, màn kết kể tiếp trang sử thật: quân Nguyên cạn lương phải rút,
+  mở đường cho đại thắng Bạch Đằng tháng 4 năm 1288
+
 ## Chất liệu lịch sử — văn hóa
 
 - Chiếu lập trang Vân Đồn 1149 thời Lý Anh Tông (Đại Việt sử ký toàn thư)
