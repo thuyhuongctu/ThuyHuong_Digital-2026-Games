@@ -3,6 +3,7 @@
 Bộ sưu tập game web của hệ sinh thái ThuyHuong Digital 2026.
 Tất cả game đều là HTML5 thuần (canvas 2D), **không cần cài đặt** — mở file
 `index.html` bằng trình duyệt hoặc chơi trực tuyến qua GitHub Pages.
+Hỗ trợ cả máy tính (bàn phím) lẫn điện thoại (cảm ứng).
 
 ## Danh sách game
 
@@ -27,4 +28,5 @@ Sau vài phút, game sẽ chạy tại:
 `https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/`
 
 ---
-© 2026 ThuyHuong Digital. Game mới sẽ được bổ sung dần trong năm 2026.
+© 2026 Đỗ Thúy Hường (ThuyHuong Digital) — dự án cá nhân.
+Game mới sẽ được bổ sung dần trong năm 2026.

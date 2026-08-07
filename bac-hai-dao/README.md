@@ -37,9 +37,15 @@ Mỗi vai có màu buồm riêng để nhận diện trên biển.
 
 ## Cách chơi
 
+**Máy tính:**
 - **↑ / ↓** — căng / hạ buồm (3 cấp). **← / →** — bẻ lái.
 - **Space** — khai hỏa thần công cả hai mạn tàu.
 - **E** — cập bến khi đến gần thương cảng. **P** — tạm dừng.
+
+**Điện thoại / máy tính bảng** (tự nhận diện thiết bị cảm ứng):
+- **⟲ ⟳** (góc trái) — bẻ lái. **⛵▲ / ⛵▼** — căng / hạ buồm.
+- **💥** (góc phải) — giữ để khai hỏa liên tục.
+- Chạm vào dòng "⚓ Nhấn E để cập bến" để vào cảng. Nên xoay ngang màn hình.
 
 ### Vòng chơi
 
