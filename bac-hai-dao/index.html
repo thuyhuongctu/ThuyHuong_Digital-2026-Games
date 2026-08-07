@@ -91,6 +91,9 @@
   .charcard .perk{font-size:12px;color:#5ee08a;margin-top:6px;line-height:1.5}
   .charcard .cdesc{font-size:12px;color:#c9d8e2;margin-top:6px;line-height:1.5}
   #endImg{max-width:min(100%,420px);border-radius:10px;margin:10px auto;display:none}
+  #btnMusic{position:absolute;left:14px;top:118px;z-index:6;display:none;
+    background:rgba(11,28,44,.82);border:1px solid var(--edge);border-radius:8px;
+    color:var(--ink);font-size:16px;padding:5px 10px;cursor:pointer}
   /* ---------- Cảm ứng (mobile) ---------- */
   #touchUI{position:absolute;inset:0;display:none;pointer-events:none;z-index:7}
   .tbtn{position:absolute;pointer-events:auto;touch-action:none;user-select:none;
@@ -135,6 +138,7 @@
 <div id="goalbox" style="display:none">🎯 <span id="hGoal"></span></div>
 <div id="hint"></div>
 <div id="toast"></div>
+<button id="btnMusic" title="Nhạc nền (M)">🔊</button>
 <div id="touchUI">
   <button class="tbtn" id="tLeft">⟲</button>
   <button class="tbtn" id="tRight">⟳</button>
@@ -270,6 +274,89 @@ function sfx(kind){
     }
   }catch(e){/* im lặng nếu trình duyệt chặn audio */}
 }
+
+// ---------------- Nhạc nền ngũ cung (sinh bằng WebAudio) ----------------
+const music = {
+  on: (()=>{ try{ return localStorage.getItem('bac-hai-dao-music')!=='off'; }catch(e){ return true; } })(),
+  timer:null, next:0, mel:3, bar:0, gain:null, combatUntil:0,
+};
+const mpick = a => a[Math.floor(Math.random()*a.length)];
+function musicInit(){
+  try{
+    if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    if(!music.gain){
+      music.gain = AC.createGain();
+      music.gain.gain.value = 0.9;
+      music.gain.connect(AC.destination);
+    }
+  }catch(e){}
+}
+// tiếng gảy dây kiểu đàn tranh, luyến âm nhẹ kiểu đàn bầu
+function pluck(freq, when, vol, dur, bend=true){
+  const o=AC.createOscillator(), o2=AC.createOscillator();
+  const g=AC.createGain(), g2=AC.createGain();
+  o.type='triangle'; o2.type='sine';
+  o.frequency.setValueAtTime(bend?freq*1.025:freq, when);
+  o.frequency.exponentialRampToValueAtTime(freq, when+0.09);
+  o2.frequency.setValueAtTime(freq*2.004, when);
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(vol, when+0.018);
+  g.gain.exponentialRampToValueAtTime(0.0001, when+dur);
+  g2.gain.value=0.22;
+  o.connect(g); o2.connect(g2); g2.connect(g); g.connect(music.gain);
+  o.start(when); o2.start(when);
+  o.stop(when+dur+0.1); o2.stop(when+dur+0.1);
+}
+function mdrum(when, vol){
+  const buf=AC.createBuffer(1, AC.sampleRate*0.12|0, AC.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
+  const src=AC.createBufferSource(); src.buffer=buf;
+  const f=AC.createBiquadFilter(); f.type='lowpass'; f.frequency.value=210;
+  const g=AC.createGain(); g.gain.setValueAtTime(vol, when);
+  src.connect(f); f.connect(g); g.connect(music.gain); src.start(when);
+}
+const MSCALES = { sail:[0,2,5,7,9], battle:[0,3,5,7,10] };
+function musicTick(){
+  if(!music.on || !AC || AC.state!=='running' || !music.gain || state==='menu') return;
+  // giáp chiến khi có thuyền giặc áp sát (giữ điệu trận thêm 4 giây)
+  const inCombat = state==='sail' && enemies.some(e =>
+    Math.hypot(e.x-ship.x, e.y-ship.y) < (e.boss?800:450));
+  if(inCombat) music.combatUntil = game.t + 4;
+  const mode = game.t < music.combatUntil ? 'battle' : 'sail';
+  const beat = mode==='battle' ? 0.34 : 0.52;
+  const base = mode==='battle' ? 110 : 146.83;
+  if(music.next < AC.currentTime) music.next = AC.currentTime + 0.05;
+  while(music.next < AC.currentTime + 0.45){
+    const t = music.next, sc = MSCALES[mode];
+    music.mel += mpick([-2,-1,-1,0,1,1,2]);
+    music.mel = clamp(music.mel, 0, 9);
+    const semi = sc[music.mel%5] + 12*Math.floor(music.mel/5) + 12;
+    if(Math.random() < (mode==='battle'?0.82:0.62))
+      pluck(base*Math.pow(2,semi/12), t,
+        mode==='battle'?0.12:0.09, mode==='battle'?0.7:1.5);
+    music.bar++;
+    if(music.bar%4===1) pluck(base, t, 0.085, beat*4.4, false);
+    if(mode==='battle' && music.bar%2===1) mdrum(t, 0.45);
+    else if(mode==='sail' && music.bar%8===1) mdrum(t, 0.18);
+    music.next = t + beat * (mode==='battle' ? 1 : mpick([1,1,1,2]));
+  }
+}
+function musicStart(){
+  musicInit();
+  if(!music.timer) music.timer = setInterval(musicTick, 120);
+  musicBtnUI();
+}
+function musicBtnUI(){ $('btnMusic').textContent = music.on ? '🔊' : '🔇'; }
+function toggleMusic(){
+  music.on = !music.on;
+  try{ localStorage.setItem('bac-hai-dao-music', music.on?'on':'off'); }catch(e){}
+  musicStart();
+  toast(music.on ? '🔊 Nhạc nền: bật (phím M)' : '🔇 Nhạc nền: tắt', 1400);
+}
+$('btnMusic').onclick = toggleMusic;
+musicBtnUI();
 
 // ---------------- Dữ liệu hàng hóa & thương cảng ----------------
 const GOODS = [
@@ -421,6 +508,7 @@ for(let i=0;i<6;i++) spawnEnemy();
 addEventListener('keydown', e => {
   keys[e.code] = true;
   if(e.code==='Space') e.preventDefault();
+  if(e.code==='KeyM' && state!=='menu') toggleMusic();
   if(state==='sail'){
     if(e.code==='ArrowUp' || e.code==='KeyW') ship.sail = Math.min(3, ship.sail+1);
     if(e.code==='ArrowDown' || e.code==='KeyS') ship.sail = Math.max(0, ship.sail-1);
@@ -957,6 +1045,8 @@ function startGame(fresh){
   $('hud').style.display = 'flex';
   $('goalbox').style.display = 'block';
   $('controls').style.display = 'block';
+  $('btnMusic').style.display = 'block';
+  musicStart();
   if(IS_TOUCH) $('touchUI').style.display = 'block';
   state = 'sail';
   toast('⚓ Nhấn <b>↑</b> để căng buồm ra khơi! Ghé chợ cảng để buôn hàng làm giàu.', 5000);

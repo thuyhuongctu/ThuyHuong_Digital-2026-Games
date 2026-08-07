@@ -64,6 +64,14 @@ Mỗi vai có màu buồm riêng để nhận diện trên biển.
 Thua trận không mất hết: dân chài Vân Đồn vớt bạn về bến, mất nửa số bạc.
 Game tự lưu (localStorage) mỗi lần cập bến — vào lại chọn **Chơi tiếp**.
 
+## 🎵 Nhạc nền
+
+Nhạc nền **ngũ cung** sinh trực tiếp bằng WebAudio (không file nhạc ngoài):
+tiếng gảy dây kiểu đàn tranh với luyến âm đàn bầu, bè trầm và trống mõ.
+Hai điệu tự chuyển: **ra khơi** khoan thai và **giáp chiến** dồn dập khi
+thuyền giặc áp sát. Bật tắt bằng nút 🔊 góc trái hoặc phím **M**,
+lựa chọn được ghi nhớ.
+
 ## Kỹ thuật
 
 - 1 file `index.html` tự chứa: HTML + CSS + JavaScript thuần (canvas 2D, WebAudio).
