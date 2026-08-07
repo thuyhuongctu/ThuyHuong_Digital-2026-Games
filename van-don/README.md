@@ -61,6 +61,18 @@ thuyền lương của **Trương Văn Hổ**.
 - Kiến trúc mái ngói cong đầu đao, hoa văn sóng nước thời Lý trên giao diện
 - Bảng màu lấy từ gốm men ngọc (celadon), nâu đất, đỏ son, vàng đồng
 
+## 🎵 Nhạc nền
+
+Nhạc nền **sinh trực tiếp bằng WebAudio** theo thang âm **ngũ cung** — không
+dùng file nhạc ngoài nên game vẫn là một file duy nhất:
+
+- Tiếng gảy dây mô phỏng đàn tranh, có luyến âm nhẹ kiểu đàn bầu, bè trầm
+  và điểm trống mõ
+- Hai điệu tự chuyển theo cảnh: **bến cảng thanh bình** (ngũ cung trưởng,
+  chậm rãi) và **trận mạc 1288** (ngũ cung thứ, dồn dập, trống thúc)
+- Giai điệu sinh ngẫu nhiên mỗi lần chơi — không bao giờ lặp y hệt
+- Nút **🔊/🔇** trên thanh trên bật tắt, ghi nhớ lựa chọn
+
 ## Kỹ thuật
 
 Một file `index.html` tự chứa (canvas 2D + WebAudio), không dependency,
