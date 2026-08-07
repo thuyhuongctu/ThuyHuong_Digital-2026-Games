@@ -96,12 +96,12 @@
   #tribBar button:disabled{opacity:.45}
 
   /* ===== Sử ký ===== */
-  #btnSu{background:none;border:1px solid var(--wood);color:var(--celadon);
+  #btnSu,#btnMusic{background:none;border:1px solid var(--wood);color:var(--celadon);
     font-size:14px;padding:4px 9px;border-radius:6px;font-weight:400}
   #title .eyebrow{white-space:nowrap}
   @media (max-width:480px){
     #res{gap:7px;font-size:11.5px}
-    #btnSu{font-size:12px;padding:3px 7px}
+    #btnSu,#btnMusic{font-size:12px;padding:3px 7px}
     #title h1{font-size:15px}
     #title .eyebrow{font-size:8px;letter-spacing:2px}
     #lvlSeal{font-size:9.5px;padding:2px 5px}
@@ -122,6 +122,7 @@
       <h1 class="serif">VÂN ĐỒN</h1>
     </div>
     <div id="res">
+      <button id="btnMusic" title="Nhạc nền">🔊</button>
       <button id="btnSu" title="Sổ sử ký">📖</button>
       <span id="lvlSeal">Trang nhỏ</span>
       <span>💰 <b id="rGold">0</b><i class="lbl"> quan</i></span>
@@ -274,6 +275,85 @@ function sfx(kind){
     else if(kind==='bad'){ tone('sawtooth',140,55,0.15,0.5); }
   }catch(e){}
 }
+
+// ---------- Nhạc nền ngũ cung (sinh bằng WebAudio, không file ngoài) ----------
+const music = { on: store.get('van-don-music')!=='off',
+  timer:null, mode:'camp', next:0, mel:3, bar:0, gain:null };
+function musicInit(){
+  try{
+    if(!AC) AC = new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    if(!music.gain){
+      music.gain = AC.createGain();
+      music.gain.gain.value = 0.9;
+      music.gain.connect(AC.destination);
+    }
+  }catch(e){}
+}
+// tiếng gảy dây: hai dao động lệch nhẹ + luyến âm xuống kiểu đàn bầu
+function pluck(freq, when, vol, dur, bend=true){
+  const o=AC.createOscillator(), o2=AC.createOscillator();
+  const g=AC.createGain(), g2=AC.createGain();
+  o.type='triangle'; o2.type='sine';
+  o.frequency.setValueAtTime(bend?freq*1.025:freq, when);
+  o.frequency.exponentialRampToValueAtTime(freq, when+0.09);
+  o2.frequency.setValueAtTime(freq*2.004, when);        // họa âm mảnh như dây tơ
+  g.gain.setValueAtTime(0.0001, when);
+  g.gain.exponentialRampToValueAtTime(vol, when+0.018);
+  g.gain.exponentialRampToValueAtTime(0.0001, when+dur);
+  g2.gain.value=0.22;
+  o.connect(g); o2.connect(g2); g2.connect(g); g.connect(music.gain);
+  o.start(when); o2.start(when);
+  o.stop(when+dur+0.1); o2.stop(when+dur+0.1);
+}
+// trống mõ trầm
+function drum(when, vol){
+  const buf=AC.createBuffer(1, AC.sampleRate*0.12|0, AC.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
+  const src=AC.createBufferSource(); src.buffer=buf;
+  const f=AC.createBiquadFilter(); f.type='lowpass'; f.frequency.value=210;
+  const g=AC.createGain(); g.gain.setValueAtTime(vol, when);
+  src.connect(f); f.connect(g); g.connect(music.gain); src.start(when);
+}
+// hai điệu: bến cảng thanh bình (ngũ cung D) · trận mạc dồn dập (ngũ cung thứ A)
+const SCALES = { camp:[0,2,5,7,9], battle:[0,3,5,7,10] };
+function musicTick(){
+  if(!music.on || !AC || AC.state!=='running' || !music.gain) return;
+  const mode = (typeof M1288!=='undefined' && M1288.active) ? 'battle' : 'camp';
+  music.mode = mode;
+  const beat = mode==='battle' ? 0.32 : 0.56;
+  const base = mode==='battle' ? 110 : 146.83;          // A2 / D3
+  if(music.next < AC.currentTime) music.next = AC.currentTime + 0.05;
+  while(music.next < AC.currentTime + 0.45){
+    const t = music.next, sc = SCALES[mode];
+    // giai điệu: bước ngẫu nhiên trên thang ngũ cung hai quãng tám
+    music.mel += pick([-2,-1,-1,0,1,1,2]);
+    music.mel = clamp(music.mel, 0, 9);
+    const semi = sc[music.mel%5] + 12*Math.floor(music.mel/5) + 12;
+    if(Math.random() < (mode==='battle'?0.82:0.66))
+      pluck(base*Math.pow(2,semi/12), t,
+        mode==='battle'?0.13:0.095, mode==='battle'?0.7:1.5);
+    music.bar++;
+    if(music.bar%4===1) pluck(base, t, 0.09, beat*4.4, false);   // bè trầm
+    if(mode==='battle' && music.bar%2===1) drum(t, 0.5);
+    else if(mode==='camp' && music.bar%8===1) drum(t, 0.2);
+    music.next = t + beat * (mode==='battle' ? 1 : pick([1,1,1,2]));
+  }
+}
+function musicStart(){
+  musicInit();
+  if(!music.timer) music.timer = setInterval(musicTick, 120);
+  musicBtnUI();
+}
+function musicBtnUI(){ $('btnMusic').textContent = music.on ? '🔊' : '🔇'; }
+$('btnMusic').onclick = () => {
+  music.on = !music.on;
+  store.set('van-don-music', music.on?'on':'off');
+  musicStart();
+  toast(music.on ? '🔊 Nhạc nền: bật' : '🔇 Nhạc nền: tắt', 1400);
+};
+musicBtnUI();
 
 // ---------- Hàng hóa ----------
 const GOODS = [
@@ -902,6 +982,7 @@ function startM1288(){
   $('introOv').style.display='none'; $('suOv').style.display='none';
   $('bottom').style.display='none'; $('tribBar').style.display='none';
   resize();
+  musicStart();
   startWave1288(1);
   toast('🌊 <b>Đông 1287–1288.</b> Đoàn thuyền lương của Trương Văn Hổ tiến vào vịnh. '+
     'Chạm vào <b>thuyền giặc</b> để bắn tên lửa — đừng để <b>5 thuyền</b> lọt qua!', 6000);
@@ -1118,6 +1199,7 @@ function begin(fresh){
   if(fresh) store.del(SAVE_KEY); else loadGame();
   $('introOv').style.display='none';
   game.started=true; game.campaignOn=true;
+  musicStart();
   resize(); renderChips(); updateHUD();
   toast('🏗️ Chạm <b>🏺 Lò gốm</b> ở thanh dưới, rồi chạm ô đất trống để dựng lò đầu tiên!',5200);
 }
