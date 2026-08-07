@@ -37,7 +37,10 @@ Bạn là quan trấn thủ được vua giao dựng bến. Vòng chơi:
 
 Nút **📖** trên thanh trên mở **Sổ sử ký** — tóm lược sử liệu thật về
 Vân Đồn: chiếu lập trang 1149, gốm Chu Đậu xuất khẩu, trận Vân Đồn 1288
-của Trần Khánh Dư.
+của Trần Khánh Dư. Nút **🏆** mở **Bảng thành tích**: thống kê cả ván
+(thuyền đã tiếp, quan tiền tích lũy, hàng sản xuất, cống phẩm, thời gian
+trấn thủ…) và 6 **danh hiệu** để chinh phục — từ *Thần buôn* đến
+*Đệ Nhất Thương Cảng*.
 
 Game tự lưu mỗi 12 giây — vào lại chọn **Chơi tiếp ván cũ**.
 
