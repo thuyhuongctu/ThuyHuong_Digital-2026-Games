@@ -164,6 +164,7 @@
         đoàn thuyền lương của Trương Văn Hổ tại vùng biển Vân Đồn – Cửa Lục,
         góp phần làm nên đại thắng Bạch Đằng.</p></div>
       <p style="text-align:center;margin-top:14px">
+        <button id="btn1288b" class="ghost">⚔️ Vào trận 1288</button>
         <button id="btnSuClose">Gấp sổ lại</button></p>
     </div>
     <div class="songly"></div>
@@ -194,6 +195,8 @@
       <p style="text-align:center;margin-top:14px">
         <button id="btnStart">🏗️ Nhận chiếu, dựng bến</button>
         <button id="btnCont" class="ghost" style="display:none">Chơi tiếp ván cũ</button></p>
+      <p style="text-align:center;margin-top:4px">
+        <button id="btn1288" class="ghost">⚔️ Thử thách 1288 — Trận Vân Đồn</button></p>
     </div>
     <div class="songly"></div>
   </div>
@@ -567,7 +570,8 @@ function checkLevel(){
   $('lvlOv').style.display='flex';
   renderChips(); saveGame();
 }
-$('btnLvl').onclick=()=>{ $('lvlOv').style.display='none'; };
+$('btnLvl').onclick=()=>{ $('lvlOv').style.display='none';
+  if(M1288.endPending){ M1288.endPending=false; exitM1288(); } };
 
 // ---------- Kiến thiết ----------
 function renderChips(){
@@ -593,8 +597,9 @@ function renderChips(){
 }
 
 cv.addEventListener('pointerdown', e=>{
-  if(!game.started) return;
   const rect=cv.getBoundingClientRect();
+  if(M1288.active){ tap1288(e.clientX-rect.left, e.clientY-rect.top); return; }
+  if(!game.started) return;
   const px=e.clientX-rect.left, py=e.clientY-rect.top;
   const c=Math.floor((px-L.ox)/L.tile), r=Math.floor((py-L.oy)/L.tile);
   if(c<0||c>=COLS||r<0||r>=ROWS) return;
@@ -626,7 +631,8 @@ function updateHUD(){
     unlockedGoods().map(g=>`<span>${g.ic} <b>${game.storage[g.id]}</b></span>`).join('') +
     `<span>⛵ Đã tiếp <b>${game.served}</b> thuyền</span>`;
 }
-setInterval(()=>{ if(game.started){ updateHUD(); renderTribute();
+setInterval(()=>{ if(M1288.active){ renderHUD1288(); return; }
+  if(game.started){ updateHUD(); renderTribute();
   // cập nhật trạng thái đủ/thiếu tiền trên chip mà không vẽ lại khi đang chọn ô
   for(const el of document.querySelectorAll('.chip')){
     const b=BUILDS.find(x=>x.id===el.dataset.id);
@@ -808,11 +814,224 @@ function drawShip(s,t){
   cx.restore();
 }
 
+// =====================================================================
+//  THỬ THÁCH 1288 — Trần Khánh Dư phục kích đoàn thuyền lương
+// =====================================================================
+const M1288 = { active:false, wave:0, enemies:[], arrows:[], parts:[],
+  escaped:0, sunk:0, toSpawn:0, spawnT:0, shotCd:0,
+  bossSpawned:false, bossDead:false, endPending:false, over:false };
+
+function startM1288(){
+  Object.assign(M1288, { active:true, wave:0, enemies:[], arrows:[], parts:[],
+    escaped:0, sunk:0, toSpawn:0, spawnT:0, shotCd:0,
+    bossSpawned:false, bossDead:false, endPending:false, over:false });
+  $('introOv').style.display='none'; $('suOv').style.display='none';
+  $('bottom').style.display='none'; $('tribBar').style.display='none';
+  resize();
+  startWave1288(1);
+  toast('🌊 <b>Đông 1287–1288.</b> Đoàn thuyền lương của Trương Văn Hổ tiến vào vịnh. '+
+    'Chạm vào <b>thuyền giặc</b> để bắn tên lửa — đừng để <b>5 thuyền</b> lọt qua!', 6000);
+  sfx('gong');
+}
+function exitM1288(){
+  M1288.active=false;
+  $('bottom').style.display='block';
+  resize();
+  if(game.campaignOn) toast('⚓ Trở về bến Vân Đồn, tiếp tục kiến thiết.');
+  else $('introOv').style.display='flex';
+}
+function startWave1288(n){
+  M1288.wave=n; M1288.toSpawn=5+n*2; M1288.spawnT=1;
+  if(n>1) toast(`⚔️ <b>Đợt ${n}/3</b> — thuyền lương giặc lại tiến vào!`, 3200);
+}
+function spawn1288(boss){
+  const H=cv.height, W=cv.width;
+  const y = rand(70, H-90);
+  if(boss){
+    M1288.enemies.push({ x:-70, y:H*0.4, hp:400, maxHp:400, spd:26, boss:true, sway:rand(0,TAU) });
+    toast('☠️ <b>Soái thuyền Trương Văn Hổ</b> xuất hiện! Đánh chìm hắn!', 4200);
+    sfx('bad');
+  } else {
+    const w=M1288.wave;
+    M1288.enemies.push({ x:-50, y, hp:50+w*15, maxHp:50+w*15, spd:36+w*8+rand(-4,6), boss:false, sway:rand(0,TAU) });
+  }
+}
+function tap1288(px,py){
+  if(M1288.over || M1288.shotCd>0) return;
+  // tìm thuyền giặc gần điểm chạm nhất trong bán kính
+  let best=null, bd=52;
+  for(const e of M1288.enemies){
+    const d=Math.hypot(px-e.x, py-e.y);
+    if(d<bd+(e.boss?26:0)){ bd=d; best=e; }
+  }
+  if(!best) return;
+  M1288.shotCd=0.4;
+  // tên lửa phóng từ thuyền phục kích gần nhất ở mép dưới
+  const bx = [cv.width*0.2, cv.width*0.5, cv.width*0.8]
+    .reduce((a,b)=>Math.abs(b-best.x)<Math.abs(a-best.x)?b:a);
+  M1288.arrows.push({ x:bx, y:cv.height-26, tgt:best, t:0 });
+  sfx('build');
+}
+function update1288(dt){
+  if(M1288.over) return;
+  M1288.shotCd=Math.max(0,M1288.shotCd-dt);
+  // sinh thuyền
+  if(M1288.toSpawn>0){
+    M1288.spawnT-=dt;
+    if(M1288.spawnT<=0){ M1288.spawnT=rand(1.4,2.3); M1288.toSpawn--; spawn1288(false); }
+  } else if(M1288.wave===3 && !M1288.bossSpawned && M1288.enemies.length<=2){
+    M1288.bossSpawned=true; spawn1288(true);
+  }
+  // di chuyển
+  for(const e of M1288.enemies){
+    e.sway+=dt;
+    e.x+=e.spd*dt; e.y+=Math.sin(e.sway*1.3)*6*dt;
+    if(e.x>cv.width+50 && !e.dead){
+      e.dead=true; M1288.escaped++;
+      sfx('bad'); fly(cv.width-40, e.y, '⚠️ thoát!', '#a5402e');
+      if(M1288.escaped>=5) end1288(false);
+    }
+  }
+  M1288.enemies=M1288.enemies.filter(e=>!e.dead);
+  // tên lửa bay
+  for(const a of M1288.arrows){
+    if(!a.tgt || a.tgt.dead){ a.done=true; continue; }
+    const dx=a.tgt.x-a.x, dy=a.tgt.y-a.y, d=Math.hypot(dx,dy);
+    if(d<14){
+      a.done=true; a.tgt.hp-=30; sfx('coin');
+      for(let i=0;i<7;i++) M1288.parts.push({ x:a.tgt.x+rand(-10,10), y:a.tgt.y+rand(-8,8),
+        vx:rand(-30,30), vy:rand(-55,-15), life:rand(0.4,0.9), c:pick(['#e8913c','#d9a441','#a5402e']) });
+      if(a.tgt.hp<=0 && !a.tgt.dead){
+        a.tgt.dead=true; M1288.sunk++;
+        fly(a.tgt.x, a.tgt.y-24, a.tgt.boss?'☠️ Soái thuyền chìm!':'🔥 +1 thuyền lương chìm', '#d9a441');
+        for(let i=0;i<14;i++) M1288.parts.push({ x:a.tgt.x+rand(-16,16), y:a.tgt.y+rand(-10,10),
+          vx:rand(-45,45), vy:rand(-70,-10), life:rand(0.5,1.1), c:pick(['#e8913c','#6f4a2b','#a5402e']) });
+        if(a.tgt.boss){ M1288.bossDead=true; end1288(true); }
+      }
+    } else { a.x+=dx/d*440*dt; a.y+=dy/d*440*dt; }
+  }
+  M1288.arrows=M1288.arrows.filter(a=>!a.done);
+  for(const p of M1288.parts){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.life-=dt; }
+  M1288.parts=M1288.parts.filter(p=>p.life>0);
+  // hết đợt
+  if(!M1288.over && M1288.toSpawn===0 && !M1288.enemies.length){
+    if(M1288.wave<3) startWave1288(M1288.wave+1);
+  }
+}
+function end1288(win){
+  M1288.over=true; M1288.endPending=true;
+  sfx('gong');
+  $('lvlEyebrow').textContent='QUỐC SỬ CHÉP RẰNG';
+  if(win){
+    $('lvlTitle').textContent='ĐẠI THẮNG VÂN ĐỒN!';
+    $('lvlText').innerHTML=`Nhân Huệ Vương <b>Trần Khánh Dư</b> phục binh đánh tan đoàn
+      thuyền lương — <b>${M1288.sunk} thuyền</b> chìm xuống vịnh, Trương Văn Hổ tháo chạy
+      về Quỳnh Châu. Đại quân Nguyên ở Thăng Long <b>cạn lương</b>, buộc phải rút —
+      mở đường cho <b>đại thắng Bạch Đằng</b> tháng 4 năm 1288. Chiến công của khanh
+      được tâu về triều, vua tha tội trận thua trước, ban thưởng trọng hậu!`;
+  } else {
+    $('lvlTitle').textContent='THUYỀN LƯƠNG LỌT LƯỚI…';
+    $('lvlText').innerHTML=`Năm thuyền lương giặc vượt qua vịnh — quân Nguyên có thêm
+      lương thảo, thế giặc thêm vững. Nhưng lịch sử còn đó: hãy vào trận lại,
+      như Trần Khánh Dư sau trận thua đầu đã <i>«thu tàn quân, phục ở Vân Đồn
+      chờ thuyền lương giặc»</i>. (Đã chìm ${M1288.sunk} thuyền)`;
+  }
+  $('lvlOv').style.display='flex';
+}
+function draw1288(dt){
+  const W=cv.width,H=cv.height,t=game.t;
+  // biển đêm đông
+  const g=cx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#26433c'); g.addColorStop(1,'#152a25');
+  cx.fillStyle=g; cx.fillRect(0,0,W,H);
+  cx.strokeStyle='rgba(200,230,220,0.12)'; cx.lineWidth=1.4;
+  for(let y=26;y<H;y+=24){
+    cx.beginPath();
+    for(let x=-20;x<W+20;x+=22){
+      const ph=(x+y*3+t*30)%44;
+      if(ph<22) cx.moveTo(x,y), cx.quadraticCurveTo(x+11,y-6,x+22,y);
+    }
+    cx.stroke();
+  }
+  // thuyền phục kích Đại Việt ở mép dưới
+  for(const bx of [W*0.2, W*0.5, W*0.8]){
+    cx.save(); cx.translate(bx, H-22+Math.sin(t*2+bx)*2);
+    cx.fillStyle='#4a3018';
+    cx.beginPath(); cx.moveTo(-18,0); cx.quadraticCurveTo(0,8,18,0);
+    cx.quadraticCurveTo(0,-4,-18,0); cx.closePath(); cx.fill();
+    cx.strokeStyle='#2c1c0c'; cx.beginPath(); cx.moveTo(0,-2); cx.lineTo(0,-20); cx.stroke();
+    cx.fillStyle='#a5402e'; cx.fillRect(0,-20,9,5);
+    cx.restore();
+  }
+  // thuyền lương giặc
+  for(const e of M1288.enemies){
+    cx.save(); cx.translate(e.x, e.y+Math.sin(e.sway*2)*2);
+    const s=e.boss?1.7:1;
+    cx.scale(s,s);
+    cx.fillStyle='#3c3226';
+    cx.beginPath(); cx.moveTo(-24,0); cx.quadraticCurveTo(-26,9,-15,11);
+    cx.lineTo(15,11); cx.quadraticCurveTo(26,9,24,0);
+    cx.quadraticCurveTo(0,-4,-24,0); cx.closePath(); cx.fill();
+    cx.strokeStyle='#1e1810'; cx.stroke();
+    // bao lương chất đống
+    cx.fillStyle='#c9a75a';
+    for(const [gx,gy] of [[-10,-6],[0,-8],[10,-6],[-5,-13],[5,-13]]){
+      cx.beginPath(); cx.arc(gx,gy,5,0,TAU); cx.fill(); }
+    // cột + cờ đen
+    cx.strokeStyle='#1e1810'; cx.lineWidth=2;
+    cx.beginPath(); cx.moveTo(0,-8); cx.lineTo(0,-34); cx.stroke();
+    cx.fillStyle='#20242c'; cx.fillRect(0,-34,12,7);
+    cx.restore();
+    // thanh máu
+    const w=e.boss?64:38;
+    cx.fillStyle='rgba(0,0,0,0.5)'; cx.fillRect(e.x-w/2, e.y-(e.boss?58:36), w, 4);
+    cx.fillStyle='#a5402e'; cx.fillRect(e.x-w/2, e.y-(e.boss?58:36), w*e.hp/e.maxHp, 4);
+    if(e.boss){
+      cx.fillStyle='#f2e8d5'; cx.font='bold 12px sans-serif'; cx.textAlign='center';
+      cx.fillText('☠️ Trương Văn Hổ', e.x, e.y-64);
+    }
+  }
+  // tên lửa
+  cx.strokeStyle='#e8913c'; cx.lineWidth=2.5;
+  for(const a of M1288.arrows){
+    const dx=(a.tgt?a.tgt.x:a.x)-a.x, dy=(a.tgt?a.tgt.y:a.y)-a.y, d=Math.hypot(dx,dy)||1;
+    cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(a.x-dx/d*12, a.y-dy/d*12); cx.stroke();
+    cx.fillStyle='#ffd98a'; cx.beginPath(); cx.arc(a.x,a.y,2.5,0,TAU); cx.fill();
+  }
+  // lửa cháy
+  for(const p of M1288.parts){
+    cx.globalAlpha=clamp(p.life,0,1);
+    cx.fillStyle=p.c; cx.beginPath(); cx.arc(p.x,p.y,3,0,TAU); cx.fill();
+  }
+  cx.globalAlpha=1;
+  // chữ bay dùng chung
+  for(const f of floats){
+    f.y-=26*dt; f.life-=dt;
+    cx.globalAlpha=clamp(f.life,0,1);
+    cx.fillStyle=f.color; cx.font='bold 13px sans-serif'; cx.textAlign='center';
+    cx.fillText(f.txt, f.x, f.y);
+  }
+  cx.globalAlpha=1;
+  floats=floats.filter(f=>f.life>0);
+}
+function renderHUD1288(){
+  $('goodsRow').innerHTML =
+    `<span>⚔️ Đợt <b>${M1288.wave}/3</b></span>`+
+    `<span>🔥 Chìm <b>${M1288.sunk}</b></span>`+
+    `<span style="color:${M1288.escaped>=3?'var(--son)':'inherit'}">⚠️ Thoát <b>${M1288.escaped}/5</b></span>`+
+    `<span>🏹 Chạm thuyền giặc để bắn</span>`;
+}
+$('btn1288').onclick=startM1288;
+$('btn1288b').onclick=startM1288;
+
 // ---------- Vòng lặp ----------
 let last=performance.now();
 function loop(now){
   const dt=Math.min(0.05,(now-last)/1000); last=now;
-  if(game.started){
+  if(M1288.active){
+    game.t+=dt;
+    update1288(dt); draw1288(dt);
+  } else if(game.started){
     game.t+=dt;
     updateShips(dt); updateProd(dt); updateEvents(dt); updateTribute(dt);
     draw(dt);
@@ -824,7 +1043,7 @@ function loop(now){
 function begin(fresh){
   if(fresh) store.del(SAVE_KEY); else loadGame();
   $('introOv').style.display='none';
-  game.started=true;
+  game.started=true; game.campaignOn=true;
   resize(); renderChips(); updateHUD();
   toast('🏗️ Chạm <b>🏺 Lò gốm</b> ở thanh dưới, rồi chạm ô đất trống để dựng lò đầu tiên!',5200);
 }
