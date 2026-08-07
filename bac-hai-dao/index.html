@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ</title>
 <style>
   :root{
@@ -91,6 +91,28 @@
   .charcard .perk{font-size:12px;color:#5ee08a;margin-top:6px;line-height:1.5}
   .charcard .cdesc{font-size:12px;color:#c9d8e2;margin-top:6px;line-height:1.5}
   #endImg{max-width:min(100%,420px);border-radius:10px;margin:10px auto;display:none}
+  /* ---------- Cảm ứng (mobile) ---------- */
+  #touchUI{position:absolute;inset:0;display:none;pointer-events:none;z-index:7}
+  .tbtn{position:absolute;pointer-events:auto;touch-action:none;user-select:none;
+    -webkit-user-select:none;border-radius:50%;border:2px solid rgba(120,180,215,.55);
+    background:rgba(11,28,44,.55);color:#dfe9f0;font-size:26px;
+    display:flex;align-items:center;justify-content:center;
+    -webkit-tap-highlight-color:transparent}
+  .tbtn:active{background:rgba(44,88,120,.8);border-color:var(--gold)}
+  #tLeft{left:18px;bottom:24px;width:74px;height:74px}
+  #tRight{left:108px;bottom:24px;width:74px;height:74px}
+  #tFire{right:18px;bottom:24px;width:88px;height:88px;font-size:34px;
+    border-color:rgba(232,150,90,.7)}
+  #tSailUp{right:124px;bottom:70px;width:60px;height:60px;font-size:20px}
+  #tSailDn{right:124px;bottom:2px;width:60px;height:60px;font-size:20px}
+  @media (pointer:coarse){
+    #controls{display:none!important}
+    #minimap{width:120px;height:auto;bottom:auto;top:118px}
+    .hudbox{font-size:11px;padding:6px 9px;line-height:1.45}
+    .bar{width:90px}
+    #goalbox{font-size:10px;max-width:46%;padding:4px 8px}
+    #hint{bottom:150px;font-size:14px}
+  }
 </style>
 </head>
 <body>
@@ -113,6 +135,13 @@
 <div id="goalbox" style="display:none">🎯 <span id="hGoal"></span></div>
 <div id="hint"></div>
 <div id="toast"></div>
+<div id="touchUI">
+  <button class="tbtn" id="tLeft">⟲</button>
+  <button class="tbtn" id="tRight">⟳</button>
+  <button class="tbtn" id="tSailUp">⛵▲</button>
+  <button class="tbtn" id="tSailDn">⛵▼</button>
+  <button class="tbtn" id="tFire">💥</button>
+</div>
 <div id="controls" style="display:none">
   <b>↑↓</b> căng/hạ buồm · <b>←→</b> bẻ lái · <b>SPACE</b> khai pháo ·
   <b>E</b> cập bến · <b>P</b> tạm dừng
@@ -400,6 +429,29 @@ addEventListener('keydown', e => {
   } else if(state==='port' && e.code==='KeyE'){ leavePort(); }
 });
 addEventListener('keyup', e => keys[e.code] = false);
+
+// ---------------- Cảm ứng (mobile) ----------------
+const IS_TOUCH = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+function bindHold(id, code){
+  const el = $(id);
+  const on  = e => { e.preventDefault(); keys[code] = true; };
+  const off = e => { e.preventDefault(); keys[code] = false; };
+  el.addEventListener('pointerdown', on);
+  el.addEventListener('pointerup', off);
+  el.addEventListener('pointercancel', off);
+  el.addEventListener('pointerleave', off);
+}
+bindHold('tLeft', 'ArrowLeft');
+bindHold('tRight', 'ArrowRight');
+bindHold('tFire', 'Space');
+$('tSailUp').addEventListener('pointerdown', e => {
+  e.preventDefault(); if(state==='sail') ship.sail = Math.min(3, ship.sail+1); });
+$('tSailDn').addEventListener('pointerdown', e => {
+  e.preventDefault(); if(state==='sail') ship.sail = Math.max(0, ship.sail-1); });
+// chạm vào gợi ý "cập bến" để vào cảng
+$('hint').style.pointerEvents = 'auto';
+$('hint').style.cursor = 'pointer';
+$('hint').addEventListener('click', () => { if(state==='sail') tryDock(); });
 
 // ---------------- Thông báo ----------------
 let toastTimer = null;
@@ -905,6 +957,7 @@ function startGame(fresh){
   $('hud').style.display = 'flex';
   $('goalbox').style.display = 'block';
   $('controls').style.display = 'block';
+  if(IS_TOUCH) $('touchUI').style.display = 'block';
   state = 'sail';
   toast('⚓ Nhấn <b>↑</b> để căng buồm ra khơi! Ghé chợ cảng để buôn hàng làm giàu.', 5000);
 }
