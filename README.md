@@ -28,5 +28,6 @@ Sau vài phút, game sẽ chạy tại:
 `https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/`
 
 ---
-© 2026 Đỗ Thúy Hường (ThuyHuong Digital) — dự án cá nhân.
-Game mới sẽ được bổ sung dần trong năm 2026.
+© 2026 Đỗ Thùy Hương / Do Thuy Huong (ThuyHuong Digital) — dự án cá nhân.
+Liên hệ: [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
+· Game mới sẽ được bổ sung dần trong năm 2026.
