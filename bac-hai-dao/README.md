@@ -1,6 +1,6 @@
 # 🏴‍☠️ Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ
 
-Game hải tặc lấy cảm hứng từ *Pirates of the Caribbean* / *Sid Meier's Pirates!*,
+Game hải tặc lấy cảm hứng từ thể loại **game đảo hải tặc** kinh điển,
 nhưng bối cảnh **thuần Việt Nam**: vịnh Bắc Bộ năm 1780, thuyền buồm cánh dơi,
 thương cảng cổ Vân Đồn và giặc biển Tàu Ô.
 
@@ -10,9 +10,9 @@ không phụ thuộc thư viện ngoài).
 
 ## Bối cảnh & chất Việt Nam
 
-| Yếu tố Caribe | Phiên bản Bắc Hải Đảo |
+| Yếu tố game đảo hải tặc | Phiên bản Bắc Hải Đảo |
 |---|---|
-| Biển Caribe | Vịnh Bắc Bộ với đảo đá vôi Hạ Long |
+| Vùng biển hải tặc xa lạ | Vịnh Bắc Bộ với đảo đá vôi Hạ Long |
 | Tàu galleon | Thuyền buồm **cánh dơi** (ghe mành) |
 | Port Royal, Tortuga | **Vân Đồn**, Hòn Gai, Cát Bà, Quan Lạn, Cô Tô, Bạch Long Vĩ |
 | Rượu rum, thuốc lá, vàng | Muối, **nước mắm Cát Hải**, chè Thái Nguyên, gốm Chu Đậu, lụa, quế, ngọc trai Cô Tô, trầm hương |

@@ -21,7 +21,7 @@ full-screen like a native app and **works offline** (service worker `sw.js` +
 
 ### 🏴‍☠️ Bắc Hải Đảo — Pirates of the Gulf of Tonkin
 
-A pirate adventure inspired by the *Pirates of the Caribbean* genre, but set
+A pirate adventure inspired by classic pirate-island games, but set
 in an authentically Vietnamese world: the Gulf of Tonkin, 1780. Sail a
 **bat-wing junk** among the limestone karsts of Hạ Long Bay, trade fish sauce,
 silk, agarwood and pearls across six historic ports (Vân Đồn, Cát Bà, Cô Tô…),
