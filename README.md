@@ -18,6 +18,7 @@ full-screen like a native app and **works offline** (service worker `sw.js` +
 |---|---|---|
 | 🏴‍☠️ [**Bắc Hải Đảo** — Pirates of the Gulf of Tonkin](bac-hai-dao/) | Adventure / trading / naval combat | [`bac-hai-dao/index.html`](bac-hai-dao/index.html) |
 | 🏮 [**Vân Đồn** — The First Trading Port](van-don/) | City building / port management | [`van-don/index.html`](van-don/index.html) |
+| 🌊 [**Bắc Hải Đảo 3D**](bac-hai-dao-3d/) | Same world, full 3D graphics (three.js) | [`bac-hai-dao-3d/index.html`](bac-hai-dao-3d/index.html) |
 
 ### 🏴‍☠️ Bắc Hải Đảo — Pirates of the Gulf of Tonkin
 
@@ -45,6 +46,27 @@ separate challenge mode recreating the historic **Battle of Vân Đồn (1288)**
 where Trần Khánh Dư ambushed the Yuan grain fleet.
 
 Detailed guide (in Vietnamese): [`van-don/README.md`](van-don/README.md)
+
+### 🌊 Bắc Hải Đảo 3D
+
+The same pirate world rebuilt in **full 3D** with three.js (vendored in
+`lib/three.min.js`, so the site still works offline): a chase camera behind
+your junk, rolling waves, towering limestone karsts, 3D ports and enemy
+ships, storm weather with rain, and the golden Dragon winding through the
+air. All gameplay systems from the 2D version are intact — captains, trading,
+combat, upgrades, music. The 2D version remains available side by side.
+
+## Installing as an app
+
+- **Web app (PWA)** — already built in: open the portal on a phone, tap
+  **📲 Install to Home Screen**, and it runs full-screen offline like a
+  native app.
+- **Google Play (optional)** — the PWA can be wrapped into an Android app
+  with [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) (Trusted
+  Web Activity): `npx @bubblewrap/cli init --manifest <site-url>/manifest.webmanifest`
+  then `npx @bubblewrap/cli build` produces an `.aab` ready for the Play
+  Console (one-time $25 developer fee). No code changes required.
+- **iOS** — installable from Safari via *Share → Add to Home Screen*.
 
 ## Play online (GitHub Pages)
 
