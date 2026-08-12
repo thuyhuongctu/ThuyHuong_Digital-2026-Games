@@ -5,8 +5,10 @@ Tài nguyên đồ họa dùng khi nộp app lên CH Play (xem
 
 | File | Dùng cho |
 |---|---|
-| `feature-graphic-1024x500.png` | Ảnh bìa *feature graphic* trên Play Console (bắt buộc, 1024×500) |
-| `feature-graphic.html` | File nguồn SVG — sửa file này rồi render lại PNG |
+| `feature-graphic-1024x500.png` | Ảnh bìa *feature graphic* trên Play Console (bắt buộc, 1024×500) — bản tiếng Việt |
+| `feature-graphic-en-1024x500.png` | Ảnh bìa cho store listing tiếng Anh |
+| `feature-graphic.html` / `feature-graphic-en.html` | File nguồn SVG — sửa file này rồi render lại PNG |
+| `store-listing-en.md` | Nội dung khai báo store listing tiếng Anh (tên app, mô tả ngắn, mô tả đầy đủ) |
 
 ## Tạo lại PNG sau khi sửa file nguồn
 
