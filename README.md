@@ -90,17 +90,23 @@ Every push to `main` is deployed automatically within a couple of minutes.
 
 ## How to cite {#cite}
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21899097.svg)](https://doi.org/10.5281/zenodo.21899097)
+
 Citation metadata lives in [`CITATION.cff`](CITATION.cff) — GitHub shows a
 **"Cite this repository"** button (top right of the repo page) that exports
 APA and BibTeX. Suggested citation:
 
 > Do, T. H. (2026). *ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt
 > (Vietnamese History Game Portal)* (Version 1.2) [Computer software].
-> https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games
+> Zenodo. https://doi.org/10.5281/zenodo.21899097
 
-**DOI**: a Zenodo DOI badge will be added here once the repository is
-archived on Zenodo — see the step-by-step guide (in Vietnamese) in
-[`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md#doi).
+Every release is archived on Zenodo with its own DOI:
+
+| Version | DOI |
+|---|---|
+| v.1.2 (latest) | [10.5281/zenodo.21899097](https://doi.org/10.5281/zenodo.21899097) |
+| v.1.1 | [10.5281/zenodo.21898774](https://doi.org/10.5281/zenodo.21898774) |
+| v.1.0 | [10.5281/zenodo.21850565](https://doi.org/10.5281/zenodo.21850565) |
 
 ## Author & Contact
 

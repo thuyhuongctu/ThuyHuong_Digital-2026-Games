@@ -1,5 +1,5 @@
 # Siêu dữ liệu trích dẫn — GitHub hiện nút "Cite this repository" từ file này,
-# và Zenodo dùng nó khi cấp DOI. Sau khi có DOI, bỏ dấu # ở dòng doi và điền mã thật.
+# và Zenodo dùng nó khi lưu trữ mỗi bản phát hành.
 cff-version: 1.2.0
 message: >-
   Nếu sử dụng phần mềm này trong nghiên cứu hoặc giảng dạy, xin trích dẫn
@@ -22,7 +22,7 @@ version: "1.2"
 date-released: 2026-08-12
 repository-code: "https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games"
 url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/"
-# doi: 10.5281/zenodo.XXXXXXX
+doi: 10.5281/zenodo.21899097
 keywords:
   - educational game
   - serious game
