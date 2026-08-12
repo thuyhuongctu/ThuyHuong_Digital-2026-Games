@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Feature graphic 1024×500 (English) — Sử Việt Games</title>
+<style>
+  * { margin: 0; padding: 0; }
+  body { width: 1024px; height: 500px; overflow: hidden; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#31200d"/>
+      <stop offset="0.75" stop-color="#241708"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d3a33"/>
+      <stop offset="1" stop-color="#17110a"/>
+    </linearGradient>
+    <radialGradient id="moonglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff8e0" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fff8e0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2d98a"/>
+      <stop offset="0.55" stop-color="#d9a441"/>
+      <stop offset="1" stop-color="#b8912e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Nền trời & biển -->
+  <rect width="1024" height="500" fill="url(#sky)"/>
+  <rect y="355" width="1024" height="145" fill="url(#sea)"/>
+
+  <!-- Trăng -->
+  <circle cx="168" cy="112" r="120" fill="url(#moonglow)"/>
+  <circle cx="168" cy="112" r="56" fill="#fff8e0"/>
+  <circle cx="150" cy="100" r="9" fill="#e0d4bb" opacity="0.7"/>
+  <circle cx="186" cy="126" r="6" fill="#e0d4bb" opacity="0.6"/>
+  <circle cx="176" cy="92" r="4" fill="#e0d4bb" opacity="0.5"/>
+
+  <!-- Rồng thiêng Hạ Long -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M 340 96 Q 420 40 500 88 T 660 84 T 820 76 T 960 60"
+          stroke="#8a6a1c" stroke-width="13" opacity="0.9"/>
+    <path d="M 340 96 Q 420 40 500 88 T 660 84 T 820 76 T 960 60"
+          stroke="url(#gold)" stroke-width="9"/>
+    <path d="M 340 96 Q 420 40 500 88 T 660 84 T 820 76 T 960 60"
+          stroke="#fff8e0" stroke-width="2.5" opacity="0.55" stroke-dasharray="2 14"/>
+  </g>
+  <!-- Đầu rồng -->
+  <g transform="translate(960 60) rotate(-18)">
+    <path d="M 0 0 L 26 -8 L 20 0 L 26 8 Z" fill="#d9a441"/>
+    <path d="M 4 -6 L 14 -18 M 10 -5 L 22 -15" stroke="#b8912e" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="9" cy="-1" r="2.2" fill="#241708"/>
+  </g>
+  <!-- Ngọc rồng -->
+  <circle cx="340" cy="96" r="7" fill="#fff8e0"/>
+  <circle cx="340" cy="96" r="12" fill="none" stroke="#f2d98a" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Đảo đá vôi (lớp xa) -->
+  <g fill="#1d3a33">
+    <path d="M -10 358 L 0 250 Q 8 208 40 206 Q 74 206 80 252 L 96 358 Z"/>
+    <path d="M 70 358 L 86 282 Q 96 246 126 246 Q 152 248 158 286 L 172 358 Z"/>
+    <path d="M 920 358 L 934 288 Q 944 254 972 254 Q 998 256 1004 292 L 1018 358 Z"/>
+    <path d="M 984 358 L 994 312 Q 1000 290 1020 290 L 1024 291 L 1024 358 Z"/>
+  </g>
+  <!-- Đảo đá vôi (lớp gần) -->
+  <g fill="#152a25">
+    <path d="M 140 358 L 158 296 Q 168 264 196 264 Q 222 266 230 300 L 244 358 Z"/>
+    <path d="M 892 358 L 904 322 Q 911 300 932 300 Q 951 302 956 326 L 966 358 Z"/>
+  </g>
+  <!-- Cây trên đỉnh đảo -->
+  <g stroke="#2f5a4e" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M 40 206 L 40 196 M 32 210 L 26 200 M 50 210 L 58 202"/>
+    <path d="M 972 254 L 972 244 M 962 258 L 956 250 M 984 258 L 990 250"/>
+  </g>
+
+  <!-- Sóng biển -->
+  <g stroke="#9ec5ab" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M 30 392 Q 60 386 90 392 T 150 392" opacity="0.30"/>
+    <path d="M 240 424 Q 275 417 310 424 T 380 424" opacity="0.22"/>
+    <path d="M 520 400 Q 550 394 580 400 T 640 400" opacity="0.25"/>
+    <path d="M 700 446 Q 735 439 770 446 T 840 446" opacity="0.18"/>
+    <path d="M 880 396 Q 910 390 940 396 T 1000 396" opacity="0.28"/>
+    <path d="M 60 462 Q 95 455 130 462 T 200 462" opacity="0.15"/>
+  </g>
+  <!-- Ánh trăng trên nước -->
+  <g stroke="#fff8e0" stroke-linecap="round">
+    <path d="M 168 372 L 168 372.1" stroke-width="26" opacity="0.30"/>
+    <path d="M 160 396 L 176 396" stroke-width="5" opacity="0.25"/>
+    <path d="M 152 420 L 184 420" stroke-width="5" opacity="0.18"/>
+    <path d="M 158 448 L 178 448" stroke-width="5" opacity="0.12"/>
+  </g>
+
+  <!-- Thuyền buồm cánh dơi -->
+  <g transform="translate(330 355)">
+    <!-- thân thuyền -->
+    <path d="M -78 22 Q -66 46 -30 50 L 66 50 Q 96 44 104 18 L 84 24 L -60 24 Z" fill="#31200d" stroke="#b8912e" stroke-width="2.5"/>
+    <path d="M -60 24 L 84 24" stroke="#8a6a1c" stroke-width="2"/>
+    <!-- cột buồm -->
+    <path d="M -6 24 L -6 -92 M 52 24 L 52 -64" stroke="#5c3d24" stroke-width="4" stroke-linecap="round"/>
+    <!-- buồm chính (cánh dơi) -->
+    <path d="M -6 -92 Q 40 -78 46 -6 L -6 16 Q -50 -22 -6 -92 Z" fill="#a5402e" stroke="#7c2f22" stroke-width="2"/>
+    <path d="M -8 -70 Q 22 -62 32 -26 M -12 -46 Q 14 -40 26 -14 M -16 -24 Q 8 -20 20 -4"
+          stroke="#7c2f22" stroke-width="2" fill="none"/>
+    <!-- buồm mũi -->
+    <path d="M 52 -64 Q 86 -52 88 -2 L 52 12 Q 24 -18 52 -64 Z" fill="#8f3627" stroke="#7c2f22" stroke-width="2"/>
+    <path d="M 50 -46 Q 72 -38 76 -10 M 46 -28 Q 64 -22 70 -4" stroke="#7c2f22" stroke-width="1.8" fill="none"/>
+    <!-- cờ vàng -->
+    <path d="M -6 -92 L -6 -104 L 18 -98 L -6 -92 Z" fill="#d9a441"/>
+  </g>
+
+  <!-- Khối chữ -->
+  <g text-anchor="middle" font-family="'DejaVu Serif', Georgia, serif">
+    <text x="640" y="196" font-size="18" letter-spacing="7" fill="#9ec5ab">THUYHUONG DIGITAL 2026</text>
+    <text x="640" y="272" font-size="68" font-weight="bold" fill="url(#gold)">Sử Việt Games</text>
+    <text x="640" y="316" font-size="26" font-style="italic" fill="#fff8e0" opacity="0.92">Vietnamese History Game Portal</text>
+    <!-- hoa văn phân cách -->
+    <g stroke="#b8912e" stroke-width="2" opacity="0.85">
+      <path d="M 495 344 L 606 344 M 674 344 L 785 344" stroke-linecap="round"/>
+      <path d="M 626 344 L 640 336 L 654 344 L 640 352 Z" fill="#d9a441" stroke="none"/>
+    </g>
+    <text x="640" y="384" font-size="22" fill="#d9a441">Vân Đồn 1149&#8194;·&#8194;Bắc Hải Đảo 1780</text>
+    <text x="640" y="422" font-size="18" fill="#e0d4bb" opacity="0.85">Free to play · No ads · Works offline</text>
+  </g>
+
+  <!-- Khung viền gốm -->
+  <rect x="12" y="12" width="1000" height="476" fill="none" stroke="#b8912e" stroke-width="2" opacity="0.55"/>
+  <rect x="20" y="20" width="984" height="460" fill="none" stroke="#b8912e" stroke-width="1" opacity="0.3"/>
+</svg>
+</body>
+</html>
