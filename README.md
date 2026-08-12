@@ -88,6 +88,26 @@ Every push to `main` is deployed automatically within a couple of minutes.
 - Progressive Web App: installable, offline-capable, with app shortcuts
   jumping straight into each game
 
+## How to cite {#cite}
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21899097.svg)](https://doi.org/10.5281/zenodo.21899097)
+
+Citation metadata lives in [`CITATION.cff`](CITATION.cff) — GitHub shows a
+**"Cite this repository"** button (top right of the repo page) that exports
+APA and BibTeX. Suggested citation:
+
+> Do, T. H. (2026). *ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt
+> (Vietnamese History Game Portal)* (Version 1.2) [Computer software].
+> Zenodo. https://doi.org/10.5281/zenodo.21899097
+
+Every release is archived on Zenodo with its own DOI:
+
+| Version | DOI |
+|---|---|
+| v.1.2 (latest) | [10.5281/zenodo.21899097](https://doi.org/10.5281/zenodo.21899097) |
+| v.1.1 | [10.5281/zenodo.21898774](https://doi.org/10.5281/zenodo.21898774) |
+| v.1.0 | [10.5281/zenodo.21850565](https://doi.org/10.5281/zenodo.21850565) |
+
 ## Author & Contact
 
 Created and maintained by **Do Thuy Huong** (Đỗ Thùy Hương) — ThuyHuong Digital.

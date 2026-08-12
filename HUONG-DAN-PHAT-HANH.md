@@ -140,7 +140,38 @@ cần xét duyệt.
 
 ---
 
-## 4. ❓ Hỏi nhanh {#faq}
+## 4. 📖 Lấy mã DOI cho dự án (Zenodo) {#doi}
+
+DOI giúp trích dẫn phần mềm trong bài báo khoa học / hồ sơ học thuật. Zenodo
+(kho lưu trữ của CERN, miễn phí) cấp DOI tự động cho mỗi bản phát hành
+GitHub. Repo đã có sẵn file `CITATION.cff` để Zenodo lấy đúng thông tin
+tác giả.
+
+1. Vào **https://zenodo.org** → **Log in** → chọn **Log in with GitHub**
+   → cho phép truy cập
+2. Bấm ảnh đại diện (góc phải) → **GitHub** → tìm
+   `thuyhuongctu/ThuyHuong_Digital-2026-Games` → gạt công tắc sang **ON**
+3. Tạo một **release mới** trên GitHub (ví dụ `v.1.3`) — ⚠️ các release
+   tạo *trước khi* bật công tắc (v.1.1, v.1.2) sẽ **không** được cấp DOI;
+   chỉ release mới sau khi bật mới được lưu trữ
+4. Chờ vài phút → quay lại trang GitHub trên Zenodo → repo sẽ hiện huy hiệu
+   DOI. Bấm vào huy hiệu để lấy 2 mã:
+   - **Concept DOI** — đại diện *mọi phiên bản* (dùng mã này trong README)
+   - **Version DOI** — riêng cho từng bản phát hành
+5. Cập nhật lại repo:
+   - Trong `CITATION.cff`: bỏ dấu `#` ở dòng `doi:` và điền Concept DOI
+   - Trong `README.md` (mục *How to cite*): dán huy hiệu Zenodo đưa cho bạn,
+     dạng:
+     ```markdown
+     [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+     ```
+
+Từ đó về sau, **mỗi release GitHub mới sẽ tự động có thêm một Version DOI**
+— không phải làm lại gì cả.
+
+---
+
+## 5. ❓ Hỏi nhanh {#faq}
 
 **Có cần dùng GDevelop / Cubyz / học C++ 3D không?**
 Không. Game đã là 3D thật bằng **three.js** (WebGL) — cùng công nghệ nền
