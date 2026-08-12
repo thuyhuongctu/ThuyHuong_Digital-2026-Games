@@ -88,6 +88,20 @@ Every push to `main` is deployed automatically within a couple of minutes.
 - Progressive Web App: installable, offline-capable, with app shortcuts
   jumping straight into each game
 
+## How to cite {#cite}
+
+Citation metadata lives in [`CITATION.cff`](CITATION.cff) — GitHub shows a
+**"Cite this repository"** button (top right of the repo page) that exports
+APA and BibTeX. Suggested citation:
+
+> Do, T. H. (2026). *ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt
+> (Vietnamese History Game Portal)* (Version 1.2) [Computer software].
+> https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games
+
+**DOI**: a Zenodo DOI badge will be added here once the repository is
+archived on Zenodo — see the step-by-step guide (in Vietnamese) in
+[`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md#doi).
+
 ## Author & Contact
 
 Created and maintained by **Do Thuy Huong** (Đỗ Thùy Hương) — ThuyHuong Digital.

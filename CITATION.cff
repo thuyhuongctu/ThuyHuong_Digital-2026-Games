@@ -1,0 +1,35 @@
+# Siêu dữ liệu trích dẫn — GitHub hiện nút "Cite this repository" từ file này,
+# và Zenodo dùng nó khi cấp DOI. Sau khi có DOI, bỏ dấu # ở dòng doi và điền mã thật.
+cff-version: 1.2.0
+message: >-
+  Nếu sử dụng phần mềm này trong nghiên cứu hoặc giảng dạy, xin trích dẫn
+  như bên dưới. / If you use this software, please cite it as below.
+type: software
+title: "ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt (Vietnamese History Game Portal)"
+abstract: >-
+  A collection of installable, offline-capable HTML5 educational games about
+  Vietnamese history: Vân Đồn (1149, port building), Bắc Hải Đảo (1780,
+  pirate adventure in the Gulf of Tonkin) in both 2D canvas and 3D (three.js)
+  versions. Bộ trò chơi giáo dục lịch sử Việt Nam chạy trên web, cài được
+  như ứng dụng, chơi ngoại tuyến.
+authors:
+  - family-names: "Do"
+    given-names: "Thuy Huong"
+    name-particle: ""
+    email: "thuyhuongctu@gmail.com"
+    affiliation: "Vinh Long University of Technology Education (VLUTE)"
+version: "1.2"
+date-released: 2026-08-12
+repository-code: "https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games"
+url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/"
+# doi: 10.5281/zenodo.XXXXXXX
+keywords:
+  - educational game
+  - serious game
+  - Vietnamese history
+  - game-based learning
+  - HTML5
+  - three.js
+  - progressive web app
+  - Vân Đồn
+  - Gulf of Tonkin
