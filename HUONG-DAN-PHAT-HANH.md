@@ -1,0 +1,158 @@
+# 📲 Hướng dẫn phát hành — Web app · CH Play · iOS
+
+Cổng game này là **PWA (Progressive Web App)** hoàn chỉnh: cài được lên màn
+hình chính, chạy toàn màn hình, chơi ngoại tuyến. Nhờ vậy **không cần viết
+lại game bằng engine nào khác** (GDevelop, Unity, C++…) — chỉ cần "đóng gói"
+đúng cách cho từng nền tảng.
+
+| Nền tảng | Chi phí | Độ khó | Thời gian |
+|---|---|---|---|
+| 🌐 Web app (GitHub Pages + PWA) | **0 đ** | Dễ — đã xong sẵn | Ngay lập tức |
+| 🤖 CH Play (Google Play) | 25 USD (nộp **một lần duy nhất**) | Trung bình | 1–2 buổi + vài ngày xét duyệt |
+| 🍎 iOS — cài từ Safari | **0 đ** | Dễ — đã xong sẵn | Ngay lập tức |
+| 🍎 iOS — App Store | 99 USD/**năm** + cần máy Mac | Khó | Không khuyến nghị lúc đầu |
+
+---
+
+## 1. 🌐 Web app — đã chạy sẵn {#web-app}
+
+Trang web đã phát hành tại:
+
+**https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/**
+
+Nếu link trên chưa hoạt động, bật GitHub Pages như sau:
+
+1. Vào repo trên GitHub → **Settings** → **Pages**
+2. Mục **Source**: chọn *Deploy from a branch*
+3. **Branch**: chọn `main`, thư mục `/ (root)` → **Save**
+4. Chờ 1–2 phút, trang sẽ có tại địa chỉ trên
+
+Người chơi mở link bằng điện thoại → bấm nút **📲 Cài vào Màn hình chính**
+(hoặc menu trình duyệt → *Thêm vào màn hình chính*) → game chạy toàn màn
+hình như app thật, kể cả khi **không có mạng**.
+
+> Mỗi lần bạn đẩy code mới lên nhánh `main`, trang web và app đã cài trên
+> máy người chơi đều **tự cập nhật** — không phải phát hành lại.
+
+---
+
+## 2. 🤖 Đưa lên CH Play (Google Play) {#ch-play}
+
+Google chính thức hỗ trợ đưa PWA lên CH Play qua công nghệ **TWA (Trusted
+Web Activity)**: app trên CH Play thực chất mở trang web của bạn toàn màn
+hình, không thanh địa chỉ. Game chỉ cần bảo trì **một nơi duy nhất** (repo
+này) — app tự cập nhật theo web.
+
+### Bước 2.1 — Đăng ký tài khoản nhà phát triển {#play-console}
+
+1. Vào https://play.google.com/console/signup
+2. Đăng nhập tài khoản Google, chọn loại **Cá nhân**
+3. Nộp phí **25 USD một lần** (thẻ Visa/Mastercard) và xác minh danh tính
+   (ảnh giấy tờ tùy thân)
+4. Chờ duyệt tài khoản (thường 1–2 ngày)
+
+> Lưu ý: tài khoản cá nhân mới cần chạy **thử nghiệm khép kín với ít nhất
+> 12 người thử trong 14 ngày** trước khi được phát hành công khai — Google
+> áp dụng quy định này cho tài khoản cá nhân đăng ký mới. Bạn có thể mời
+> sinh viên/đồng nghiệp làm người thử nghiệm bằng email của họ.
+
+### Bước 2.2 — Tạo gói Android bằng PWABuilder (không cần cài gì) {#pwabuilder}
+
+1. Vào **https://www.pwabuilder.com**
+2. Dán địa chỉ web app:
+   `https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/`
+3. Bấm **Start** → chờ chấm điểm PWA → bấm **Package for stores**
+4. Chọn **Android** → điền:
+   - **Package ID**: `vn.thuyhuongdigital.suvietgames` (tên miền đảo ngược,
+     đặt một lần, **không đổi được** về sau)
+   - **App name**: `Sử Việt Games` · **Version**: `1.0.0`
+   - Signing key: chọn *Create new* (tạo khóa ký mới)
+5. Tải về file `.zip` — bên trong có:
+   - `*.aab` — gói nộp lên CH Play
+   - `signing.keystore` + mật khẩu — **⚠️ LƯU CẨN THẬN, MẤT LÀ KHÔNG CẬP
+     NHẬT APP ĐƯỢC NỮA** (lưu vào Google Drive riêng tư + USB)
+   - `assetlinks.json` — dùng ở bước tiếp theo
+
+### Bước 2.3 — Xác minh quyền sở hữu web (assetlinks.json) {#assetlinks}
+
+Để app mở toàn màn hình không hiện thanh địa chỉ, cần chứng minh web và app
+cùng một chủ. Tạo file `.well-known/assetlinks.json` **trong repo này** với
+nội dung PWABuilder đưa cho bạn (dạng như sau, thay `XX:YY:…` bằng vân tay
+SHA-256 thật trong file tải về):
+
+```json
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "vn.thuyhuongdigital.suvietgames",
+    "sha256_cert_fingerprints": ["XX:YY:ZZ:..."]
+  }
+}]
+```
+
+Đẩy lên `main` để file có tại:
+`https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/.well-known/assetlinks.json`
+
+### Bước 2.4 — Tạo ứng dụng trên Play Console và nộp {#play-submit}
+
+1. Play Console → **Create app** → tên `Sử Việt Games — Cổng Trò Chơi Sử
+   Việt`, ngôn ngữ mặc định *Tiếng Việt*, loại **Game**, **Miễn phí**
+2. Hoàn tất các mục khai báo bắt buộc (Play Console liệt kê sẵn checklist):
+   - **Mô tả ứng dụng**: lấy từ phần *Giới thiệu* trong README
+   - **Đồ họa cửa hàng** cần chuẩn bị:
+     - Biểu tượng 512×512 (có sẵn: `icons/icon-512.png`)
+     - Ảnh bìa *feature graphic* 1024×500 (chụp cảnh game + tên game)
+     - Tối thiểu 2 ảnh chụp màn hình điện thoại (chụp ngay trong game)
+   - **Xếp hạng nội dung**: điền bảng hỏi → game không bạo lực máu me,
+     thường được xếp 3+/7+
+   - **Quyền riêng tư**: game không thu thập dữ liệu ai — có thể ghi rõ
+     như vậy; cần một trang *privacy policy* (tạo file `privacy.html` trong
+     repo là đủ)
+3. **Testing → Closed testing** → tạo bản phát hành → tải file `.aab` lên
+   → mời người thử nghiệm → chạy đủ 14 ngày (quy định tài khoản cá nhân mới)
+4. Sau đó **Production → Create release** → nộp xét duyệt (vài ngày)
+
+### Cập nhật app về sau {#update-app}
+
+- Sửa **nội dung game** → chỉ cần push lên `main`, app tự cập nhật, **không
+  phải nộp lại CH Play**
+- Chỉ khi đổi tên app, biểu tượng, hoặc màn hình khởi động mới cần tạo lại
+  `.aab` (PWABuilder, dùng lại signing key cũ) và nộp bản mới
+
+---
+
+## 3. 🍎 iOS {#ios}
+
+**Cách miễn phí (khuyên dùng):** người chơi mở web app bằng **Safari** →
+nút **Chia sẻ** (ô vuông mũi tên) → **Thêm vào MH chính** → game chạy toàn
+màn hình, có biểu tượng riêng, chơi được ngoại tuyến. Không mất phí, không
+cần xét duyệt.
+
+**Đưa lên App Store (chỉ khi thật cần):**
+
+- Cần tài khoản **Apple Developer 99 USD/năm** + **máy Mac** cài Xcode
+- PWABuilder cũng tạo được gói iOS (chọn **iOS** ở bước Package) → mở bằng
+  Xcode → ký và nộp qua App Store Connect
+- ⚠️ Apple thường **từ chối** app "chỉ là trang web đóng gói" (quy định
+  4.2). Muốn qua xét duyệt nên có thêm tính năng bản địa (ví dụ Game Center,
+  thông báo đẩy). Vì vậy nên bắt đầu bằng cách miễn phí ở trên.
+
+---
+
+## 4. ❓ Hỏi nhanh {#faq}
+
+**Có cần dùng GDevelop / Cubyz / học C++ 3D không?**
+Không. Game đã là 3D thật bằng **three.js** (WebGL) — cùng công nghệ nền
+với các engine web. Viết lại bằng engine khác mất nhiều tháng mà kết quả
+phát hành vẫn y như con đường PWA → TWA ở trên. Các repo đó chỉ hữu ích
+làm tài liệu tham khảo kỹ thuật.
+
+**Game 3D có chạy nổi trên điện thoại yếu?**
+Có — bản 3D dùng khối hình đơn giản (low-poly), và người chơi luôn có thể
+chọn bản 2D trên cùng cổng game.
+
+**Một app trên CH Play chứa được cả 3 game?**
+Đúng — app mở cổng game (trang chủ), từ đó vào cả Vân Đồn, Bắc Hải Đảo 2D
+và 3D. Manifest đã khai báo *shortcut* để nhấn giữ biểu tượng app là nhảy
+thẳng vào từng game.

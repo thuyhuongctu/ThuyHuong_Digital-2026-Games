@@ -3,6 +3,8 @@
   "short_name": "Sử Việt Games",
   "description": "Mỗi trò chơi là một trang sử Đại Việt: dựng thương cảng Vân Đồn thời Lý, làm hải tặc Vịnh Bắc Bộ. Chơi miễn phí, hỗ trợ ngoại tuyến.",
   "lang": "vi",
+  "id": "./",
+  "categories": ["games", "education"],
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -18,6 +20,8 @@
     { "name": "Vân Đồn — Đệ Nhất Thương Cảng", "url": "./van-don/index.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Bắc Hải Đảo — Hải Tặc Vịnh Bắc Bộ", "url": "./bac-hai-dao/index.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Bắc Hải Đảo 3D", "url": "./bac-hai-dao-3d/index.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

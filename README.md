@@ -61,12 +61,14 @@ combat, upgrades, music. The 2D version remains available side by side.
 - **Web app (PWA)** — already built in: open the portal on a phone, tap
   **📲 Install to Home Screen**, and it runs full-screen offline like a
   native app.
-- **Google Play (optional)** — the PWA can be wrapped into an Android app
-  with [Bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap) (Trusted
-  Web Activity): `npx @bubblewrap/cli init --manifest <site-url>/manifest.webmanifest`
-  then `npx @bubblewrap/cli build` produces an `.aab` ready for the Play
-  Console (one-time $25 developer fee). No code changes required.
-- **iOS** — installable from Safari via *Share → Add to Home Screen*.
+- **Google Play (CH Play)** — the PWA can be wrapped into an Android app
+  (Trusted Web Activity) and submitted to the Play Console. See the
+  **step-by-step release guide (in Vietnamese):
+  [`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md)** — covers PWABuilder,
+  signing keys, `assetlinks.json`, store listing and the privacy policy
+  ([`privacy.html`](privacy.html)).
+- **iOS** — installable from Safari via *Share → Add to Home Screen*;
+  App Store submission is also covered in the release guide.
 
 ## Play online (GitHub Pages)
 
