@@ -90,17 +90,19 @@ Every push to `main` is deployed automatically within a couple of minutes.
 
 ## How to cite {#cite}
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21899097.svg)](https://doi.org/10.5281/zenodo.21899097)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 
 Citation metadata lives in [`CITATION.cff`](CITATION.cff) — GitHub shows a
 **"Cite this repository"** button (top right of the repo page) that exports
 APA and BibTeX. Suggested citation:
 
 > Do, T. H. (2026). *ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt
-> (Vietnamese History Game Portal)* (Version 1.2) [Computer software].
-> Zenodo. https://doi.org/10.5281/zenodo.21899097
+> (Vietnamese History Game Portal)* [Computer software]. Zenodo.
+> https://doi.org/10.5281/zenodo.21850564
 
-Every release is archived on Zenodo with its own DOI:
+The DOI above is the **concept DOI**: it represents all versions and always
+resolves to the latest release. Every release is also archived on Zenodo
+with its own version DOI:
 
 | Version | DOI |
 |---|---|
