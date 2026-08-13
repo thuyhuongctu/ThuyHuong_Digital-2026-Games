@@ -1,7 +1,7 @@
 /* ThuyHuong Digital — service worker
    Cache-first cho toàn bộ cổng game: cài một lần, chơi ngoại tuyến. */
 'use strict';
-const VERSION = 'thd-v3';
+const VERSION = 'thd-v4';
 const SHELL = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const SHELL = [
   './lib/three.min.js',
   './bac-hai-dao/assets/do-doc-phuong-hoa.jpg',
   './bac-hai-dao/assets/do-doc-phuong-hoa-chibi.jpg',
+  './bac-hai-dao/assets/lai-buon-tran-van-don.jpg',
 ];
 
 self.addEventListener('install', e => {
