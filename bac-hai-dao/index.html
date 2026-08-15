@@ -84,7 +84,9 @@
   .charcard{cursor:pointer;border:2px solid var(--edge);border-radius:12px;padding:12px;
     text-align:center;background:#0d2234;transition:transform .15s,border-color .15s}
   .charcard:hover{border-color:var(--gold);transform:translateY(-3px)}
-  .charcard img{width:100%;border-radius:8px;display:block;margin-bottom:8px}
+  /* khung ảnh đồng nhất 3:4 để 4 thẻ nhân vật cao bằng nhau dù ảnh gốc khác tỉ lệ */
+  .charcard img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top center;
+    border-radius:8px;display:block;margin-bottom:8px}
   .charcard .cicon{font-size:58px;line-height:1.7}
   .charcard h3{margin:4px 0 2px;font-size:15px}
   .charcard .alias{color:#8fb0c4;font-size:12px;font-style:italic}
@@ -427,12 +429,12 @@ const CHARACTERS = [
     desc:'Tay bàn tính trứ danh đất bến cổ — thuộc lòng giá cả mọi thương cảng, mặc cả sắc như dao cau.',
     perkDesc:'💰 Mua rẻ 10%, bán đắt 10% · 📦 +20 khoang hàng',
     perk:{ buyMul:0.9, sellMul:1.1, extraCap:20 } },
-  { id:'haiau', cicon:'🌪️',
+  { id:'haiau', img:'assets/kiem-khach-hai-au.jpg', img2:'assets/kiem-khach-hai-au.jpg',
     name:'Kiếm khách Hải Âu', alias:'Cánh Én Ngược Gió', sail:'#3f6fb5',
     desc:'Cô gái làng chài Cát Bà, lái thuyền như én liệng trước giông.',
     perkDesc:'⛵ Tốc độ +15% · bẻ lái nhanh hơn 25%',
     perk:{ speedMul:1.15, turnMul:1.25 } },
-  { id:'batu', cicon:'⚓',
+  { id:'batu', img:'assets/ba-tu-cat-hai.jpg', img2:'assets/ba-tu-cat-hai.jpg',
     name:'Bà Tư Cát Hải', alias:'Mẹ Biển Cả', sail:'#a33327',
     desc:'Chủ vựa nước mắm, mẹ nuôi của cả trăm thủy thủ mồ côi.',
     perkDesc:'🛡️ +50 máu tối đa · ⚓ +4 thủy thủ',
