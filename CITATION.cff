@@ -1,17 +1,24 @@
+# Citation metadata. GitHub renders the "Cite this repository" control from this
+# file, and Zenodo reads it when archiving each release.
 # Siêu dữ liệu trích dẫn — GitHub hiện nút "Cite this repository" từ file này,
 # và Zenodo dùng nó khi lưu trữ mỗi bản phát hành.
 cff-version: 1.2.0
 message: >-
+  If you use this software in research or teaching, please cite it as below. /
   Nếu sử dụng phần mềm này trong nghiên cứu hoặc giảng dạy, xin trích dẫn
-  như bên dưới. / If you use this software, please cite it as below.
+  như bên dưới.
 type: software
 title: "ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt (Vietnamese History Game Portal)"
 abstract: >-
-  A collection of installable, offline-capable HTML5 educational games about
-  Vietnamese history: Vân Đồn (1149, port building), Bắc Hải Đảo (1780,
-  pirate adventure in the Gulf of Tonkin) in both 2D canvas and 3D (three.js)
-  versions. Bộ trò chơi giáo dục lịch sử Việt Nam chạy trên web, cài được
-  như ứng dụng, chơi ngoại tuyến.
+  A portal of four installable, offline-capable HTML5 educational games set in
+  documented periods of Vietnamese history: Vân Đồn (1149, port building and
+  maritime trade), Bắc Hải Đảo (1780, adventure and trade in the Gulf of
+  Tonkin) in both 2D canvas and 3D three.js editions, and Chợ Nổi (nineteenth
+  century, an arcade game set in the floating markets of the Mekong Delta).
+  The portal is a Progressive Web App: it installs to a device home screen,
+  runs full screen, works without a network connection, and collects no
+  personal data. Bộ trò chơi giáo dục lịch sử Việt Nam chạy trên trình duyệt,
+  cài được như ứng dụng, chơi ngoại tuyến.
 authors:
   - family-names: "Do"
     given-names: "Thuy Huong"
@@ -21,15 +28,19 @@ version: "1.2"
 date-released: 2026-08-12
 repository-code: "https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games"
 url: "https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/"
-# Concept DOI — đại diện mọi phiên bản, luôn trỏ về bản mới nhất
+# Concept DOI — represents every version and always resolves to the latest release.
 doi: 10.5281/zenodo.21850564
 keywords:
   - educational game
   - serious game
-  - Vietnamese history
   - game-based learning
+  - Vietnamese history
+  - digital heritage
   - HTML5
-  - three.js
   - progressive web app
+  - offline-first
+  - three.js
+  - Phaser
   - Vân Đồn
   - Gulf of Tonkin
+  - Mekong Delta floating market
