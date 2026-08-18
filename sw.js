@@ -1,7 +1,7 @@
 /* ThuyHuong Digital — service worker
    Cache-first cho toàn bộ cổng game: cài một lần, chơi ngoại tuyến. */
 'use strict';
-const VERSION = 'thd-v5';
+const VERSION = 'thd-v6';
 const SHELL = [
   './',
   './index.html',
@@ -12,6 +12,8 @@ const SHELL = [
   './van-don/index.html',
   './bac-hai-dao/index.html',
   './bac-hai-dao-3d/index.html',
+  './cho-noi/index.html',
+  './assets/vendor/phaser.min.js',
   './lib/three.min.js',
   './bac-hai-dao/assets/do-doc-phuong-hoa.jpg',
   './bac-hai-dao/assets/do-doc-phuong-hoa-chibi.jpg',

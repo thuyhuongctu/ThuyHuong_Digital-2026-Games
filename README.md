@@ -52,6 +52,7 @@ full-screen like a native app and works completely offline.
 | 🏮 | **Vân Đồn** — The First Trading Port | 1149 | City building / port management | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don/) · [Guide](van-don/README.md) |
 | 🏴‍☠️ | **Bắc Hải Đảo** — Pirates of the Gulf of Tonkin | 1780 | Adventure / trading / naval combat | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/) · [Guide](bac-hai-dao/README.md) |
 | 🌊 | **Bắc Hải Đảo 3D** — full 3D edition | 1780 | Same world, three.js graphics | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao-3d/) · [Guide](bac-hai-dao-3d/README.md) |
+| 🛶 | **Chợ Nổi** — Floating Market | 19th c. | Arcade catcher (Phaser 3) | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/cho-noi/) · [Guide](cho-noi/README.md) |
 
 ### 🏮 Vân Đồn — The First Trading Port
 
@@ -85,6 +86,17 @@ ships, storm weather with rain, and the golden Dragon winding through the
 air. All gameplay systems from the 2D version are intact — captains,
 trading, combat, upgrades, music. The 2D version remains available side by
 side.
+
+### 🛶 Chợ Nổi — Floating Market on the River
+
+An arcade catcher set in the **Mekong Delta floating markets of the 19th
+century**, when Vietnamese settlers opened up Đất Phương Nam along its
+canals. A merchant barge crosses the river dropping produce — steer your
+**sampan (xuồng ba lá)** to catch coconuts, bananas, mangoes, pineapples
+and rice (+1 to +3 points), dodge driftwood (−5), and fill your hold before
+the market ends (90 seconds). Keyboard and touch controls, pentatonic
+WebAudio sound, best score saved locally. The portal's first game built on
+**Phaser 3**.
 
 ## Features
 
@@ -137,13 +149,23 @@ in **[`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md)**.
 |---|---|
 | Games (2D) | HTML5 canvas 2D + vanilla JavaScript, one self-contained file per game |
 | Game (3D) | [three.js](https://threejs.org/) r147, vendored locally for offline play |
+| Game engine (2D) | [Phaser 3](https://phaser.io/) v3.90.0 (MIT), vendored in `assets/vendor/` — powers Chợ Nổi |
 | Audio | WebAudio API — real-time generative pentatonic music |
 | App platform | Progressive Web App: web manifest, service worker (cache-first), app shortcuts |
 | Distribution | GitHub Pages (web) · TWA wrap for Google Play · Safari home-screen install for iOS |
 | Archival | Every GitHub release is archived on [Zenodo](https://doi.org/10.5281/zenodo.21850564) with a DOI |
 
-There are **no dependencies, no frameworks and no build tools** — the
-repository is the deployable site.
+There are **no build tools and no CDN dependencies** — the repository is the
+deployable site; the two engines used (three.js, Phaser) are vendored locally.
+
+**Engine decision.** Phaser was chosen over other engines evaluated for the
+portal because it is a single-file MIT-licensed JS library that runs directly
+on GitHub Pages with no build step and is actively maintained. Rejected:
+Godot / cocos / GDevelop (editor-based, need export pipelines); libGDX,
+MonoGame, jMonkeyEngine, Torque3D, Spring RTS, gameplay3d, OpenRTS (Java /
+C# / C++ — wrong platform for a static site); Babylon.js (3D — the portal
+already vendors three.js); Starling (Flash/ActionScript, dead platform);
+Turbulenz, Crafty, whs.js, Superpowers, Atomic (unmaintained).
 
 ## Project structure
 
@@ -153,7 +175,9 @@ repository is the deployable site.
 ├── van-don/                 # 🏮 Vân Đồn — port building (1149)
 ├── bac-hai-dao/             # 🏴‍☠️ Bắc Hải Đảo — pirate adventure, 2D (1780)
 ├── bac-hai-dao-3d/          # 🌊 Bắc Hải Đảo 3D — three.js edition
+├── cho-noi/                 # 🛶 Chợ Nổi — floating market catcher (Phaser 3)
 ├── lib/three.min.js         # Vendored three.js r147
+├── assets/vendor/           # Vendored Phaser 3.90.0 + license
 ├── icons/                   # PWA icon set (192 / 512 / maskable)
 ├── manifest.webmanifest     # Web app manifest (+ per-game shortcuts)
 ├── sw.js                    # Service worker — offline cache
