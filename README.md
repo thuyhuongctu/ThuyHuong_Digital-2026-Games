@@ -1,227 +1,297 @@
 <div align="center">
 
-# 🎮 ThuyHuong Digital 2026 — Games
+# ThuyHuong Digital 2026 — Games
 
 ### Cổng Trò Chơi Sử Việt · *Vietnamese History Game Portal*
 
-**Every game is a page of Đại Việt's history** — sail the Gulf of Tonkin as a
-pirate captain, or raise Vân Đồn from a fishing hamlet into the kingdom's
-first international trading port.
+A collection of browser-based educational games set in documented periods of
+Vietnamese history, published as an installable, offline-capable web application.
 
 [![Release](https://img.shields.io/github/v/release/thuyhuongctu/ThuyHuong_Digital-2026-Games?label=release&color=b8860b)](https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 [![PWA](https://img.shields.io/badge/PWA-installable%20%C2%B7%20offline-5a3&logo=pwa)](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/)
-[![Made with three.js](https://img.shields.io/badge/3D-three.js-049EF4?logo=threedotjs&logoColor=white)](bac-hai-dao-3d/)
+[![three.js](https://img.shields.io/badge/3D-three.js-049EF4?logo=threedotjs&logoColor=white)](bac-hai-dao-3d/)
+[![Phaser](https://img.shields.io/badge/2D-Phaser%203-2ea3f2)](cho-noi/)
 
-**[▶️ Play now — thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/)**
+**[▶ Play now: thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/)**
 
-*No installation, no account, no ads — runs in any browser, works offline once loaded.*
+*No installation, no account, no advertising, no data collection.*
 
 </div>
 
 ---
 
-## Table of contents
+## Contents
 
 - [Overview](#overview)
 - [The games](#the-games)
+- [Educational use](#educational-use)
 - [Features](#features)
 - [Getting started](#getting-started)
-- [Publishing to app stores](#publishing-to-app-stores)
-- [Technology](#technology)
-- [Project structure](#project-structure)
+- [Repository structure](#repository-structure)
+- [Implementation notes](#implementation-notes)
+- [Privacy](#privacy)
+- [Releases and archiving](#releases-and-archiving)
 - [How to cite](#how-to-cite)
-- [Author & contact](#author--contact)
+- [License and third-party components](#license-and-third-party-components)
+- [Author and contact](#author-and-contact)
 
 ## Overview
 
-**ThuyHuong Digital 2026 — Games** is a collection of history-themed HTML5
-games set in authentically Vietnamese worlds, arranged on the portal
-homepage as a **historical timeline** (Vân Đồn 1149 → Bắc Hải Đảo 1780) and
-styled with a shared Lý–Trần dynasty ceramic color palette.
+**ThuyHuong Digital 2026 — Games** is a portal of four history-themed HTML5
+games covering three periods of Vietnamese history: the maritime trading port
+of Vân Đồn under the Lý dynasty (1149), piracy and coastal trade in the Gulf
+of Tonkin (1780), and the floating markets of the Mekong Delta during the
+nineteenth-century settlement of the southern provinces.
 
-Each game is a single self-contained `index.html` — pure HTML5 and vanilla
-JavaScript with no dependencies and no build step. The portal is a
-**Progressive Web App**: installed to a phone's home screen, it runs
-full-screen like a native app and works completely offline.
+The portal homepage presents the games as a chronological timeline and applies
+a single visual identity derived from Lý–Trần dynasty ceramic colours. Each
+game is a self-contained `index.html` file that requires no build step, no
+server-side component, and no account. The portal is a Progressive Web App:
+once loaded it can be installed to a device home screen, runs full screen, and
+remains playable without a network connection.
+
+The project is developed and maintained by a single author as an open,
+non-commercial contribution to Vietnamese-language educational resources on
+the web.
 
 ## The games
 
-| | Game | Year | Genre | Play |
+| | Game | Period | Genre | Play |
 |---|---|---|---|---|
-| 🏮 | **Vân Đồn** — The First Trading Port | 1149 | City building / port management | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don/) · [Guide](van-don/README.md) |
-| 🏴‍☠️ | **Bắc Hải Đảo** — Pirates of the Gulf of Tonkin | 1780 | Adventure / trading / naval combat | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/) · [Guide](bac-hai-dao/README.md) |
-| 🌊 | **Bắc Hải Đảo 3D** — full 3D edition | 1780 | Same world, three.js graphics | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao-3d/) · [Guide](bac-hai-dao-3d/README.md) |
-| 🛶 | **Chợ Nổi** — Floating Market | 19th c. | Arcade catcher (Phaser 3) | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/cho-noi/) · [Guide](cho-noi/README.md) |
+| 🏮 | **Vân Đồn** — The First Trading Port | 1149 | City building, port management | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/van-don/) · [Guide](van-don/README.md) |
+| 🏴‍☠️ | **Bắc Hải Đảo** — Pirates of the Gulf of Tonkin | 1780 | Adventure, trading, naval combat | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao/) · [Guide](bac-hai-dao/README.md) |
+| 🌊 | **Bắc Hải Đảo 3D** | 1780 | The same world rendered in 3D | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/bac-hai-dao-3d/) · [Guide](bac-hai-dao-3d/README.md) |
+| 🛶 | **Chợ Nổi** — Floating Market | 19th century | Arcade, reaction and timing | [Play](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/cho-noi/) · [Guide](cho-noi/README.md) |
 
-### 🏮 Vân Đồn — The First Trading Port
+### Vân Đồn — The First Trading Port (1149)
 
-Grounded in real history: in 1149, King Lý Anh Tông issued a royal edict
-establishing Vân Đồn — Đại Việt's first international trading port. Build
-piers to welcome merchant ships from **Song China, Japan, Java and Siam**;
-open Chu Đậu pottery kilns, silk workshops and pearl rafts; weather storms,
-repel Tàu Ô raiders, and raise the port from a small hamlet to 👑 *the First
-Trading Port of Đại Việt*. Includes tiered building upgrades, royal tribute
-quests, an in-game history codex, an achievements board, and a challenge
-mode recreating the historic **Battle of Vân Đồn (1288)**, where Trần Khánh
-Dư ambushed the Yuan grain fleet.
+In 1149 King Lý Anh Tông issued an edict establishing Vân Đồn, the first
+international trading port of Đại Việt. The player develops the port from a
+fishing hamlet: building piers for merchant ships arriving from Song China,
+Japan, Java and Siam; opening Chu Đậu pottery kilns, silk workshops and pearl
+rafts; collecting tax revenue; weathering storms; and repelling raids. The game
+includes tiered building upgrades, royal tribute quests, an in-game history
+codex, an achievements board, and a separate challenge mode recreating the
+Battle of Vân Đồn (1288), in which Trần Khánh Dư intercepted the Yuan supply
+fleet.
 
-### 🏴‍☠️ Bắc Hải Đảo — Pirates of the Gulf of Tonkin
+### Bắc Hải Đảo — Pirates of the Gulf of Tonkin (1780)
 
-A pirate adventure inspired by classic pirate-island games, set in the Gulf
-of Tonkin, 1780. Sail a **bat-wing junk** among the limestone karsts of Hạ
-Long Bay, trade fish sauce, silk, agarwood and pearls across six historic
-ports (Vân Đồn, Cát Bà, Cô Tô…), sink **Tàu Ô** pirate ships, survive
-storms, meet the **Sacred Dragon of Hạ Long**, and defeat the pirate lord
-**Hắc Giao** to be crowned *King of the Northern Isles* 👑. Four playable
-captains with distinct perks, generative pentatonic background music, and
-full touch controls.
+A maritime adventure set among the limestone karsts of Hạ Long Bay. The player
+sails a bat-wing junk between six historic ports, trades fish sauce, silk,
+agarwood and pearls, engages Tàu Ô pirate vessels, survives storms, and
+ultimately confronts the pirate lord Hắc Giao. Four playable captains provide
+distinct starting conditions and abilities. Background music is generated in
+real time on the Vietnamese pentatonic scale.
 
-### 🌊 Bắc Hải Đảo 3D
+### Bắc Hải Đảo 3D (1780)
 
-The same pirate world rebuilt in **full 3D** with three.js (vendored in
-`lib/three.min.js`, so the site still works offline): a chase camera behind
-your junk, rolling waves, towering limestone karsts, 3D ports and enemy
-ships, storm weather with rain, and the golden Dragon winding through the
-air. All gameplay systems from the 2D version are intact — captains,
-trading, combat, upgrades, music. The 2D version remains available side by
-side.
+The same world rebuilt in three dimensions with three.js: a chase camera behind
+the junk, animated sea surface, limestone islands, three-dimensional ports and
+enemy vessels, storm weather, and the Dragon of Hạ Long. All gameplay systems
+of the two-dimensional version are retained. Both versions remain available so
+that the portal continues to work on low-powered devices.
 
-### 🛶 Chợ Nổi — Floating Market on the River
+### Chợ Nổi — Floating Market (19th century)
 
-An arcade catcher set in the **Mekong Delta floating markets of the 19th
-century**, when Vietnamese settlers opened up Đất Phương Nam along its
-canals. A merchant barge crosses the river dropping produce — steer your
-**sampan (xuồng ba lá)** to catch coconuts, bananas, mangoes, pineapples
-and rice (+1 to +3 points), dodge driftwood (−5), and fill your hold before
-the market ends (90 seconds). Keyboard and touch controls, pentatonic
-WebAudio sound, best score saved locally. The portal's first game built on
-**Phaser 3**.
+An arcade game set in the floating markets that formed along the canals of the
+Mekong Delta as settlers opened up the southern provinces. A merchant barge
+crosses the river releasing produce; the player steers a sampan (*xuồng ba lá*)
+to catch coconuts, bananas, watermelons, mangoes, pineapples and rice (one to
+three points each) while avoiding driftwood (minus five points). A market
+session lasts ninety seconds and the drop rate increases progressively. This is
+the first game in the portal built on the Phaser 3 engine.
+
+## Educational use
+
+The games are intended for secondary and undergraduate teaching, for
+self-directed learning, and for informal use by general audiences interested in
+Vietnamese history. They run on shared or low-specification school computers
+and on mobile phones, and continue to work offline after the first load, which
+makes them usable in classrooms without reliable internet access.
+
+Historical settings, place names, trade goods and events are drawn from
+well-documented episodes of Vietnamese history and are presented in an
+accompanying in-game codex. The games are nevertheless works of interactive
+fiction: mechanics, difficulty balance and narrative details are designed for
+playability and should not be treated as a scholarly source.
 
 ## Features
 
-- 🎮 **Three complete games** sharing one visual identity and world
-- 📲 **Installable PWA** — *Install to Home Screen* button on mobile;
-  runs full-screen and offline (service worker + web manifest + icon set)
-- 🎵 **Generative music** — background scores composed in real time with
-  WebAudio on the Vietnamese **pentatonic scale** (đàn tranh-style plucked
-  strings, đàn bầu-style pitch bends); no audio files shipped
-- 🖱️ **Desktop and mobile controls** — keyboard on desktop, full touch
-  controls on phones and tablets
-- 💾 **Local save games** — progress is stored on-device only; the project
-  collects no data whatsoever ([privacy policy](privacy.html))
-- 🏛️ **History inside the games** — real events, ports, trade goods and
-  figures from Vietnamese history, with an in-game codex
+- **Four complete games** sharing a single visual identity and historical frame
+- **Installable Progressive Web App**: home-screen installation, full-screen
+  presentation, and complete offline operation through a service worker,
+  web manifest and icon set
+- **Generative audio**: background music synthesised in real time with the
+  Web Audio API on the Vietnamese pentatonic scale, emulating *đàn tranh*
+  plucked strings and *đàn bầu* pitch bends; no audio files are shipped
+- **Desktop and mobile input**: keyboard control on desktop, touch control on
+  phones and tablets
+- **Local progress storage**: saved games and high scores are held in browser
+  storage on the device only
+- **Bilingual interface material**: game text in Vietnamese, documentation and
+  store listings in Vietnamese and English
 
 ## Getting started
 
-**Play online** (recommended):
-open **[the portal](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/)**
-in any modern browser. On a phone, tap **📲 Install to Home Screen** to get
-the full-screen offline app.
+### Play online
 
-**Run locally** — no build step required:
+Open the [portal](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/)
+in any modern browser. On a mobile device, select **Install to Home Screen** to
+obtain the full-screen offline application. On iOS, use Safari and choose
+**Share → Add to Home Screen**.
+
+### Requirements
+
+A current version of Chrome, Edge, Firefox or Safari with JavaScript enabled.
+No installation, account, plug-in or build toolchain is required. The 3D
+edition benefits from WebGL hardware acceleration; the 2D editions do not
+require it.
+
+### Run locally
 
 ```bash
 git clone https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games.git
 cd ThuyHuong_Digital-2026-Games
-# open index.html directly, or serve the folder:
-python3 -m http.server 8000   # then visit http://localhost:8000
+python3 -m http.server 8000     # then open http://localhost:8000
 ```
 
-> Serving over HTTP (rather than opening the file directly) is required for
-> the service worker and PWA install prompt; the games themselves run
-> either way.
+The games also run when `index.html` is opened directly from the file system.
+Serving the directory over HTTP is required only for the service worker and the
+installation prompt.
 
-**iOS**: open the portal in Safari → *Share → Add to Home Screen*.
+### Deployment
 
-## Publishing to app stores
+The repository is the deployable site. Any static host will serve it; the
+published instance is hosted on GitHub Pages, and each push to the default
+branch is deployed automatically. Guidance on wrapping the Progressive Web App
+for Google Play as a Trusted Web Activity, and on preparing store listings, is
+given in [`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md) (in Vietnamese).
 
-The PWA can be wrapped and submitted to **Google Play (CH Play)** as a
-Trusted Web Activity, with no changes to the game code. The complete
-step-by-step guide (in Vietnamese) — PWABuilder, signing keys,
-`assetlinks.json`, store listing, privacy policy and App Store notes — is
-in **[`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md)**.
-
-## Technology
-
-| Layer | Choice |
-|---|---|
-| Games (2D) | HTML5 canvas 2D + vanilla JavaScript, one self-contained file per game |
-| Game (3D) | [three.js](https://threejs.org/) r147, vendored locally for offline play |
-| Game engine (2D) | [Phaser 3](https://phaser.io/) v3.90.0 (MIT), vendored in `assets/vendor/` — powers Chợ Nổi |
-| Audio | WebAudio API — real-time generative pentatonic music |
-| App platform | Progressive Web App: web manifest, service worker (cache-first), app shortcuts |
-| Distribution | GitHub Pages (web) · TWA wrap for Google Play · Safari home-screen install for iOS |
-| Archival | Every GitHub release is archived on [Zenodo](https://doi.org/10.5281/zenodo.21850564) with a DOI |
-
-There are **no build tools and no CDN dependencies** — the repository is the
-deployable site; the two engines used (three.js, Phaser) are vendored locally.
-
-**Engine decision.** Phaser was chosen over other engines evaluated for the
-portal because it is a single-file MIT-licensed JS library that runs directly
-on GitHub Pages with no build step and is actively maintained. Rejected:
-Godot / cocos / GDevelop (editor-based, need export pipelines); libGDX,
-MonoGame, jMonkeyEngine, Torque3D, Spring RTS, gameplay3d, OpenRTS (Java /
-C# / C++ — wrong platform for a static site); Babylon.js (3D — the portal
-already vendors three.js); Starling (Flash/ActionScript, dead platform);
-Turbulenz, Crafty, whs.js, Superpowers, Atomic (unmaintained).
-
-## Project structure
+## Repository structure
 
 ```
 .
-├── index.html               # Portal homepage (historical timeline)
-├── van-don/                 # 🏮 Vân Đồn — port building (1149)
-├── bac-hai-dao/             # 🏴‍☠️ Bắc Hải Đảo — pirate adventure, 2D (1780)
-├── bac-hai-dao-3d/          # 🌊 Bắc Hải Đảo 3D — three.js edition
-├── cho-noi/                 # 🛶 Chợ Nổi — floating market catcher (Phaser 3)
-├── lib/three.min.js         # Vendored three.js r147
-├── assets/vendor/           # Vendored Phaser 3.90.0 + license
-├── icons/                   # PWA icon set (192 / 512 / maskable)
-├── manifest.webmanifest     # Web app manifest (+ per-game shortcuts)
-├── sw.js                    # Service worker — offline cache
-├── privacy.html             # Privacy policy (VI/EN) for store listings
-├── HUONG-DAN-PHAT-HANH.md   # Release guide: CH Play / iOS / web / DOI
-└── CITATION.cff             # Citation metadata (GitHub / Zenodo)
+├── index.html               Portal homepage (chronological timeline)
+├── van-don/                 Vân Đồn: port building (1149)
+├── bac-hai-dao/             Bắc Hải Đảo: pirate adventure, 2D (1780)
+├── bac-hai-dao-3d/          Bắc Hải Đảo 3D: three.js edition
+├── cho-noi/                 Chợ Nổi: floating market, Phaser 3 (19th century)
+├── lib/three.min.js         Vendored three.js r147
+├── assets/vendor/           Vendored Phaser 3.90.0 and its licence
+├── icons/                   Application icon set (192, 512, maskable)
+├── store-assets/            Store listings and promotional graphics
+├── manifest.webmanifest     Web application manifest with per-game shortcuts
+├── sw.js                    Service worker (cache-first offline strategy)
+├── privacy.html             Privacy policy, Vietnamese and English
+├── HUONG-DAN-PHAT-HANH.md   Release and store-submission guide (Vietnamese)
+└── CITATION.cff             Citation metadata for GitHub and Zenodo
 ```
+
+## Implementation notes
+
+| Layer | Implementation |
+|---|---|
+| 2D games (Vân Đồn, Bắc Hải Đảo) | HTML5 canvas and vanilla JavaScript, one self-contained file per game |
+| 3D game (Bắc Hải Đảo 3D) | [three.js](https://threejs.org/) r147, vendored locally |
+| 2D game engine (Chợ Nổi) | [Phaser 3](https://phaser.io/) v3.90.0, vendored locally |
+| Audio | Web Audio API, generative pentatonic music, no audio assets |
+| Application platform | Progressive Web App: manifest, service worker, shortcuts |
+| Persistence | Browser `localStorage`, device-local only |
+| Distribution | GitHub Pages; Trusted Web Activity wrapper for Google Play; home-screen installation on iOS |
+| Archiving | Each release is deposited in [Zenodo](https://doi.org/10.5281/zenodo.21850564) with a DOI |
+
+The project uses no build tooling and no content delivery networks. The two
+external libraries are vendored into the repository so that the application
+remains fully functional offline and so that each archived release is complete
+and independently executable.
+
+**Engine selection.** Phaser 3 was adopted for new 2D work after evaluating a
+range of open-source game engines. It is a single-file, MIT-licensed JavaScript
+library that runs directly from a static host without a build step and is
+actively maintained. Editor-centred engines (Godot, Cocos, GDevelop) were not
+adopted because they require an export pipeline; engines targeting the Java, C#
+or C++ toolchains (libGDX, MonoGame, jMonkeyEngine, Torque3D, Spring, gameplay3d,
+OpenRTS) are not deployable as a static website; Babylon.js was not adopted
+because the portal already vendors three.js for 3D work; and several browser
+engines considered (Starling, Turbulenz, Crafty, whs.js, Superpowers, Atomic)
+are no longer maintained.
+
+## Privacy
+
+The application collects no personal data. It has no analytics, no advertising,
+no third-party requests at runtime, and no server-side component. Saved games
+and high scores are written to browser storage on the user's own device and can
+be removed by clearing site data. The full policy is provided in
+[`privacy.html`](privacy.html).
+
+## Releases and archiving
+
+Releases are tagged in GitHub and deposited automatically in Zenodo, where each
+release receives its own version DOI in addition to the concept DOI that
+represents the project as a whole. The archived record is the citable version
+of record.
 
 ## How to cite
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 
-Citation metadata lives in [`CITATION.cff`](CITATION.cff) — GitHub's
-**"Cite this repository"** button exports APA and BibTeX. Suggested
-citation:
+Citation metadata is maintained in [`CITATION.cff`](CITATION.cff); GitHub's
+**Cite this repository** control exports APA and BibTeX from that file.
 
 > Do, T. H. (2026). *ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt
 > (Vietnamese History Game Portal)* [Computer software]. Zenodo.
 > https://doi.org/10.5281/zenodo.21850564
 
-The DOI above is the **concept DOI**: it represents all versions and always
-resolves to the latest release. Every release is also archived on Zenodo
-with its own version DOI:
+```bibtex
+@software{do_thuyhuong_digital_games_2026,
+  author    = {Do, Thuy Huong},
+  title     = {{ThuyHuong Digital 2026 --- Games: Cổng Trò Chơi Sử Việt
+               (Vietnamese History Game Portal)}},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.21850564},
+  url       = {https://doi.org/10.5281/zenodo.21850564}
+}
+```
+
+The DOI above is the **concept DOI**, which represents all versions and always
+resolves to the most recent release. Individual releases carry their own DOIs:
 
 | Version | DOI |
 |---|---|
-| v.1.2 (latest) | [10.5281/zenodo.21899097](https://doi.org/10.5281/zenodo.21899097) |
-| v.1.1 | [10.5281/zenodo.21898774](https://doi.org/10.5281/zenodo.21898774) |
-| v.1.0 | [10.5281/zenodo.21850565](https://doi.org/10.5281/zenodo.21850565) |
+| 1.2 (latest) | [10.5281/zenodo.21899097](https://doi.org/10.5281/zenodo.21899097) |
+| 1.1 | [10.5281/zenodo.21898774](https://doi.org/10.5281/zenodo.21898774) |
+| 1.0 | [10.5281/zenodo.21850565](https://doi.org/10.5281/zenodo.21850565) |
 
-## Author & contact
+## License and third-party components
 
-Created and maintained by **Đỗ Thùy Hương** (Do Thuy Huong) — ThuyHuong
-Digital.
+The games, source code, artwork and accompanying text are © 2026 Đỗ Thùy Hương.
+The licence recorded in the Zenodo deposit governs reuse of each archived
+release.
 
-📧 [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
+Vendored third-party libraries retain their own licences:
+
+| Component | Version | Licence |
+|---|---|---|
+| [Phaser](https://phaser.io/) | 3.90.0 | MIT ([`assets/vendor/PHASER-LICENSE.md`](assets/vendor/PHASER-LICENSE.md)) |
+| [three.js](https://threejs.org/) | r147 | MIT |
+
+## Author and contact
+
+**Đỗ Thùy Hương** (Do Thuy Huong), ThuyHuong Digital.
+Vinh Long University of Technology Education (VLUTE).
+
+Correspondence: [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
+
+Issues and suggestions are welcome through the repository
+[issue tracker](https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games/issues).
 
 ---
 
 <div align="center">
 
-© 2026 Do Thuy Huong (ThuyHuong Digital) — personal project.
-New games will be added throughout 2026.
-
-**⭐ If these games helped you teach or learn Vietnamese history, a star is appreciated!**
+© 2026 Đỗ Thùy Hương (ThuyHuong Digital). Further games are planned during 2026.
 
 </div>
