@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#241708">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<title>Chợ Nổi — Phiên Chợ Trên Sông · ThuyHuong Digital</title>
+<meta name="description" content="Chèo xuồng ba lá giữa chợ nổi miền Tây thời khẩn hoang: hứng dừa, xoài, khóm từ ghe bầu, né gỗ trôi. Game HTML5 chạy Phaser, chơi miễn phí trên trình duyệt.">
+<style>
+  :root{
+    --panel:#241708; --panel2:#31200d; --wood:#5c3d24;
+    --son:#a5402e; --dong:#d9a441; --nga:#f2e8d5; --celadon:#9ec5ab;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--panel);color:var(--nga);
+    font-family:"Segoe UI",system-ui,sans-serif;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center}
+  .songly{height:9px;width:100%;background:
+    radial-gradient(circle at 6px -3px, transparent 5.5px, var(--dong) 6px, var(--dong) 7.5px, transparent 8px)
+    repeat-x;background-size:12px 9px;opacity:.85}
+  header{text-align:center;padding:14px 16px 8px}
+  header a{color:var(--celadon);text-decoration:none;font-size:12px;letter-spacing:2px}
+  h1{font-family:Georgia,"Times New Roman",serif;color:var(--dong);
+    font-size:clamp(20px,5vw,30px);letter-spacing:1px;margin-top:4px}
+  #khung{width:min(96vw,480px);margin:10px auto 18px;border:1.5px solid var(--wood);
+    border-radius:14px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  #khung canvas{display:block}
+  footer{text-align:center;color:#8d7d5e;font-size:11.5px;padding:0 16px 26px;line-height:1.8}
+  footer b{color:var(--celadon)}
+</style>
+</head>
+<body>
+<header>
+  <a href="../index.html">⟵ CỔNG TRÒ CHƠI SỬ VIỆT</a>
+  <h1>CHỢ NỔI — PHIÊN CHỢ TRÊN SÔNG</h1>
+</header>
+<div class="songly"></div>
+<div id="khung"></div>
+<footer>
+  Thế kỷ 19, lưu dân theo kênh rạch khẩn hoang Đất Phương Nam; ghe xuồng tụ lại
+  thành <b>chợ nổi</b> — treo bẹo hàng gì, bán hàng nấy.<br>
+  © 2026 <b>ThuyHuong Digital</b> · dựng bằng Phaser 3 (MIT)
+</footer>
+
+<script src="../assets/vendor/phaser.min.js"></script>
+<script>
+'use strict';
+/* Chợ Nổi — game hứng nông sản trên Phaser 3.
+   Ghe bầu chạy ngang phía trên thả hàng xuống; người chơi chèo xuồng ba lá
+   hứng nông sản, né gỗ trôi. Phiên chợ dài 90 giây. */
+
+const W = 480, H = 720;
+const NONG_SAN = [
+  { hinh: '🥥', diem: 1 }, { hinh: '🍌', diem: 1 }, { hinh: '🍉', diem: 2 },
+  { hinh: '🥭', diem: 2 }, { hinh: '🍍', diem: 3 }, { hinh: '🌾', diem: 3 },
+];
+const GO_TROI = '🪵';
+const PHIEN_CHO_GIAY = 90;
+const KHOA_KY_LUC = 'thd_chonoi_best';
+
+/* ---- tiếng ngũ cung bằng WebAudio (đồng bộ với Vân Đồn / Bắc Hải Đảo) ---- */
+let amCtx = null;
+const NGU_CUNG = [261.63, 293.66, 329.63, 392.0, 440.0]; // C D E G A
+function keu(bac, to = 0.16, dai = 0.18) {
+  try {
+    amCtx = amCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = amCtx.createOscillator(), g = amCtx.createGain();
+    o.type = 'triangle';
+    o.frequency.value = NGU_CUNG[((bac % 5) + 5) % 5] * (bac >= 5 ? 2 : 1);
+    g.gain.setValueAtTime(to, amCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, amCtx.currentTime + dai);
+    o.connect(g); g.connect(amCtx.destination);
+    o.start(); o.stop(amCtx.currentTime + dai);
+  } catch (e) { /* trình duyệt chặn âm thanh trước tương tác — bỏ qua */ }
+}
+
+/* ---- nền sông chung cho các màn ---- */
+function veSong(scene) {
+  const g = scene.add.graphics();
+  // nước phù sa: chuyển từ men ngọc sang nâu đất
+  g.fillGradientStyle(0x2f5a4e, 0x2f5a4e, 0x4a3a1e, 0x3a2a12, 1);
+  g.fillRect(0, 0, W, H);
+  // hai bờ dừa nước
+  g.fillStyle(0x241708, 1);
+  g.fillTriangle(0, 0, 74, 0, 0, 190);
+  g.fillTriangle(W, 0, W - 74, 0, W, 190);
+  const soLine = scene.add.graphics();
+  scene.tweens.addCounter({
+    from: 0, to: 48, duration: 2600, repeat: -1,
+    onUpdate: (tw) => {
+      const d = tw.getValue();
+      soLine.clear();
+      soLine.lineStyle(1.4, 0x9ec5ab, 0.13);
+      for (let y = 140; y < H; y += 52) {
+        soLine.beginPath();
+        for (let x = -48 + d; x < W + 24; x += 48) {
+          soLine.moveTo(x, y);
+          soLine.lineTo(x + 14, y - 5);
+          soLine.lineTo(x + 28, y);
+        }
+        soLine.strokePath();
+      }
+    },
+  });
+  for (const bx of [26, W - 26]) {
+    scene.add.text(bx, 26, '🌴', { fontSize: '34px' }).setOrigin(0.5);
+  }
+}
+
+/* =============== MÀN MỞ ĐẦU =============== */
+class ManMoDau extends Phaser.Scene {
+  constructor() { super('modau'); }
+  create() {
+    veSong(this);
+    this.add.text(W / 2, 128, 'CHỢ NỔI', {
+      fontFamily: 'Georgia, serif', fontSize: '52px', color: '#d9a441',
+    }).setOrigin(0.5);
+    this.add.text(W / 2, 176, 'Phiên chợ trên sông · Đất Phương Nam', {
+      fontSize: '16px', color: '#9ec5ab', fontStyle: 'italic',
+    }).setOrigin(0.5);
+    this.add.text(W / 2, 300, '🛶', { fontSize: '84px' }).setOrigin(0.5);
+    const luat = [
+      'Ghe bầu thả hàng — chèo xuồng tới hứng:',
+      '🥥 🍌 +1 · 🍉 🥭 +2 · 🍍 🌾 +3',
+      '🪵 gỗ trôi: −5 điểm, ướt cả xuồng!',
+      '',
+      '⬅️ ➡️ phím mũi tên · hoặc rê / chạm màn hình',
+      `Phiên chợ dài ${PHIEN_CHO_GIAY} giây.`,
+    ].join('\n');
+    this.add.text(W / 2, 430, luat, {
+      fontSize: '16.5px', color: '#f2e8d5', align: 'center', lineSpacing: 9,
+    }).setOrigin(0.5);
+    const ky_luc = Number(localStorage.getItem(KHOA_KY_LUC) || 0);
+    if (ky_luc > 0) {
+      this.add.text(W / 2, 540, `🏆 Kỷ lục của bạn: ${ky_luc} điểm`, {
+        fontSize: '15px', color: '#d9a441',
+      }).setOrigin(0.5);
+    }
+    const nut = this.add.text(W / 2, 615, '⚓ NHÓM CHỢ', {
+      fontFamily: 'Georgia, serif', fontSize: '26px', color: '#fff8e0',
+      backgroundColor: '#8a6a1c', padding: { x: 26, y: 12 },
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    this.tweens.add({ targets: nut, scale: 1.06, duration: 700, yoyo: true, repeat: -1 });
+    nut.on('pointerdown', () => { keu(4); this.scene.start('choi'); });
+    this.input.keyboard.on('keydown-SPACE', () => this.scene.start('choi'));
+  }
+}
+
+/* =============== MÀN CHƠI =============== */
+class ManChoi extends Phaser.Scene {
+  constructor() { super('choi'); }
+  create() {
+    veSong(this);
+    this.diem = 0;
+    this.conLai = PHIEN_CHO_GIAY;
+    this.nhipTha = 950;          // ms giữa hai lần thả — rút ngắn dần
+    this.tocDoRoi = 150;
+
+    // ghe bầu chạy ngang phía trên
+    this.ghe = this.add.text(W / 2, 96, '⛵', { fontSize: '58px' }).setOrigin(0.5);
+    this.gheHuong = 1;
+
+    // xuồng ba lá của người chơi
+    this.xuong = this.physics.add.sprite(W / 2, H - 74, null).setVisible(false);
+    this.xuong.body.setSize(104, 40);
+    this.xuong.setCollideWorldBounds(true);
+    this.xuongHinh = this.add.text(0, 0, '🛶', { fontSize: '64px' }).setOrigin(0.5);
+
+    this.hang = this.physics.add.group();
+    this.physics.add.overlap(this.xuong, this.hang, (x, mon) => this.hung(mon));
+
+    // bảng điểm
+    this.bangDiem = this.add.text(14, 12, '', { fontSize: '19px', color: '#f2e8d5' });
+    this.bangGio = this.add.text(W - 14, 12, '', { fontSize: '19px', color: '#9ec5ab' }).setOrigin(1, 0);
+    this.capNhatBang();
+
+    this.phim = this.input.keyboard.createCursorKeys();
+    this.input.on('pointermove', (p) => { if (p.isDown || p.wasTouch) this.xuong.x = p.x; });
+    this.input.on('pointerdown', (p) => { this.xuong.x = p.x; });
+
+    this.henTha = this.time.addEvent({ delay: this.nhipTha, loop: true, callback: () => this.tha() });
+    this.time.addEvent({
+      delay: 1000, loop: true,
+      callback: () => {
+        this.conLai -= 1;
+        // chợ càng về trưa càng đông: thả nhanh hơn, rơi nhanh hơn
+        if (this.conLai % 15 === 0 && this.nhipTha > 420) {
+          this.nhipTha -= 90; this.tocDoRoi += 22;
+          this.henTha.reset({ delay: this.nhipTha, loop: true, callback: () => this.tha() });
+        }
+        this.capNhatBang();
+        if (this.conLai <= 0) this.tanCho();
+      },
+    });
+  }
+
+  capNhatBang() {
+    this.bangDiem.setText(`🧺 ${this.diem} điểm`);
+    this.bangGio.setText(`⏱ ${this.conLai}s`);
+  }
+
+  tha() {
+    // 1/5 là gỗ trôi, còn lại là nông sản
+    const laGo = Math.random() < 0.2;
+    const mon = laGo
+      ? { hinh: GO_TROI, diem: -5 }
+      : NONG_SAN[Math.floor(Math.random() * NONG_SAN.length)];
+    const chu = this.add.text(this.ghe.x, this.ghe.y + 30, mon.hinh, { fontSize: '40px' }).setOrigin(0.5);
+    // thêm vào nhóm TRƯỚC rồi mới đặt vận tốc — nhóm vật lý enable lại body khi add
+    this.hang.add(chu);
+    chu.body.setVelocityY(this.tocDoRoi + Math.random() * 60);
+    chu.body.setSize(40, 40);
+    chu.setData('diem', mon.diem);
+  }
+
+  hung(mon) {
+    const d = mon.getData('diem');
+    this.diem = Math.max(0, this.diem + d);
+    if (d > 0) { keu(d + 1); } else { keu(0, 0.2, 0.3); this.cameras.main.shake(160, 0.012); }
+    const bay = this.add.text(this.xuong.x, this.xuong.y - 46, d > 0 ? `+${d}` : `${d}`, {
+      fontSize: '24px', color: d > 0 ? '#d9a441' : '#a5402e', fontStyle: 'bold',
+    }).setOrigin(0.5);
+    this.tweens.add({ targets: bay, y: bay.y - 42, alpha: 0, duration: 600, onComplete: () => bay.destroy() });
+    mon.destroy();
+    this.capNhatBang();
+  }
+
+  tanCho() {
+    this.scene.start('tancho', { diem: this.diem });
+  }
+
+  update() {
+    // ghe bầu lượn qua lại
+    this.ghe.x += this.gheHuong * 2.1;
+    if (this.ghe.x > W - 70 || this.ghe.x < 70) this.gheHuong *= -1;
+    this.ghe.setFlipX(this.gheHuong < 0);
+
+    // điều khiển xuồng bằng phím
+    if (this.phim.left.isDown) this.xuong.setVelocityX(-330);
+    else if (this.phim.right.isDown) this.xuong.setVelocityX(330);
+    else this.xuong.setVelocityX(0);
+    this.xuongHinh.setPosition(this.xuong.x, this.xuong.y);
+
+    // dọn món đã rơi quá đáy
+    this.hang.children.each((c) => { if (c.y > H + 40) c.destroy(); });
+  }
+}
+
+/* =============== MÀN TAN CHỢ =============== */
+class ManTanCho extends Phaser.Scene {
+  constructor() { super('tancho'); }
+  init(d) { this.diem = d.diem || 0; }
+  create() {
+    veSong(this);
+    const cu = Number(localStorage.getItem(KHOA_KY_LUC) || 0);
+    const kyLucMoi = this.diem > cu;
+    if (kyLucMoi) localStorage.setItem(KHOA_KY_LUC, String(this.diem));
+
+    this.add.text(W / 2, 150, 'TAN CHỢ', {
+      fontFamily: 'Georgia, serif', fontSize: '46px', color: '#d9a441',
+    }).setOrigin(0.5);
+    this.add.text(W / 2, 250, `🧺 Khoang xuồng: ${this.diem} điểm`, {
+      fontSize: '26px', color: '#f2e8d5',
+    }).setOrigin(0.5);
+    this.add.text(W / 2, 300, kyLucMoi
+      ? '🏆 KỶ LỤC MỚI! Ghe thương hồ nể mặt.'
+      : `Kỷ lục của bạn: ${Math.max(cu, this.diem)} điểm`, {
+      fontSize: '17px', color: kyLucMoi ? '#d9a441' : '#9ec5ab',
+    }).setOrigin(0.5);
+
+    let bac, loi;
+    if (this.diem >= 120) { bac = '👑 Chủ vựa chợ nổi'; loi = 'Mua tận gốc bán tận ngọn, thương hồ khắp sông đều biết tên.'; }
+    else if (this.diem >= 70) { bac = '⚓ Thương hồ lành nghề'; loi = 'Xuồng đầy khoang, chèo về miệt vườn trước con nước lớn.'; }
+    else if (this.diem >= 30) { bac = '🛶 Bạn hàng mới nhóm'; loi = 'Buổi chợ đầu đủ vốn — mai nhóm sớm hơn nghen!'; }
+    else { bac = '🌊 Ướt cả xuồng'; loi = 'Sông nước miền Tây khó lường; chèo thêm vài phiên là quen tay.'; }
+    this.add.text(W / 2, 392, bac, { fontSize: '25px', color: '#fff8e0' }).setOrigin(0.5);
+    this.add.text(W / 2, 442, loi, {
+      fontSize: '15.5px', color: '#e0d4bb', fontStyle: 'italic',
+      align: 'center', wordWrap: { width: 380 },
+    }).setOrigin(0.5);
+
+    const nut = this.add.text(W / 2, 560, '🔁 NHÓM PHIÊN MỚI', {
+      fontFamily: 'Georgia, serif', fontSize: '24px', color: '#fff8e0',
+      backgroundColor: '#8a6a1c', padding: { x: 24, y: 12 },
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    nut.on('pointerdown', () => { keu(4); this.scene.start('choi'); });
+    const ve = this.add.text(W / 2, 630, '⟵ Về cổng trò chơi', {
+      fontSize: '15px', color: '#9ec5ab',
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    ve.on('pointerdown', () => { location.href = '../index.html'; });
+    this.input.keyboard.on('keydown-SPACE', () => this.scene.start('choi'));
+  }
+}
+
+new Phaser.Game({
+  type: Phaser.AUTO,
+  parent: 'khung',
+  width: W,
+  height: H,
+  backgroundColor: '#2f5a4e',
+  physics: { default: 'arcade' },
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  scene: [ManMoDau, ManChoi, ManTanCho],
+});
+</script>
+</body>
+</html>
