@@ -15,7 +15,6 @@ abstract: >-
 authors:
   - family-names: "Do"
     given-names: "Thuy Huong"
-    name-particle: ""
     email: "thuyhuongctu@gmail.com"
     affiliation: "Vinh Long University of Technology Education (VLUTE)"
 version: "1.2"

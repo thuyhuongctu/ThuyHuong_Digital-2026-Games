@@ -159,14 +159,17 @@ repository is the deployable site.
 ├── sw.js                    # Service worker — offline cache
 ├── privacy.html             # Privacy policy (VI/EN) for store listings
 ├── HUONG-DAN-PHAT-HANH.md   # Release guide: CH Play / iOS / web / DOI
-└── CITATION.cff             # Citation metadata (GitHub / Zenodo)
+├── CITATION.cff             # Citation metadata (GitHub "Cite this repository")
+└── .zenodo.json             # Archival metadata Zenodo reads on each release
 ```
 
 ## How to cite
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 
-Citation metadata lives in [`CITATION.cff`](CITATION.cff) — GitHub's
+Author: **Do Thuy Huong** (Đỗ Thùy Hương), Vinh Long University of
+Technology Education (VLUTE). Citation metadata lives in
+[`CITATION.cff`](CITATION.cff) and [`.zenodo.json`](.zenodo.json) — GitHub's
 **"Cite this repository"** button exports APA and BibTeX. Suggested
 citation:
 
@@ -186,8 +189,8 @@ with its own version DOI:
 
 ## Author & contact
 
-Created and maintained by **Đỗ Thùy Hương** (Do Thuy Huong) — ThuyHuong
-Digital.
+Created and maintained by **Do Thuy Huong** (Đỗ Thùy Hương) — ThuyHuong
+Digital, Vinh Long University of Technology Education (VLUTE).
 
 📧 [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
 

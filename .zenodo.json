@@ -1,0 +1,23 @@
+{
+  "upload_type": "software",
+  "title": "ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt (Vietnamese History Game Portal)",
+  "creators": [
+    {
+      "name": "Do, Thuy Huong",
+      "affiliation": "Vinh Long University of Technology Education (VLUTE)"
+    }
+  ],
+  "description": "A collection of installable, offline-capable HTML5 educational games about Vietnamese history: Vân Đồn (1149, port building) and Bắc Hải Đảo (1780, pirate adventure in the Gulf of Tonkin) in both 2D canvas and 3D (three.js) versions. Bộ trò chơi giáo dục lịch sử Việt Nam chạy trên web, cài được như ứng dụng, chơi ngoại tuyến.",
+  "language": "vie",
+  "keywords": [
+    "educational game",
+    "serious game",
+    "Vietnamese history",
+    "game-based learning",
+    "HTML5",
+    "three.js",
+    "progressive web app",
+    "Vân Đồn",
+    "Gulf of Tonkin"
+  ]
+}
