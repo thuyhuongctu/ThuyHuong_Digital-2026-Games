@@ -186,7 +186,8 @@ given in [`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md) (in Vietnamese).
 ├── sw.js                    Service worker (cache-first offline strategy)
 ├── privacy.html             Privacy policy, Vietnamese and English
 ├── HUONG-DAN-PHAT-HANH.md   Release and store-submission guide (Vietnamese)
-└── CITATION.cff             Citation metadata for GitHub and Zenodo
+├── CITATION.cff             Citation metadata for GitHub and Zenodo
+└── .zenodo.json             Archival metadata Zenodo reads on each release
 ```
 
 ## Implementation notes
@@ -237,8 +238,11 @@ of record.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 
-Citation metadata is maintained in [`CITATION.cff`](CITATION.cff); GitHub's
-**Cite this repository** control exports APA and BibTeX from that file.
+The author of record is **Do Thuy Huong** (Đỗ Thùy Hương), Vinh Long
+University of Technology Education (VLUTE). Citation metadata is maintained in
+[`CITATION.cff`](CITATION.cff), from which GitHub's **Cite this repository**
+control exports APA and BibTeX, and in [`.zenodo.json`](.zenodo.json), which
+Zenodo reads when it archives each release.
 
 > Do, T. H. (2026). *ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt
 > (Vietnamese History Game Portal)* [Computer software]. Zenodo.
@@ -267,9 +271,9 @@ resolves to the most recent release. Individual releases carry their own DOIs:
 
 ## License and third-party components
 
-The games, source code, artwork and accompanying text are © 2026 Đỗ Thùy Hương.
-The licence recorded in the Zenodo deposit governs reuse of each archived
-release.
+The games, source code, artwork and accompanying text are © 2026 Do Thuy Huong
+(Đỗ Thùy Hương). The licence recorded in the Zenodo deposit governs reuse of
+each archived release.
 
 Vendored third-party libraries retain their own licences:
 
@@ -280,7 +284,7 @@ Vendored third-party libraries retain their own licences:
 
 ## Author and contact
 
-**Đỗ Thùy Hương** (Do Thuy Huong), ThuyHuong Digital.
+**Do Thuy Huong** (Đỗ Thùy Hương), ThuyHuong Digital.
 Vinh Long University of Technology Education (VLUTE).
 
 Correspondence: [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
@@ -292,6 +296,6 @@ Issues and suggestions are welcome through the repository
 
 <div align="center">
 
-© 2026 Đỗ Thùy Hương (ThuyHuong Digital). Further games are planned during 2026.
+© 2026 Do Thuy Huong (ThuyHuong Digital). Further games are planned during 2026.
 
 </div>

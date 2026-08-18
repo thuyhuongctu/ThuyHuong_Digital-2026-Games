@@ -1,0 +1,27 @@
+{
+  "upload_type": "software",
+  "title": "ThuyHuong Digital 2026 — Games: Cổng Trò Chơi Sử Việt (Vietnamese History Game Portal)",
+  "creators": [
+    {
+      "name": "Do, Thuy Huong",
+      "affiliation": "Vinh Long University of Technology Education (VLUTE)"
+    }
+  ],
+  "description": "A portal of four installable, offline-capable HTML5 educational games set in documented periods of Vietnamese history: Vân Đồn (1149, port building and maritime trade), Bắc Hải Đảo (1780, adventure and trade in the Gulf of Tonkin) in both 2D canvas and 3D three.js editions, and Chợ Nổi (nineteenth century, an arcade game set in the floating markets of the Mekong Delta). The portal is a Progressive Web App: it installs to a device home screen, runs full screen, works without a network connection, and collects no personal data. Bộ trò chơi giáo dục lịch sử Việt Nam chạy trên trình duyệt, cài được như ứng dụng, chơi ngoại tuyến.",
+  "language": "vie",
+  "keywords": [
+    "educational game",
+    "serious game",
+    "game-based learning",
+    "Vietnamese history",
+    "digital heritage",
+    "HTML5",
+    "progressive web app",
+    "offline-first",
+    "three.js",
+    "Phaser",
+    "Vân Đồn",
+    "Gulf of Tonkin",
+    "Mekong Delta floating market"
+  ]
+}
