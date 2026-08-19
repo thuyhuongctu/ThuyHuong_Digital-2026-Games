@@ -25,6 +25,7 @@ Vietnamese history, published as an installable, offline-capable web application
 ## Contents
 
 - [Overview](#overview)
+- [Screenshots](#screenshots)
 - [The games](#the-games)
 - [Educational use](#educational-use)
 - [Features](#features)
@@ -56,6 +57,35 @@ The project is developed and maintained by a single author as a free,
 non-commercial contribution to Vietnamese-language educational resources on
 the web. It is free to play and to teach with, but it is not open-source
 software: see [License](#license-and-third-party-components).
+
+## Screenshots
+
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/portal.png" alt="Portal homepage presenting the games on a chronological timeline"></td>
+<td width="50%"><img src="docs/screenshots/van-don.png" alt="Vân Đồn: a developed trading port with piers, kilns, workshops and a watchtower"></td>
+</tr>
+<tr>
+<td><b>Portal</b> — the games on a chronological timeline, in a shared visual identity drawn from Lý–Trần ceramics.</td>
+<td><b>Vân Đồn (1149)</b> — the port after several rounds of construction: piers, Chu Đậu kilns, silk workshops, shrines and a naval watchtower.</td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/bac-hai-dao-captains.jpg" alt="Captain selection screen showing four illustrated captains and their abilities"></td>
+<td><img src="docs/screenshots/bac-hai-dao.png" alt="Sailing a junk between islands in the Gulf of Tonkin"></td>
+</tr>
+<tr>
+<td><b>Bắc Hải Đảo (1780)</b> — four playable captains, each with distinct starting conditions and abilities.</td>
+<td><b>Bắc Hải Đảo (1780)</b> — sailing between historic ports, with wind, weather, cargo and reputation tracked on the interface.</td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/bac-hai-dao-3d.jpg" alt="Third-person view behind a junk sailing among limestone islands in 3D"></td>
+<td><img src="docs/screenshots/cho-noi.png" alt="Chợ Nổi title screen showing the sampan and the scoring rules"></td>
+</tr>
+<tr>
+<td><b>Bắc Hải Đảo 3D (1780)</b> — the same world under a chase camera, with limestone karsts, sea surface and weather rendered in three dimensions.</td>
+<td><b>Chợ Nổi (19th century)</b> — a ninety-second market session on the canals of the Mekong Delta.</td>
+</tr>
+</table>
 
 ## The games
 
@@ -183,6 +213,7 @@ given in [`HUONG-DAN-PHAT-HANH.md`](HUONG-DAN-PHAT-HANH.md) (in Vietnamese).
 ├── lib/three.min.js         Vendored three.js r147
 ├── assets/vendor/           Vendored Phaser 3.90.0 and its licence
 ├── icons/                   Application icon set (192, 512, maskable)
+├── docs/screenshots/        Screenshots used in this document
 ├── store-assets/            Store listings and promotional graphics
 ├── manifest.webmanifest     Web application manifest with per-game shortcuts
 ├── sw.js                    Service worker (cache-first offline strategy)
@@ -273,7 +304,7 @@ resolves to the most recent release. Individual releases carry their own DOIs:
 
 ## License and third-party components
 
-**© 2026 Đỗ Thùy Hương (Do Thuy Huong). All rights reserved.** See
+**© 2026 Do Thuy Huong (Đỗ Thùy Hương). All rights reserved.** See
 [`LICENSE`](LICENSE) for the full bilingual terms.
 
 The games are published to be played, taught with and cited, not to be reused
