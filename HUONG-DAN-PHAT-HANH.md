@@ -169,6 +169,25 @@ tác giả.
 Từ đó về sau, **mỗi release GitHub mới sẽ tự động có thêm một Version DOI**
 — không phải làm lại gì cả.
 
+### Sửa metadata của bản ghi Zenodo đã phát hành {#doi-metadata}
+
+Bản ghi lưu trữ **trước khi** repo có `.zenodo.json` sẽ thiếu thông tin: Zenodo
+lấy tạm tên đăng nhập GitHub làm tác giả và không có phần mô tả. Sửa như sau
+(mã DOI **không đổi**, chỉ metadata cập nhật):
+
+1. Vào **zenodo.org** → đăng nhập → **My dashboard** → mở bản ghi → **Edit**
+2. **Creators**: xóa dòng cũ, nhập
+   - Family name `Do` · Given names `Thuy Huong`
+   - Affiliation `Vinh Long University of Technology Education (VLUTE)`
+   - Có ORCID thì điền luôn để bản ghi tự liên kết vào hồ sơ ORCID
+3. **Description**: mở [`docs/zenodo-description.html`](docs/zenodo-description.html),
+   copy toàn bộ phần bên dưới khối ghi chú và dán vào (ô này nhận HTML — nếu
+   trình soạn thảo đang ở chế độ chữ thường, chuyển sang chế độ mã/HTML trước)
+4. Bấm **Publish**
+
+Các release **mới** không cần làm bước này: `.zenodo.json` trong repo đã chứa
+sẵn tác giả và mô tả nên Zenodo tự điền.
+
 ---
 
 ## 5. ❓ Hỏi nhanh {#faq}
