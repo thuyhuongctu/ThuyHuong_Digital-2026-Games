@@ -271,8 +271,8 @@ of record.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 
-The author of record is **Do Thuy Huong** (Đỗ Thùy Hương), Vinh Long
-University of Technology Education (VLUTE). Citation metadata is maintained in
+The author of record is **Do Thuy Huong** (Đỗ Thùy Hương). Citation metadata is
+maintained in
 [`CITATION.cff`](CITATION.cff), from which GitHub's **Cite this repository**
 control exports APA and BibTeX, and in [`.zenodo.json`](.zenodo.json), which
 Zenodo reads when it archives each release.
@@ -330,7 +330,6 @@ retain their own licences:
 ## Author and contact
 
 **Do Thuy Huong** (Đỗ Thùy Hương), ThuyHuong Digital.
-Vinh Long University of Technology Education (VLUTE).
 
 Correspondence: [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
 
