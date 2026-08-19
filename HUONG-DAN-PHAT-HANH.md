@@ -178,7 +178,7 @@ lấy tạm tên đăng nhập GitHub làm tác giả và không có phần mô 
 1. Vào **zenodo.org** → đăng nhập → **My dashboard** → mở bản ghi → **Edit**
 2. **Creators**: xóa dòng cũ, nhập
    - Family name `Do` · Given names `Thuy Huong`
-   - Affiliation `Vinh Long University of Technology Education (VLUTE)`
+   - Bỏ trống ô Affiliation
    - Có ORCID thì điền luôn để bản ghi tự liên kết vào hồ sơ ORCID
 3. **Description**: mở [`docs/zenodo-description.html`](docs/zenodo-description.html),
    copy toàn bộ phần bên dưới khối ghi chú và dán vào (ô này nhận HTML — nếu
