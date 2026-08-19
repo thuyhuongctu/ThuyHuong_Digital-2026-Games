@@ -10,6 +10,7 @@ Vietnamese history, published as an installable, offline-capable web application
 [![Release](https://img.shields.io/github/v/release/thuyhuongctu/ThuyHuong_Digital-2026-Games?label=release&color=b8860b)](https://github.com/thuyhuongctu/ThuyHuong_Digital-2026-Games/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21850564.svg)](https://doi.org/10.5281/zenodo.21850564)
 [![PWA](https://img.shields.io/badge/PWA-installable%20%C2%B7%20offline-5a3&logo=pwa)](https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/)
+[![License](https://img.shields.io/badge/license-proprietary%20·%20all%20rights%20reserved-lightgrey)](LICENSE)
 [![three.js](https://img.shields.io/badge/3D-three.js-049EF4?logo=threedotjs&logoColor=white)](bac-hai-dao-3d/)
 [![Phaser](https://img.shields.io/badge/2D-Phaser%203-2ea3f2)](cho-noi/)
 
@@ -51,9 +52,10 @@ server-side component, and no account. The portal is a Progressive Web App:
 once loaded it can be installed to a device home screen, runs full screen, and
 remains playable without a network connection.
 
-The project is developed and maintained by a single author as an open,
+The project is developed and maintained by a single author as a free,
 non-commercial contribution to Vietnamese-language educational resources on
-the web.
+the web. It is free to play and to teach with, but it is not open-source
+software: see [License](#license-and-third-party-components).
 
 ## The games
 
@@ -271,11 +273,23 @@ resolves to the most recent release. Individual releases carry their own DOIs:
 
 ## License and third-party components
 
-The games, source code, artwork and accompanying text are © 2026 Do Thuy Huong
-(Đỗ Thùy Hương). The licence recorded in the Zenodo deposit governs reuse of
-each archived release.
+**© 2026 Đỗ Thùy Hương (Do Thuy Huong). All rights reserved.** See
+[`LICENSE`](LICENSE) for the full bilingual terms.
 
-Vendored third-party libraries retain their own licences:
+The games are published to be played, taught with and cited, not to be reused
+as source material. Playing the games at the official address, non-commercial
+classroom use by teachers and institutions, reading the source for personal
+learning, academic citation with attribution and the DOI, and screenshots or
+review videos with credit are all permitted without prior permission.
+Redistribution, re-deployment, modification, derivative works, extraction of
+artwork or music, publication to application stores, fee-charging use, and use
+as training data for commercial AI systems require the author's prior written
+permission.
+
+Licensing enquiries: [thuyhuongctu@gmail.com](mailto:thuyhuongctu@gmail.com)
+
+Vendored third-party libraries are excluded from the reservation above and
+retain their own licences:
 
 | Component | Version | Licence |
 |---|---|---|
