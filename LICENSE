@@ -1,0 +1,97 @@
+GIẤY PHÉP ĐỘC QUYỀN — PROPRIETARY LICENSE
+
+ThuyHuong Digital 2026 — Games · Cổng Trò Chơi Sử Việt
+Bản quyền © 2026 Đỗ Thùy Hương.
+BẢO LƯU MỌI QUYỀN — ALL RIGHTS RESERVED.
+
+Mã định danh công bố (DOI): 10.5281/zenodo.21850564
+
+1. PHẠM VI BẢO HỘ
+   Toàn bộ nội dung trong kho mã nguồn này, bao gồm nhưng không giới hạn:
+   - Mã nguồn phần mềm (HTML, CSS, JavaScript) của cổng trò chơi và của
+     từng trò: Vân Đồn (1149), Bắc Hải Đảo (1780) bản 2D và bản 3D,
+     Chợ Nổi (thế kỷ 19);
+   - Thiết kế trò chơi: cơ chế chơi, hệ thống nâng cấp, kịch bản nhiệm vụ,
+     bảng cân bằng độ khó, nội dung sử liệu trong trò chơi;
+   - Tạo hình nhân vật thuyền trưởng, tài sản đồ họa, bảng màu gốm Lý–Trần
+     và nhận diện thị giác của cổng trò chơi;
+   - Nhạc nền sinh bằng WebAudio trên thang ngũ cung và các mẫu âm thanh;
+   - Tài liệu hướng dẫn, nội dung trang cửa hàng trong store-assets/
+     và docs/;
+   là tài sản trí tuệ của tác giả nêu trên, được bảo hộ theo Luật Sở hữu
+   trí tuệ Việt Nam và các điều ước quốc tế liên quan (Công ước Berne,
+   Hiệp định TRIPS).
+
+2. QUYỀN ĐƯỢC PHÉP (không cần xin phép trước)
+   - Chơi và sử dụng ứng dụng tại địa chỉ chính thức
+     https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/ ,
+     kể cả cài lên màn hình chính và chơi ngoại tuyến;
+   - Giáo viên, giảng viên và cơ sở giáo dục sử dụng tại địa chỉ chính thức
+     cho hoạt động GIẢNG DẠY PHI THƯƠNG MẠI (không thu phí riêng cho việc
+     dùng phần mềm);
+   - Đọc mã nguồn cho mục đích học tập, tham khảo cá nhân;
+   - Trích dẫn học thuật kèm ghi công tác giả và DOI nêu trên;
+   - Chụp ảnh màn hình, quay video giới thiệu/đánh giá có ghi rõ nguồn.
+
+3. HÀNH VI BỊ CẤM (khi chưa có văn bản cho phép của chủ sở hữu)
+   - Sao chép, phân phối, công bố lại toàn bộ hoặc một phần mã nguồn,
+     kể cả triển khai ứng dụng tại tên miền hoặc kho mã khác;
+   - Chỉnh sửa, tạo tác phẩm phái sinh, dịch ngược hoặc khai thác mã trò
+     chơi dưới bất kỳ hình thức nào;
+   - Tách riêng để sử dụng: tạo hình nhân vật, tài sản đồ họa, nhạc nền
+     hoặc nhận diện thương hiệu của cổng trò chơi;
+   - Phát hành trò chơi lên cửa hàng ứng dụng hoặc nền tảng khác;
+   - Sử dụng trong sản phẩm, dịch vụ hoặc hoạt động đào tạo CÓ THU PHÍ cho
+     việc dùng phần mềm (cần hợp đồng cấp phép — xem mục 5);
+   - Dùng nội dung kho này làm dữ liệu huấn luyện hệ thống AI thương mại.
+
+4. NGOẠI LỆ — THÀNH PHẦN BÊN THỨ BA
+   Các thành phần bên thứ ba được sử dụng theo giấy phép riêng của chúng và
+   không thuộc phạm vi bảo lưu nêu trên:
+   - Phaser 3.90.0 (MIT License) — assets/vendor/phaser.min.js,
+     xem assets/vendor/PHASER-LICENSE.md
+   - three.js r147 (MIT License) — lib/three.min.js
+
+5. CẤP PHÉP THƯƠNG MẠI
+   Nhu cầu cấp phép cho khoa/trường, tùy biến nội dung, đồng thương hiệu
+   hoặc mọi hình thức thương mại hóa khác: thuyhuongctu@gmail.com
+   (cấp phép KHÔNG ĐỘC QUYỀN theo thỏa thuận bằng văn bản).
+
+6. MIỄN TRỪ TRÁCH NHIỆM
+   Phần mềm được cung cấp "nguyên trạng", không kèm bất kỳ bảo đảm nào.
+   Bối cảnh lịch sử trong trò chơi dựa trên sử liệu nhưng đã được hư cấu
+   hóa phục vụ trải nghiệm chơi; đây không phải là nguồn nghiên cứu.
+
+---
+
+ENGLISH SUMMARY
+
+ThuyHuong Digital 2026 — Games · Vietnamese History Game Portal
+Copyright © 2026 Do Thuy Huong. All rights reserved.
+Publication identifier (DOI): 10.5281/zenodo.21850564
+
+PERMITTED without prior permission: playing the games at the official URL
+(https://thuyhuongctu.github.io/ThuyHuong_Digital-2026-Games/), including
+home-screen installation and offline play; use by teachers, lecturers and
+educational institutions for NON-COMMERCIAL classroom teaching (no fee charged
+for the software itself); reading the source for personal learning; academic
+citation with attribution and the DOI above; screenshots and review videos
+with credit.
+
+PROHIBITED without prior written permission: copying, redistributing or
+re-deploying the source in whole or in part at any other domain or repository;
+modifying, creating derivative works from, or reverse-engineering the game
+code; extracting the character designs, artwork, music or brand identity;
+publishing the games to any application store or platform; use in any product,
+service or training activity that charges a fee for the software (a licence
+agreement is required — see section 5); and use of this repository as training
+data for commercial AI systems.
+
+THIRD-PARTY COMPONENTS remain under their own licences and are excluded from
+the reservation above: Phaser 3.90.0 (MIT) and three.js r147 (MIT).
+
+Licensing enquiries: thuyhuongctu@gmail.com
+
+DISCLAIMER: the software is provided "as is", without warranty of any kind.
+The historical settings draw on documented history but are fictionalised for
+play; the games are not a scholarly source.
