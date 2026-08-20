@@ -106,9 +106,10 @@ SHA-256 thật trong file tải về):
      - Tối thiểu 2 ảnh chụp màn hình điện thoại (chụp ngay trong game)
    - **Xếp hạng nội dung**: điền bảng hỏi → game không bạo lực máu me,
      thường được xếp 3+/7+
-   - **Quyền riêng tư**: game không thu thập dữ liệu ai — có thể ghi rõ
-     như vậy; cần một trang *privacy policy* (tạo file `privacy.html` trong
-     repo là đủ)
+   - **Quyền riêng tư**: game không thu thập dữ liệu ai; trang chính sách
+     đã có sẵn tại `privacy.html`
+   - **Data safety và các mục App content**: nội dung điền sẵn từng ô nằm
+     trong [`store-assets/data-safety-play-console.md`](store-assets/data-safety-play-console.md)
 3. **Testing → Closed testing** → tạo bản phát hành → tải file `.aab` lên
    → mời người thử nghiệm → chạy đủ 14 ngày (quy định tài khoản cá nhân mới)
 4. Sau đó **Production → Create release** → nộp xét duyệt (vài ngày)
